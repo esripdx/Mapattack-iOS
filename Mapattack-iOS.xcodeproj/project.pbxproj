@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1388C7A006C34AD3885E56B9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC953DE7C226410C8714336B /* libPods.a */; };
 		BD69CBBA17EA50FE00E63C71 /* GLGameTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBB917EA50FE00E63C71 /* GLGameTableViewController.m */; };
+		BD69CBBD17EA5F6800E63C71 /* GLCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBBC17EA5F6800E63C71 /* GLCreateViewController.m */; };
+		BD69CBC017EA5FB100E63C71 /* GLWTFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBBF17EA5FB100E63C71 /* GLWTFViewController.m */; };
 		BDADFD6617EA41C000CB11B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6517EA41C000CB11B8 /* UIKit.framework */; };
 		BDADFD6817EA41C000CB11B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6717EA41C000CB11B8 /* Foundation.framework */; };
 		BDADFD6A17EA41C000CB11B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6917EA41C000CB11B8 /* CoreGraphics.framework */; };
@@ -64,6 +66,10 @@
 /* Begin PBXFileReference section */
 		BD69CBB817EA50FE00E63C71 /* GLGameTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLGameTableViewController.h; sourceTree = "<group>"; };
 		BD69CBB917EA50FE00E63C71 /* GLGameTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLGameTableViewController.m; sourceTree = "<group>"; };
+		BD69CBBB17EA5F6800E63C71 /* GLCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLCreateViewController.h; path = ../GLCreateViewController.h; sourceTree = "<group>"; };
+		BD69CBBC17EA5F6800E63C71 /* GLCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLCreateViewController.m; path = ../GLCreateViewController.m; sourceTree = "<group>"; };
+		BD69CBBE17EA5FB100E63C71 /* GLWTFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLWTFViewController.h; sourceTree = "<group>"; };
+		BD69CBBF17EA5FB100E63C71 /* GLWTFViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLWTFViewController.m; sourceTree = "<group>"; };
 		BDADFD6217EA41C000CB11B8 /* Mapattack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mapattack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDADFD6517EA41C000CB11B8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BDADFD6717EA41C000CB11B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -183,6 +189,8 @@
 		BDADFD6B17EA41C000CB11B8 /* Mapattack-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				BD69CBBB17EA5F6800E63C71 /* GLCreateViewController.h */,
+				BD69CBBC17EA5F6800E63C71 /* GLCreateViewController.m */,
 				BE2228A917EA457400EFF703 /* msgpack-objectivec */,
 				BDADFD7417EA41C000CB11B8 /* GLAppDelegate.h */,
 				BDADFD7517EA41C000CB11B8 /* GLAppDelegate.m */,
@@ -192,6 +200,8 @@
 				BDADFD6C17EA41C000CB11B8 /* Supporting Files */,
 				BD69CBB817EA50FE00E63C71 /* GLGameTableViewController.h */,
 				BD69CBB917EA50FE00E63C71 /* GLGameTableViewController.m */,
+				BD69CBBE17EA5FB100E63C71 /* GLWTFViewController.h */,
+				BD69CBBF17EA5FB100E63C71 /* GLWTFViewController.m */,
 			);
 			path = "Mapattack-iOS";
 			sourceTree = "<group>";
@@ -438,12 +448,14 @@
 				BE2228D317EA457400EFF703 /* objectc.c in Sources */,
 				BE2228CD17EA457400EFF703 /* MessagePackPacker.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
+				BD69CBC017EA5FB100E63C71 /* GLWTFViewController.m in Sources */,
 				BE2228DD17EA457400EFF703 /* NSArray+MessagePack.m in Sources */,
 				BE2228D517EA457400EFF703 /* unpack.c in Sources */,
 				BE2228D917EA457400EFF703 /* vrefbuffer.c in Sources */,
 				BE2228D717EA457400EFF703 /* version.c in Sources */,
 				BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */,
 				BE2228CF17EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */,
+				BD69CBBD17EA5F6800E63C71 /* GLCreateViewController.m in Sources */,
 				BE2228D117EA457400EFF703 /* MessagePackParser.m in Sources */,
 				BE2228DB17EA457400EFF703 /* zone.c in Sources */,
 				BE2228E117EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */,
