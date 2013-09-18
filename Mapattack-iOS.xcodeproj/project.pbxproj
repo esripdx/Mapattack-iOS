@@ -54,6 +54,8 @@
 		BE2228E217EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */; };
 		BE2228E317EA457400EFF703 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = BE2228CC17EA457400EFF703 /* readme.md */; };
 		BE2228E417EA457400EFF703 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = BE2228CC17EA457400EFF703 /* readme.md */; };
+		BE2228E717EA601500EFF703 /* GLUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* GLUdpConnection.m */; };
+		BE2228E817EA601500EFF703 /* GLUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* GLUdpConnection.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +136,8 @@
 		BE2228CA17EA457400EFF703 /* NSDictionary+MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+MessagePack.h"; sourceTree = "<group>"; };
 		BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+MessagePack.m"; sourceTree = "<group>"; };
 		BE2228CC17EA457400EFF703 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.md; sourceTree = "<group>"; };
+		BE2228E517EA601500EFF703 /* GLUdpConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLUdpConnection.h; sourceTree = "<group>"; };
+		BE2228E617EA601500EFF703 /* GLUdpConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLUdpConnection.m; sourceTree = "<group>"; };
 		D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FC953DE7C226410C8714336B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -204,6 +208,10 @@
 				BDADFD7417EA41C000CB11B8 /* GLAppDelegate.h */,
 				BDADFD7517EA41C000CB11B8 /* GLAppDelegate.m */,
 				BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */,
+				BDADFD8017EA41C000CB11B8 /* GLViewController.h */,
+				BDADFD8117EA41C000CB11B8 /* GLViewController.m */,
+				BE2228E517EA601500EFF703 /* GLUdpConnection.h */,
+				BE2228E617EA601500EFF703 /* GLUdpConnection.m */,
 				BDADFD6C17EA41C000CB11B8 /* Supporting Files */,
 				BD69CBC417EA691000E63C71 /* GLCreateGameViewController.h */,
 				BD69CBC517EA691000E63C71 /* GLCreateGameViewController.m */,
@@ -463,6 +471,7 @@
 				BE2228D317EA457400EFF703 /* objectc.c in Sources */,
 				BE2228CD17EA457400EFF703 /* MessagePackPacker.m in Sources */,
 				BD69CBCF17EA695B00E63C71 /* GLLaunchViewController.m in Sources */,
+				BE2228E717EA601500EFF703 /* GLUdpConnection.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
 				BE2228DD17EA457400EFF703 /* NSArray+MessagePack.m in Sources */,
 				BE2228D517EA457400EFF703 /* unpack.c in Sources */,
@@ -492,6 +501,7 @@
 				BE2228D017EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */,
 				BE2228E217EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */,
 				BE2228DA17EA457400EFF703 /* vrefbuffer.c in Sources */,
+				BE2228E817EA601500EFF703 /* GLUdpConnection.m in Sources */,
 				BE2228D417EA457400EFF703 /* objectc.c in Sources */,
 				BE2228D617EA457400EFF703 /* unpack.c in Sources */,
 				BE2228D817EA457400EFF703 /* version.c in Sources */,

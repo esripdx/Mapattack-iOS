@@ -14,21 +14,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-
-    // a trivial example of sending MessagePacked NSDictionary data over UDP
-    // see server.rb for ruby example of receiving this data
-    //
-    /*
-     
-    NSDictionary *foo = @{@"foo": @"bar", @"bat": @[ @1, @2, @3 ]};
-    NSData *packed = [foo messagePack];
-    
-    GCDAsyncUdpSocket *socket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    
-    [socket sendData:packed toHost:@"127.0.0.1" port:5309 withTimeout:-1 tag:1];
-
-     */
-    
     return YES;
 }
 							

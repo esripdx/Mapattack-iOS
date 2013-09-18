@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GCDAsyncUdpSocket.h"
 
-@interface GLAppDelegate : UIResponder <UIApplicationDelegate, GCDAsyncUdpSocketDelegate>
+@interface GLAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
