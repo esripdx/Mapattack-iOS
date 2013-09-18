@@ -1,18 +1,18 @@
 //
-//  GLCreateViewController.m
+//  GLGameViewController.m
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
-#import "GLCreateViewController.h"
+#import "GLGameViewController.h"
 
-@interface GLCreateViewController ()
+@interface GLGameViewController ()
 
 @end
 
-@implementation GLCreateViewController
+@implementation GLGameViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

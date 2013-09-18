@@ -1,5 +1,5 @@
 //
-//  GLWTFViewController.h
+//  GLHelpViewController.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLWTFViewController : UIViewController
+@interface GLHelpViewController : UIViewController
 
 @end

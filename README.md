@@ -3,6 +3,16 @@ Mapattack-iOS
 
 Mapattack iOS app!
 
+## Screens: 
+
+### On Launch
+
+enter name
+take pic of self
+
+store name and photo
+send name and photo as base64 encoded jpg to server as device register
+
 ## Routes:
 
 * post udp locations

@@ -1,5 +1,5 @@
 //
-//  GLCreateViewController.h
+//  GLNearbyGamesViewController.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLCreateViewController : UIViewController
+@interface GLNearbyGamesViewController : UIViewController
 
 @end
