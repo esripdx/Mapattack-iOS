@@ -17,4 +17,10 @@ extern const int GLMapAttackPort;
 @property (strong, nonatomic) NSString *hostname;
 @property (strong, nonatomic) NSError *lastError;
 
++ (GLUdpConnection *)getConnectionForHostname:(NSString *)hostname;
++ (GLUdpConnection *)getConnection;
+
+- (BOOL)connect;
+- (void)sendDictionary:(NSDictionary *)dictionary;
+
 @end

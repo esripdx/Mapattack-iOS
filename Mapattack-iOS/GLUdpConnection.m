@@ -16,8 +16,7 @@ static const int GLMapAttackUdpSendDataTimeout = -1;
 
 static GLUdpConnection *instance;
 
-@implementation GLUdpConnection
-{
+@implementation GLUdpConnection {
     GCDAsyncUdpSocket *socket;
     long queueCounter;
 }
@@ -26,8 +25,7 @@ static GLUdpConnection *instance;
 
 // get the singleton instance with a specified hostname to connect to
 //
-+ (GLUdpConnection *)getConnectionForHostname:(NSString *)hostname
-{
++ (GLUdpConnection *)getConnectionForHostname:(NSString *)hostname {
     if (!instance) {
         instance = [[GLUdpConnection alloc] initWithHostname:hostname];
     }
@@ -36,15 +34,13 @@ static GLUdpConnection *instance;
 
 // get the singleton instance with the default hostname to connect to
 //
-+ (GLUdpConnection *)getConnection
-{
++ (GLUdpConnection *)getConnection {
     return [GLUdpConnection getConnectionForHostname:GLMapAttackHostname];
 }
 
 #pragma mark -
 
-- (GLUdpConnection *)initWithHostname:(NSString *)hostname
-{
+- (GLUdpConnection *)initWithHostname:(NSString *)hostname {
     queueCounter = 0;
     
     // set our hostname in the singleton instance
@@ -58,38 +54,61 @@ static GLUdpConnection *instance;
     return self;
 }
 
-// try to connect, logging error if necessary
-//
-- (BOOL)connect
-{
-    BOOL ret = YES;
-    NSError *err = nil;
-    if (![socket connectToHost:self.hostname onPort:GLMapAttackPort error:&err])
-    {
-        NSLog(@"connection error: %@", err);
-        self.lastError = err;
-        ret = NO;
-    }
-    return ret;
+#pragma mark -
+
+- (BOOL)connect {
+    return [socket connectToHost:self.hostname onPort:GLMapAttackPort error:nil];
 }
 
-- (void)sendDictionary:(NSDictionary *)dictionary
-{
+- (void)sendDictionary:(NSDictionary *)dictionary {
+    if (![socket isConnected]) {
+        if (![self connect]) {
+            return;
+        }
+    }
     queueCounter++;
     NSData *packed = [dictionary messagePack];
     [socket sendData:packed withTimeout:GLMapAttackUdpSendDataTimeout tag:queueCounter];
 }
 
-#pragma mark -
+- (void)setLastError:(NSError *)lastError {
+    NSLog(@"error: %@", lastError);
+    _lastError = lastError;
+}
 
-- (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag
-{
+- (void)close {
+    [socket close];
+}
+
+#pragma mark - GCDAsyncUdpSocketDelegate
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag {
     queueCounter--;
 }
 
-- (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error
-{
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error {
     queueCounter--;
+    self.lastError = error;
+}
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotConnect:(NSError *)error {
+    NSLog(@"did not connect!");
+    if (error) {
+        self.lastError = error;
+    }
+}
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data
+      fromAddress:(NSData *)address
+withFilterContext:(id)filterContext {
+    
+}
+
+- (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError *)error {
+    NSLog(@"socket closed!");
+    if (error) {
+        self.lastError = error;
+    }
 }
 
 @end
