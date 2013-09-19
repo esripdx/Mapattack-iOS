@@ -1,5 +1,5 @@
 //
-//  GLUdpConnection.h
+//  MAUdpConnection.h
 //  Mapattack-iOS
 //
 //  Created by kenichi nakamura on 9/18/13.
@@ -12,13 +12,13 @@
 extern NSString *const GLMapAttackHostname;
 extern const int GLMapAttackPort;
 
-@interface GLUdpConnection : NSObject <GCDAsyncUdpSocketDelegate>
+@interface MAUdpConnection : NSObject <GCDAsyncUdpSocketDelegate>
 
 @property (strong, nonatomic) NSString *hostname;
 @property (strong, nonatomic) NSError *lastError;
 
-+ (GLUdpConnection *)getConnectionForHostname:(NSString *)hostname;
-+ (GLUdpConnection *)getConnection;
++ (MAUdpConnection *)getConnectionForHostname:(NSString *)hostname;
++ (MAUdpConnection *)getConnection;
 
 - (BOOL)connect;
 - (void)sendDictionary:(NSDictionary *)dictionary;

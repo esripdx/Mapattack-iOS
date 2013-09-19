@@ -1,12 +1,12 @@
 //
-//  GLUdpConnection.m
+//  MAUdpConnection.m
 //  Mapattack-iOS
 //
 //  Created by kenichi nakamura on 9/18/13.
 //  Copyright (c) 2013 Esri. All rights reserved.
 //
 
-#import "GLUdpConnection.h"
+#import "MAUdpConnection.h"
 #import "MessagePack.h"
 
 NSString *const GLMapAttackHostname = @"mapattack.org";
@@ -14,9 +14,9 @@ int const GLMapAttackPort = 5309;
 
 static const int GLMapAttackUdpSendDataTimeout = -1;
 
-static GLUdpConnection *instance;
+static MAUdpConnection *instance;
 
-@implementation GLUdpConnection {
+@implementation MAUdpConnection {
     GCDAsyncUdpSocket *socket;
     long queueCounter;
 }
@@ -25,22 +25,22 @@ static GLUdpConnection *instance;
 
 // get the singleton instance with a specified hostname to connect to
 //
-+ (GLUdpConnection *)getConnectionForHostname:(NSString *)hostname {
++ (MAUdpConnection *)getConnectionForHostname:(NSString *)hostname {
     if (!instance) {
-        instance = [[GLUdpConnection alloc] initWithHostname:hostname];
+        instance = [[MAUdpConnection alloc] initWithHostname:hostname];
     }
     return instance;
 }
 
 // get the singleton instance with the default hostname to connect to
 //
-+ (GLUdpConnection *)getConnection {
-    return [GLUdpConnection getConnectionForHostname:GLMapAttackHostname];
++ (MAUdpConnection *)getConnection {
+    return [MAUdpConnection getConnectionForHostname:GLMapAttackHostname];
 }
 
 #pragma mark -
 
-- (GLUdpConnection *)initWithHostname:(NSString *)hostname {
+- (MAUdpConnection *)initWithHostname:(NSString *)hostname {
     queueCounter = 0;
     
     // set our hostname in the singleton instance

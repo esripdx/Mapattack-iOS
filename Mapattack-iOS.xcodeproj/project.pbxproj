@@ -8,81 +8,53 @@
 
 /* Begin PBXBuildFile section */
 		1388C7A006C34AD3885E56B9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC953DE7C226410C8714336B /* libPods.a */; };
-		BD69CBC317EA68B900E63C71 /* GLNearbyGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC217EA68B900E63C71 /* GLNearbyGamesViewController.m */; };
-		BD69CBC617EA691000E63C71 /* GLCreateGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC517EA691000E63C71 /* GLCreateGameViewController.m */; };
-		BD69CBC917EA691D00E63C71 /* GLJoinGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC817EA691D00E63C71 /* GLJoinGameViewController.m */; };
-		BD69CBCF17EA695B00E63C71 /* GLLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBCE17EA695B00E63C71 /* GLLaunchViewController.m */; };
-		BD69CBD217EA69D200E63C71 /* GLHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD117EA69D200E63C71 /* GLHelpViewController.m */; };
-		BD69CBD517EA6B9C00E63C71 /* GLGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD417EA6B9C00E63C71 /* GLGameViewController.m */; };
-		BD69CBD817EA6BF500E63C71 /* GLChooseBoardTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD717EA6BF500E63C71 /* GLChooseBoardTableViewController.m */; };
+		BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */; };
+		BD69CBC617EA691000E63C71 /* MACreateGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC517EA691000E63C71 /* MACreateGameViewController.m */; };
+		BD69CBC917EA691D00E63C71 /* MAJoinGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC817EA691D00E63C71 /* MAJoinGameViewController.m */; };
+		BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */; };
+		BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */; };
+		BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */; };
+		BD69CBD817EA6BF500E63C71 /* MAChooseBoardTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD717EA6BF500E63C71 /* MAChooseBoardTableViewController.m */; };
 		BDADFD6617EA41C000CB11B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6517EA41C000CB11B8 /* UIKit.framework */; };
 		BDADFD6817EA41C000CB11B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6717EA41C000CB11B8 /* Foundation.framework */; };
 		BDADFD6A17EA41C000CB11B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6917EA41C000CB11B8 /* CoreGraphics.framework */; };
 		BDADFD7017EA41C000CB11B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD6E17EA41C000CB11B8 /* InfoPlist.strings */; };
 		BDADFD7217EA41C000CB11B8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BDADFD7117EA41C000CB11B8 /* main.m */; };
-		BDADFD7617EA41C000CB11B8 /* GLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDADFD7517EA41C000CB11B8 /* GLAppDelegate.m */; };
+		BDADFD7617EA41C000CB11B8 /* MAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDADFD7517EA41C000CB11B8 /* MAAppDelegate.m */; };
 		BDADFD7817EA41C000CB11B8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7717EA41C000CB11B8 /* Default.png */; };
 		BDADFD7A17EA41C000CB11B8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7917EA41C000CB11B8 /* Default@2x.png */; };
 		BDADFD7C17EA41C000CB11B8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7B17EA41C000CB11B8 /* Default-568h@2x.png */; };
 		BDADFD7F17EA41C000CB11B8 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */; };
-		BDADFD8A17EA41C000CB11B8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD8917EA41C000CB11B8 /* SenTestingKit.framework */; };
-		BDADFD8B17EA41C000CB11B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6517EA41C000CB11B8 /* UIKit.framework */; };
-		BDADFD8C17EA41C000CB11B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6717EA41C000CB11B8 /* Foundation.framework */; };
-		BDADFD9417EA41C000CB11B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD9217EA41C000CB11B8 /* InfoPlist.strings */; };
-		BDADFD9717EA41C000CB11B8 /* Mapattack_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BDADFD9617EA41C000CB11B8 /* Mapattack_iOSTests.m */; };
 		BE2228CD17EA457400EFF703 /* MessagePackPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228AC17EA457400EFF703 /* MessagePackPacker.m */; };
-		BE2228CE17EA457400EFF703 /* MessagePackPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228AC17EA457400EFF703 /* MessagePackPacker.m */; };
 		BE2228CF17EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228AE17EA457400EFF703 /* MessagePackParser+Streaming.m */; };
-		BE2228D017EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228AE17EA457400EFF703 /* MessagePackParser+Streaming.m */; };
 		BE2228D117EA457400EFF703 /* MessagePackParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228B017EA457400EFF703 /* MessagePackParser.m */; };
-		BE2228D217EA457400EFF703 /* MessagePackParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228B017EA457400EFF703 /* MessagePackParser.m */; };
 		BE2228D317EA457400EFF703 /* objectc.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C117EA457400EFF703 /* objectc.c */; };
-		BE2228D417EA457400EFF703 /* objectc.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C117EA457400EFF703 /* objectc.c */; };
 		BE2228D517EA457400EFF703 /* unpack.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C217EA457400EFF703 /* unpack.c */; };
-		BE2228D617EA457400EFF703 /* unpack.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C217EA457400EFF703 /* unpack.c */; };
 		BE2228D717EA457400EFF703 /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C317EA457400EFF703 /* version.c */; };
-		BE2228D817EA457400EFF703 /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C317EA457400EFF703 /* version.c */; };
 		BE2228D917EA457400EFF703 /* vrefbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C417EA457400EFF703 /* vrefbuffer.c */; };
-		BE2228DA17EA457400EFF703 /* vrefbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C417EA457400EFF703 /* vrefbuffer.c */; };
 		BE2228DB17EA457400EFF703 /* zone.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C517EA457400EFF703 /* zone.c */; };
-		BE2228DC17EA457400EFF703 /* zone.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C517EA457400EFF703 /* zone.c */; };
 		BE2228DD17EA457400EFF703 /* NSArray+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C717EA457400EFF703 /* NSArray+MessagePack.m */; };
-		BE2228DE17EA457400EFF703 /* NSArray+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C717EA457400EFF703 /* NSArray+MessagePack.m */; };
 		BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C917EA457400EFF703 /* NSData+MessagePack.m */; };
-		BE2228E017EA457400EFF703 /* NSData+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C917EA457400EFF703 /* NSData+MessagePack.m */; };
 		BE2228E117EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */; };
-		BE2228E217EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */; };
 		BE2228E317EA457400EFF703 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = BE2228CC17EA457400EFF703 /* readme.md */; };
-		BE2228E417EA457400EFF703 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = BE2228CC17EA457400EFF703 /* readme.md */; };
-		BE2228E717EA601500EFF703 /* GLUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* GLUdpConnection.m */; };
-		BE2228E817EA601500EFF703 /* GLUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* GLUdpConnection.m */; };
+		BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* MAUdpConnection.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		BDADFD8D17EA41C000CB11B8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BDADFD5A17EA41C000CB11B8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BDADFD6117EA41C000CB11B8;
-			remoteInfo = "Mapattack-iOS";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		BD69CBC117EA68B900E63C71 /* GLNearbyGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLNearbyGamesViewController.h; path = ../GLNearbyGamesViewController.h; sourceTree = "<group>"; };
-		BD69CBC217EA68B900E63C71 /* GLNearbyGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLNearbyGamesViewController.m; path = ../GLNearbyGamesViewController.m; sourceTree = "<group>"; };
-		BD69CBC417EA691000E63C71 /* GLCreateGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCreateGameViewController.h; sourceTree = "<group>"; };
-		BD69CBC517EA691000E63C71 /* GLCreateGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCreateGameViewController.m; sourceTree = "<group>"; };
-		BD69CBC717EA691D00E63C71 /* GLJoinGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLJoinGameViewController.h; sourceTree = "<group>"; };
-		BD69CBC817EA691D00E63C71 /* GLJoinGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLJoinGameViewController.m; sourceTree = "<group>"; };
-		BD69CBCD17EA695B00E63C71 /* GLLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLaunchViewController.h; sourceTree = "<group>"; };
-		BD69CBCE17EA695B00E63C71 /* GLLaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLaunchViewController.m; sourceTree = "<group>"; };
-		BD69CBD017EA69D200E63C71 /* GLHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLHelpViewController.h; sourceTree = "<group>"; };
-		BD69CBD117EA69D200E63C71 /* GLHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpViewController.m; sourceTree = "<group>"; };
-		BD69CBD317EA6B9C00E63C71 /* GLGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLGameViewController.h; sourceTree = "<group>"; };
-		BD69CBD417EA6B9C00E63C71 /* GLGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLGameViewController.m; sourceTree = "<group>"; };
-		BD69CBD617EA6BF500E63C71 /* GLChooseBoardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLChooseBoardTableViewController.h; sourceTree = "<group>"; };
-		BD69CBD717EA6BF500E63C71 /* GLChooseBoardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLChooseBoardTableViewController.m; sourceTree = "<group>"; };
+		BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MANearbyGamesViewController.h; path = ../MANearbyGamesViewController.h; sourceTree = "<group>"; };
+		BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MANearbyGamesViewController.m; path = ../MANearbyGamesViewController.m; sourceTree = "<group>"; };
+		BD69CBC417EA691000E63C71 /* MACreateGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACreateGameViewController.h; sourceTree = "<group>"; };
+		BD69CBC517EA691000E63C71 /* MACreateGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACreateGameViewController.m; sourceTree = "<group>"; };
+		BD69CBC717EA691D00E63C71 /* MAJoinGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAJoinGameViewController.h; sourceTree = "<group>"; };
+		BD69CBC817EA691D00E63C71 /* MAJoinGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAJoinGameViewController.m; sourceTree = "<group>"; };
+		BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MALaunchViewController.h; sourceTree = "<group>"; };
+		BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MALaunchViewController.m; sourceTree = "<group>"; };
+		BD69CBD017EA69D200E63C71 /* MAHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAHelpViewController.h; sourceTree = "<group>"; };
+		BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAHelpViewController.m; sourceTree = "<group>"; };
+		BD69CBD317EA6B9C00E63C71 /* MAGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameViewController.h; sourceTree = "<group>"; };
+		BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameViewController.m; sourceTree = "<group>"; };
+		BD69CBD617EA6BF500E63C71 /* MAChooseBoardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAChooseBoardTableViewController.h; sourceTree = "<group>"; };
+		BD69CBD717EA6BF500E63C71 /* MAChooseBoardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAChooseBoardTableViewController.m; sourceTree = "<group>"; };
 		BDADFD6217EA41C000CB11B8 /* Mapattack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mapattack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDADFD6517EA41C000CB11B8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BDADFD6717EA41C000CB11B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -91,18 +63,13 @@
 		BDADFD6F17EA41C000CB11B8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BDADFD7117EA41C000CB11B8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BDADFD7317EA41C000CB11B8 /* Mapattack-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mapattack-iOS-Prefix.pch"; sourceTree = "<group>"; };
-		BDADFD7417EA41C000CB11B8 /* GLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLAppDelegate.h; sourceTree = "<group>"; };
-		BDADFD7517EA41C000CB11B8 /* GLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLAppDelegate.m; sourceTree = "<group>"; };
+		BDADFD7417EA41C000CB11B8 /* MAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MAAppDelegate.h; sourceTree = "<group>"; };
+		BDADFD7517EA41C000CB11B8 /* MAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MAAppDelegate.m; sourceTree = "<group>"; };
 		BDADFD7717EA41C000CB11B8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BDADFD7917EA41C000CB11B8 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BDADFD7B17EA41C000CB11B8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		BDADFD7E17EA41C000CB11B8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		BDADFD8817EA41C000CB11B8 /* Mapattack-iOSTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mapattack-iOSTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDADFD8917EA41C000CB11B8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		BDADFD9117EA41C000CB11B8 /* Mapattack-iOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mapattack-iOSTests-Info.plist"; sourceTree = "<group>"; };
-		BDADFD9317EA41C000CB11B8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		BDADFD9517EA41C000CB11B8 /* Mapattack_iOSTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mapattack_iOSTests.h; sourceTree = "<group>"; };
-		BDADFD9617EA41C000CB11B8 /* Mapattack_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mapattack_iOSTests.m; sourceTree = "<group>"; };
 		BE2228AA17EA457400EFF703 /* MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePack.h; sourceTree = "<group>"; };
 		BE2228AB17EA457400EFF703 /* MessagePackPacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePackPacker.h; sourceTree = "<group>"; };
 		BE2228AC17EA457400EFF703 /* MessagePackPacker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePackPacker.m; sourceTree = "<group>"; };
@@ -136,8 +103,8 @@
 		BE2228CA17EA457400EFF703 /* NSDictionary+MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+MessagePack.h"; sourceTree = "<group>"; };
 		BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+MessagePack.m"; sourceTree = "<group>"; };
 		BE2228CC17EA457400EFF703 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.md; sourceTree = "<group>"; };
-		BE2228E517EA601500EFF703 /* GLUdpConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLUdpConnection.h; sourceTree = "<group>"; };
-		BE2228E617EA601500EFF703 /* GLUdpConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLUdpConnection.m; sourceTree = "<group>"; };
+		BE2228E517EA601500EFF703 /* MAUdpConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAUdpConnection.h; sourceTree = "<group>"; };
+		BE2228E617EA601500EFF703 /* MAUdpConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAUdpConnection.m; sourceTree = "<group>"; };
 		D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FC953DE7C226410C8714336B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -154,16 +121,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BDADFD8417EA41C000CB11B8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BDADFD8A17EA41C000CB11B8 /* SenTestingKit.framework in Frameworks */,
-				BDADFD8B17EA41C000CB11B8 /* UIKit.framework in Frameworks */,
-				BDADFD8C17EA41C000CB11B8 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -171,7 +128,6 @@
 			isa = PBXGroup;
 			children = (
 				BDADFD6B17EA41C000CB11B8 /* Mapattack-iOS */,
-				BDADFD8F17EA41C000CB11B8 /* Mapattack-iOSTests */,
 				BDADFD6417EA41C000CB11B8 /* Frameworks */,
 				BDADFD6317EA41C000CB11B8 /* Products */,
 				D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */,
@@ -182,7 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				BDADFD6217EA41C000CB11B8 /* Mapattack-iOS.app */,
-				BDADFD8817EA41C000CB11B8 /* Mapattack-iOSTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -202,29 +157,27 @@
 		BDADFD6B17EA41C000CB11B8 /* Mapattack-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				BD69CBC117EA68B900E63C71 /* GLNearbyGamesViewController.h */,
-				BD69CBC217EA68B900E63C71 /* GLNearbyGamesViewController.m */,
+				BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */,
+				BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */,
 				BE2228A917EA457400EFF703 /* msgpack-objectivec */,
-				BDADFD7417EA41C000CB11B8 /* GLAppDelegate.h */,
-				BDADFD7517EA41C000CB11B8 /* GLAppDelegate.m */,
+				BDADFD7417EA41C000CB11B8 /* MAAppDelegate.h */,
+				BDADFD7517EA41C000CB11B8 /* MAAppDelegate.m */,
 				BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */,
-				BDADFD8017EA41C000CB11B8 /* GLViewController.h */,
-				BDADFD8117EA41C000CB11B8 /* GLViewController.m */,
-				BE2228E517EA601500EFF703 /* GLUdpConnection.h */,
-				BE2228E617EA601500EFF703 /* GLUdpConnection.m */,
+				BE2228E517EA601500EFF703 /* MAUdpConnection.h */,
+				BE2228E617EA601500EFF703 /* MAUdpConnection.m */,
 				BDADFD6C17EA41C000CB11B8 /* Supporting Files */,
-				BD69CBC417EA691000E63C71 /* GLCreateGameViewController.h */,
-				BD69CBC517EA691000E63C71 /* GLCreateGameViewController.m */,
-				BD69CBC717EA691D00E63C71 /* GLJoinGameViewController.h */,
-				BD69CBC817EA691D00E63C71 /* GLJoinGameViewController.m */,
-				BD69CBCD17EA695B00E63C71 /* GLLaunchViewController.h */,
-				BD69CBCE17EA695B00E63C71 /* GLLaunchViewController.m */,
-				BD69CBD017EA69D200E63C71 /* GLHelpViewController.h */,
-				BD69CBD117EA69D200E63C71 /* GLHelpViewController.m */,
-				BD69CBD317EA6B9C00E63C71 /* GLGameViewController.h */,
-				BD69CBD417EA6B9C00E63C71 /* GLGameViewController.m */,
-				BD69CBD617EA6BF500E63C71 /* GLChooseBoardTableViewController.h */,
-				BD69CBD717EA6BF500E63C71 /* GLChooseBoardTableViewController.m */,
+				BD69CBC417EA691000E63C71 /* MACreateGameViewController.h */,
+				BD69CBC517EA691000E63C71 /* MACreateGameViewController.m */,
+				BD69CBC717EA691D00E63C71 /* MAJoinGameViewController.h */,
+				BD69CBC817EA691D00E63C71 /* MAJoinGameViewController.m */,
+				BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */,
+				BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */,
+				BD69CBD017EA69D200E63C71 /* MAHelpViewController.h */,
+				BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */,
+				BD69CBD317EA6B9C00E63C71 /* MAGameViewController.h */,
+				BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */,
+				BD69CBD617EA6BF500E63C71 /* MAChooseBoardTableViewController.h */,
+				BD69CBD717EA6BF500E63C71 /* MAChooseBoardTableViewController.m */,
 			);
 			path = "Mapattack-iOS";
 			sourceTree = "<group>";
@@ -239,25 +192,6 @@
 				BDADFD7717EA41C000CB11B8 /* Default.png */,
 				BDADFD7917EA41C000CB11B8 /* Default@2x.png */,
 				BDADFD7B17EA41C000CB11B8 /* Default-568h@2x.png */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		BDADFD8F17EA41C000CB11B8 /* Mapattack-iOSTests */ = {
-			isa = PBXGroup;
-			children = (
-				BDADFD9517EA41C000CB11B8 /* Mapattack_iOSTests.h */,
-				BDADFD9617EA41C000CB11B8 /* Mapattack_iOSTests.m */,
-				BDADFD9017EA41C000CB11B8 /* Supporting Files */,
-			);
-			path = "Mapattack-iOSTests";
-			sourceTree = "<group>";
-		};
-		BDADFD9017EA41C000CB11B8 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				BDADFD9117EA41C000CB11B8 /* Mapattack-iOSTests-Info.plist */,
-				BDADFD9217EA41C000CB11B8 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -340,25 +274,6 @@
 			productReference = BDADFD6217EA41C000CB11B8 /* Mapattack-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BDADFD8717EA41C000CB11B8 /* Mapattack-iOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BDADFD9D17EA41C000CB11B8 /* Build configuration list for PBXNativeTarget "Mapattack-iOSTests" */;
-			buildPhases = (
-				BDADFD8317EA41C000CB11B8 /* Sources */,
-				BDADFD8417EA41C000CB11B8 /* Frameworks */,
-				BDADFD8517EA41C000CB11B8 /* Resources */,
-				BDADFD8617EA41C000CB11B8 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BDADFD8E17EA41C000CB11B8 /* PBXTargetDependency */,
-			);
-			name = "Mapattack-iOSTests";
-			productName = "Mapattack-iOSTests";
-			productReference = BDADFD8817EA41C000CB11B8 /* Mapattack-iOSTests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -371,6 +286,11 @@
 				TargetAttributes = {
 					BDADFD6117EA41C000CB11B8 = {
 						DevelopmentTeam = YTMHSBH37A;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -387,7 +307,6 @@
 			projectRoot = "";
 			targets = (
 				BDADFD6117EA41C000CB11B8 /* Mapattack-iOS */,
-				BDADFD8717EA41C000CB11B8 /* Mapattack-iOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -403,15 +322,6 @@
 				BDADFD7C17EA41C000CB11B8 /* Default-568h@2x.png in Resources */,
 				BE2228E317EA457400EFF703 /* readme.md in Resources */,
 				BDADFD7F17EA41C000CB11B8 /* MainStoryboard.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BDADFD8517EA41C000CB11B8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BE2228E417EA457400EFF703 /* readme.md in Resources */,
-				BDADFD9417EA41C000CB11B8 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,19 +358,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		BDADFD8617EA41C000CB11B8 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -470,57 +367,29 @@
 			files = (
 				BE2228D317EA457400EFF703 /* objectc.c in Sources */,
 				BE2228CD17EA457400EFF703 /* MessagePackPacker.m in Sources */,
-				BD69CBCF17EA695B00E63C71 /* GLLaunchViewController.m in Sources */,
-				BE2228E717EA601500EFF703 /* GLUdpConnection.m in Sources */,
+				BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */,
+				BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
 				BE2228DD17EA457400EFF703 /* NSArray+MessagePack.m in Sources */,
 				BE2228D517EA457400EFF703 /* unpack.c in Sources */,
 				BE2228D917EA457400EFF703 /* vrefbuffer.c in Sources */,
 				BE2228D717EA457400EFF703 /* version.c in Sources */,
-				BD69CBD817EA6BF500E63C71 /* GLChooseBoardTableViewController.m in Sources */,
-				BD69CBD217EA69D200E63C71 /* GLHelpViewController.m in Sources */,
-				BD69CBC617EA691000E63C71 /* GLCreateGameViewController.m in Sources */,
+				BD69CBD817EA6BF500E63C71 /* MAChooseBoardTableViewController.m in Sources */,
+				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
+				BD69CBC617EA691000E63C71 /* MACreateGameViewController.m in Sources */,
 				BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */,
-				BD69CBC317EA68B900E63C71 /* GLNearbyGamesViewController.m in Sources */,
+				BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */,
 				BE2228CF17EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */,
-				BD69CBC917EA691D00E63C71 /* GLJoinGameViewController.m in Sources */,
+				BD69CBC917EA691D00E63C71 /* MAJoinGameViewController.m in Sources */,
 				BE2228D117EA457400EFF703 /* MessagePackParser.m in Sources */,
 				BE2228DB17EA457400EFF703 /* zone.c in Sources */,
 				BE2228E117EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */,
-				BDADFD7617EA41C000CB11B8 /* GLAppDelegate.m in Sources */,
-				BD69CBD517EA6B9C00E63C71 /* GLGameViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BDADFD8317EA41C000CB11B8 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BE2228CE17EA457400EFF703 /* MessagePackPacker.m in Sources */,
-				BE2228DE17EA457400EFF703 /* NSArray+MessagePack.m in Sources */,
-				BE2228D017EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */,
-				BE2228E217EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */,
-				BE2228DA17EA457400EFF703 /* vrefbuffer.c in Sources */,
-				BE2228E817EA601500EFF703 /* GLUdpConnection.m in Sources */,
-				BE2228D417EA457400EFF703 /* objectc.c in Sources */,
-				BE2228D617EA457400EFF703 /* unpack.c in Sources */,
-				BE2228D817EA457400EFF703 /* version.c in Sources */,
-				BE2228DC17EA457400EFF703 /* zone.c in Sources */,
-				BE2228E017EA457400EFF703 /* NSData+MessagePack.m in Sources */,
-				BDADFD9717EA41C000CB11B8 /* Mapattack_iOSTests.m in Sources */,
-				BE2228D217EA457400EFF703 /* MessagePackParser.m in Sources */,
+				BDADFD7617EA41C000CB11B8 /* MAAppDelegate.m in Sources */,
+				BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		BDADFD8E17EA41C000CB11B8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BDADFD6117EA41C000CB11B8 /* Mapattack-iOS */;
-			targetProxy = BDADFD8D17EA41C000CB11B8 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		BDADFD6E17EA41C000CB11B8 /* InfoPlist.strings */ = {
@@ -537,14 +406,6 @@
 				BDADFD7E17EA41C000CB11B8 /* en */,
 			);
 			name = MainStoryboard.storyboard;
-			sourceTree = "<group>";
-		};
-		BDADFD9217EA41C000CB11B8 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BDADFD9317EA41C000CB11B8 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -636,40 +497,6 @@
 			};
 			name = Release;
 		};
-		BDADFD9E17EA41C000CB11B8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mapattack-iOS.app/Mapattack-iOS";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mapattack-iOS/Mapattack-iOS-Prefix.pch";
-				INFOPLIST_FILE = "Mapattack-iOSTests/Mapattack-iOSTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		BDADFD9F17EA41C000CB11B8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mapattack-iOS.app/Mapattack-iOS";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mapattack-iOS/Mapattack-iOS-Prefix.pch";
-				INFOPLIST_FILE = "Mapattack-iOSTests/Mapattack-iOSTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -687,15 +514,6 @@
 			buildConfigurations = (
 				BDADFD9B17EA41C000CB11B8 /* Debug */,
 				BDADFD9C17EA41C000CB11B8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BDADFD9D17EA41C000CB11B8 /* Build configuration list for PBXNativeTarget "Mapattack-iOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BDADFD9E17EA41C000CB11B8 /* Debug */,
-				BDADFD9F17EA41C000CB11B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

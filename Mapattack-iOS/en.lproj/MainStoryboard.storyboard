@@ -8,7 +8,7 @@
         <!--Nearby Games View Controller-->
         <scene sceneID="u7W-Wd-u2R">
             <objects>
-                <viewController id="SEu-za-KrJ" customClass="GLNearbyGamesViewController" sceneMemberID="viewController">
+                <viewController id="SEu-za-KrJ" customClass="MANearbyGamesViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6Zn-fT-ACc"/>
                         <viewControllerLayoutGuide type="bottom" id="XYN-7X-YNR"/>
@@ -89,7 +89,7 @@
         <!--Launch View Controller-->
         <scene sceneID="m2o-0h-QBo">
             <objects>
-                <viewController id="XDp-c9-Qyj" customClass="GLLaunchViewController" sceneMemberID="viewController">
+                <viewController id="XDp-c9-Qyj" customClass="MALaunchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tlU-nE-J5k"/>
                         <viewControllerLayoutGuide type="bottom" id="RLk-Ep-cv2"/>
@@ -129,7 +129,7 @@
         <!--Help View Controller-->
         <scene sceneID="TIi-O1-lxo">
             <objects>
-                <viewController id="a0y-hW-1Sj" customClass="GLHelpViewController" sceneMemberID="viewController">
+                <viewController id="a0y-hW-1Sj" customClass="MAHelpViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jFB-kk-4ew"/>
                         <viewControllerLayoutGuide type="bottom" id="nBB-Mf-YNn"/>
@@ -156,7 +156,7 @@
         <!--Game View Controller-->
         <scene sceneID="MQc-AA-iiX">
             <objects>
-                <viewController id="XWS-kU-rdB" customClass="GLGameViewController" sceneMemberID="viewController">
+                <viewController id="XWS-kU-rdB" customClass="MAGameViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5mX-LJ-CUp"/>
                         <viewControllerLayoutGuide type="bottom" id="m2c-Rq-ztF"/>
@@ -219,7 +219,7 @@
         <!--Join Game View Controller-->
         <scene sceneID="EFz-sP-4Cd">
             <objects>
-                <viewController id="rxU-P1-rGz" customClass="GLJoinGameViewController" sceneMemberID="viewController">
+                <viewController id="rxU-P1-rGz" customClass="MAJoinGameViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kOw-yz-gfC"/>
                         <viewControllerLayoutGuide type="bottom" id="lin-ZC-Jsd"/>
@@ -264,7 +264,7 @@
         <!--Choose Board Table View Controller-->
         <scene sceneID="87X-k7-Gez">
             <objects>
-                <tableViewController id="og6-NQ-h5V" customClass="GLChooseBoardTableViewController" sceneMemberID="viewController">
+                <tableViewController id="og6-NQ-h5V" customClass="MAChooseBoardTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Vat-w7-MOH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

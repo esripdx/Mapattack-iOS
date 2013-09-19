@@ -1,5 +1,5 @@
 //
-//  GLAppDelegate.h
+//  MAHelpViewController.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLAppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
+@interface MAHelpViewController : UIViewController
 
 @end

@@ -1,5 +1,5 @@
 //
-//  GLCreateGameViewController.h
+//  MAAppDelegate.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLCreateGameViewController : UIViewController
+@interface MAAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
 
 @end

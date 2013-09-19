@@ -1,15 +1,15 @@
 //
-//  GLAppDelegate.m
+//  MAAppDelegate.m
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
-#import "GLAppDelegate.h"
+#import "MAAppDelegate.h"
 #import "MessagePack.h"
 
-@implementation GLAppDelegate
+@implementation MAAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

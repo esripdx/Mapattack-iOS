@@ -1,5 +1,5 @@
 //
-//  GLLaunchViewController.h
+//  MANearbyGamesViewController.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLLaunchViewController : UIViewController
+@interface MANearbyGamesViewController : UIViewController
 
 @end

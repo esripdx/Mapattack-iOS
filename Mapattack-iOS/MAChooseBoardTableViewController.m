@@ -1,18 +1,18 @@
 //
-//  GLChooseBoardTableViewController.m
+//  MAChooseBoardTableViewController.m
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
-#import "GLChooseBoardTableViewController.h"
+#import "MAChooseBoardTableViewController.h"
 
-@interface GLChooseBoardTableViewController ()
+@interface MAChooseBoardTableViewController ()
 
 @end
 
-@implementation GLChooseBoardTableViewController
+@implementation MAChooseBoardTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {

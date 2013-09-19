@@ -1,5 +1,5 @@
 //
-//  GLGameViewController.h
+//  MAJoinGameViewController.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLGameViewController : UIViewController
+@interface MAJoinGameViewController : UIViewController
 
 @end

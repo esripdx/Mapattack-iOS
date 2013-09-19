@@ -1,5 +1,5 @@
 //
-//  GLChooseBoardTableViewController.h
+//  MACreateGameViewController.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLChooseBoardTableViewController : UITableViewController
+@interface MACreateGameViewController : UIViewController
 
 @end

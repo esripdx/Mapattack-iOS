@@ -1,5 +1,5 @@
 //
-//  GLJoinGameViewController.h
+//  MAChooseBoardTableViewController.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLJoinGameViewController : UIViewController
+@interface MAChooseBoardTableViewController : UITableViewController
 
 @end

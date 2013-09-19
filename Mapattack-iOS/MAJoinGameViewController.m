@@ -1,18 +1,18 @@
 //
-//  GLNearbyGamesViewController.m
+//  MAJoinGameViewController.m
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
-#import "GLNearbyGamesViewController.h"
+#import "MAJoinGameViewController.h"
 
-@interface GLNearbyGamesViewController ()
+@interface MAJoinGameViewController ()
 
 @end
 
-@implementation GLNearbyGamesViewController
+@implementation MAJoinGameViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

@@ -1,18 +1,18 @@
 //
-//  GLLaunchViewController.m
+//  MANearbyGamesViewController.m
 //  Mapattack-iOS
 //
 //  Created by Jen on 9/18/13.
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
-#import "GLLaunchViewController.h"
+#import "MANearbyGamesViewController.h"
 
-@interface GLLaunchViewController ()
+@interface MANearbyGamesViewController ()
 
 @end
 
-@implementation GLLaunchViewController
+@implementation MANearbyGamesViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
