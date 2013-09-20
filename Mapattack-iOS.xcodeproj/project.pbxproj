@@ -10,6 +10,12 @@
 		55C3C3CFC6C84F488572B570 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD71C79D415455F8DAB6718 /* libPods.a */; };
 		94A131CE17EB9CA500E1B15D /* MAGameStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameStateManager.m */; };
 		94C6D22617EBB0F900F30187 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22517EBB0F900F30187 /* CoreLocation.framework */; };
+		94C6D22817EC0D2F00F30187 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22717EC0D2F00F30187 /* AVFoundation.framework */; };
+		94C6D22A17EC151000F30187 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22917EC151000F30187 /* CoreImage.framework */; };
+		94C6D22C17EC151B00F30187 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22B17EC151B00F30187 /* CoreMedia.framework */; };
+		94C6D22E17EC152E00F30187 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22D17EC152E00F30187 /* CoreVideo.framework */; };
+		94C6D23017EC15AA00F30187 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22F17EC15AA00F30187 /* ImageIO.framework */; };
+		94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D23117EC15D000F30187 /* QuartzCore.framework */; };
 		BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */; };
 		BD69CBC617EA691000E63C71 /* MACreateGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC517EA691000E63C71 /* MACreateGameViewController.m */; };
 		BD69CBC917EA691D00E63C71 /* MAJoinGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC817EA691D00E63C71 /* MAJoinGameViewController.m */; };
@@ -47,6 +53,12 @@
 		94A131CC17EB9CA500E1B15D /* MAGameStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameStateManager.h; sourceTree = "<group>"; };
 		94A131CD17EB9CA500E1B15D /* MAGameStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameStateManager.m; sourceTree = "<group>"; };
 		94C6D22517EBB0F900F30187 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		94C6D22717EC0D2F00F30187 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		94C6D22917EC151000F30187 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		94C6D22B17EC151B00F30187 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		94C6D22D17EC152E00F30187 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		94C6D22F17EC15AA00F30187 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		94C6D23117EC15D000F30187 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MANearbyGamesViewController.h; sourceTree = "<group>"; };
 		BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MANearbyGamesViewController.m; sourceTree = "<group>"; };
 		BD69CBC417EA691000E63C71 /* MACreateGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACreateGameViewController.h; sourceTree = "<group>"; };
@@ -119,6 +131,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */,
+				94C6D23017EC15AA00F30187 /* ImageIO.framework in Frameworks */,
+				94C6D22E17EC152E00F30187 /* CoreVideo.framework in Frameworks */,
+				94C6D22C17EC151B00F30187 /* CoreMedia.framework in Frameworks */,
+				94C6D22A17EC151000F30187 /* CoreImage.framework in Frameworks */,
+				94C6D22817EC0D2F00F30187 /* AVFoundation.framework in Frameworks */,
 				94C6D22617EBB0F900F30187 /* CoreLocation.framework in Frameworks */,
 				BDADFD6617EA41C000CB11B8 /* UIKit.framework in Frameworks */,
 				BDADFD6817EA41C000CB11B8 /* Foundation.framework in Frameworks */,
@@ -173,6 +191,12 @@
 		BDADFD6417EA41C000CB11B8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				94C6D23117EC15D000F30187 /* QuartzCore.framework */,
+				94C6D22F17EC15AA00F30187 /* ImageIO.framework */,
+				94C6D22D17EC152E00F30187 /* CoreVideo.framework */,
+				94C6D22B17EC151B00F30187 /* CoreMedia.framework */,
+				94C6D22917EC151000F30187 /* CoreImage.framework */,
+				94C6D22717EC0D2F00F30187 /* AVFoundation.framework */,
 				94C6D22517EBB0F900F30187 /* CoreLocation.framework */,
 				BDADFD6517EA41C000CB11B8 /* UIKit.framework */,
 				BDADFD6717EA41C000CB11B8 /* Foundation.framework */,

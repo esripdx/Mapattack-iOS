@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
+#import <ImageIO/ImageIO.h>
 #import "MALaunchViewController.h"
 
 static NSString * const kDeviceIdKey = @"com.esri.portland.mapattack.deviceId";
@@ -42,11 +43,17 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
 
     NSData *avatarData = [defaults dataForKey:kAvatarKey];
     if (avatarData) {
-        [self.avatarButton setImage:[UIImage imageWithData:avatarData]forState:UIControlStateNormal];
+        [self.capturedAvatarImage setImage:[UIImage imageWithData:avatarData]];
         _isAvatarSet = YES;
     }
 
     [self updateEnterButton];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    if (!_isAvatarSet) {
+        [self startCapture];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,31 +79,83 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
     [self.userNameField resignFirstResponder];
 }
 
-- (IBAction)chooseAvatarClicked:(id)sender {
-    self.imagePickerController = [[UIImagePickerController alloc] init];
-    self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-    self.imagePickerController.delegate = self;
+- (void)startCapture {
+    self.session = [[AVCaptureSession alloc] init];
+    self.session.sessionPreset = AVCaptureSessionPreset640x480;
 
-    [self presentViewController:self.imagePickerController animated:YES completion:nil];
+    CALayer *viewLayer = self.capturedAvatarImage.layer;
+    NSLog(@"viewLayer = %@", viewLayer);
+
+    self.videoLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+
+    self.videoLayer.frame = self.capturedAvatarImage.bounds;
+    [self.capturedAvatarImage.layer addSublayer:self.videoLayer];
+
+    self.stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG, AVVideoCodecKey, nil];
+    [self.stillImageOutput setOutputSettings:outputSettings];
+    [self.session addOutput:self.stillImageOutput];
+
+    for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
+        if (device.position == AVCaptureDevicePositionFront) {
+            NSError *error = nil;
+            AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+            if (!input) {
+                // Handle the error appropriately.
+                NSLog(@"ERROR: trying to open camera: %@", error);
+            }
+
+            [self.session addInput:input];
+
+            [self.session startRunning];
+            break;
+        }
+    }
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
-    [self.avatarButton setImage:image forState:UIControlStateNormal];
+- (IBAction)captureNow {
+    if (!self.session) {
+        [self startCapture];
+        return;
+    }
+    AVCaptureConnection *videoConnection = nil;
+    for (AVCaptureConnection *connection in self.stillImageOutput.connections) {
+        for (AVCaptureInputPort *port in [connection inputPorts]) {
+            if ([[port mediaType] isEqual:AVMediaTypeVideo]) {
+                videoConnection = connection;
+                videoConnection.videoMirrored = YES;
+                break;
+            }
+        }
+        if (videoConnection) {break;}
+    }
 
-    // TODO: This is bad, mmmmmkay. Should probably store the file on disk and handle loading that file if it's there
-    // or a default image if not. Should refactor to that method when we have a default image to load in the failure
-    // case. Until then... I'm in ur defaults storin' all my blobs.
-    [[NSUserDefaults standardUserDefaults] setObject:UIImagePNGRepresentation(image) forKey:kAvatarKey];
-    _isAvatarSet = YES;
+    NSLog(@"about to request a capture from: %@", self.stillImageOutput);
+    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection
+                                                       completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
+                                                           CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+                                                           if (exifAttachments) {
+                                                               // Do something with the attachments.
+                                                               NSLog(@"attachements: %@", exifAttachments);
+                                                           }
+                                                           else {
+                                                               NSLog(@"no attachments");
+                                                           }
 
-    [self dismissViewControllerAnimated:YES completion:nil];
-    self.imagePickerController = nil;
-}
+                                                           NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
+                                                           UIImage *image = [[UIImage alloc] initWithData:imageData];
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    self.imagePickerController = nil;
+                                                           self.capturedAvatarImage.image = image;
+                                                           [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kAvatarKey];
+                                                           [[NSUserDefaults standardUserDefaults] synchronize];
+                                                           _isAvatarSet = YES;
+
+                                                           [self.session stopRunning];
+                                                           self.session = nil;
+                                                           self.stillImageOutput = nil;
+                                                           [self.videoLayer removeFromSuperlayer];
+                                                           [self updateEnterButton];
+                                                       }];
 }
 
 @end
