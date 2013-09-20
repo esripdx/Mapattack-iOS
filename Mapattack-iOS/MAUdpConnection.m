@@ -9,10 +9,10 @@
 #import "MAUdpConnection.h"
 #import "MessagePack.h"
 
-NSString *const GLMapAttackHostname = @"mapattack.org";
-int const GLMapAttackPort = 5309;
+NSString *const MAMapAttackHostname = @"mapattack.org";
+int const MAMapAttackPort = 5309;
 
-static const int GLMapAttackUdpSendDataTimeout = -1;
+static const int MAMapAttackUdpSendDataTimeout = -1;
 
 static MAUdpConnection *instance;
 
@@ -25,17 +25,29 @@ static MAUdpConnection *instance;
 
 // get the singleton instance with a specified hostname to connect to
 //
-+ (MAUdpConnection *)getConnectionForHostname:(NSString *)hostname {
++ (instancetype)connectionForHostname:(NSString *)hostname {
     if (!instance) {
         instance = [[MAUdpConnection alloc] initWithHostname:hostname];
     }
     return instance;
 }
 
++ (instancetype)connectionForHostname:(NSString *)hostname delegate:(id <MAUdpConnectionDelegate>)delegate {
+    MAUdpConnection *instance = [MAUdpConnection connectionForHostname:hostname];
+    instance.delegate = delegate;
+    return instance;
+}
+
 // get the singleton instance with the default hostname to connect to
 //
-+ (MAUdpConnection *)getConnection {
-    return [MAUdpConnection getConnectionForHostname:GLMapAttackHostname];
++ (instancetype)connection {
+    return [MAUdpConnection connectionForHostname:MAMapAttackHostname];
+}
+
++ (instancetype)connectionWithDelegate:(id <MAUdpConnectionDelegate>)delegate {
+    MAUdpConnection *instance = [MAUdpConnection connectionForHostname:MAMapAttackHostname];
+    instance.delegate = delegate;
+    return instance;
 }
 
 #pragma mark -
@@ -49,15 +61,22 @@ static MAUdpConnection *instance;
     
     // create the socket instance, stash in ivar
     //
+    DDLogVerbose(@"creating socket...");
     socket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    
+    DDLogVerbose(@"socket created: %@", socket);
     return self;
 }
 
 #pragma mark -
 
 - (BOOL)connect {
-    return [socket connectToHost:self.hostname onPort:GLMapAttackPort error:nil];
+    DDLogVerbose(@"connecting socket...");
+    NSError *err = nil;
+    if (![socket connectToHost:self.hostname onPort:MAMapAttackPort error:&err]) {
+        DDLogError(@"error: %@", err);
+        return NO;
+    }
+    return YES;
 }
 
 - (void)sendDictionary:(NSDictionary *)dictionary {
@@ -68,16 +87,25 @@ static MAUdpConnection *instance;
     }
     queueCounter++;
     NSData *packed = [dictionary messagePack];
-    [socket sendData:packed withTimeout:GLMapAttackUdpSendDataTimeout tag:queueCounter];
+    [socket sendData:packed withTimeout:MAMapAttackUdpSendDataTimeout tag:queueCounter];
 }
 
 - (void)setLastError:(NSError *)lastError {
-    NSLog(@"error: %@", lastError);
+    DDLogError(@"error: %@", lastError);
     _lastError = lastError;
 }
 
 - (void)close {
     [socket close];
+}
+
+- (void)beginReceiving {
+    DDLogVerbose(@"beginning the receiving...");
+    NSError *err = nil;
+    if (![socket beginReceiving:&err]) {
+        DDLogCError(@"begin receiving failed!");
+        self.lastError = err;
+    }
 }
 
 #pragma mark - GCDAsyncUdpSocketDelegate
@@ -92,20 +120,34 @@ static MAUdpConnection *instance;
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotConnect:(NSError *)error {
-    NSLog(@"did not connect!");
+    DDLogError(@"did not connect!");
     if (error) {
         self.lastError = error;
     }
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data
-      fromAddress:(NSData *)address
-withFilterContext:(id)filterContext {
+                                               fromAddress:(NSData *)address
+                                         withFilterContext:(id)filterContext {
+    DDLogVerbose(@"received data!");
+    id unpacked = [data messagePackParse];
+    DDLogVerbose(@"unpacked: %@", unpacked);
     
+    if ([unpacked isKindOfClass:[NSDictionary class]] &&
+        [self.delegate respondsToSelector:@selector(udpConnection:didReceiveDictionary:)]) {
+        
+        [self.delegate udpConnection:self didReceiveDictionary:(NSDictionary *)unpacked];
+    }
+    
+    if ([unpacked isKindOfClass:[NSArray class]] &&
+        [self.delegate respondsToSelector:@selector(udpConnection:didReceiveArray:)]) {
+       
+        [self.delegate udpConnection:self didReceiveArray:(NSArray *)unpacked];
+    }
 }
 
 - (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError *)error {
-    NSLog(@"socket closed!");
+    DDLogVerbose(@"socket closed!");
     if (error) {
         self.lastError = error;
     }
