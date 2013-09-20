@@ -18,6 +18,8 @@
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (strong, nonatomic) AVCaptureSession *videoCaptureSession;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *videoLayer;
+
 - (IBAction)captureNow;
+- (IBAction)enterLobby;
 
 @end

@@ -7,7 +7,9 @@
 //
 
 #import <ImageIO/ImageIO.h>
+#import <AFNetworking/AFNetworking.h>
 #import "MALaunchViewController.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 static NSString * const kDeviceIdKey = @"com.esri.portland.mapattack.deviceId";
 static NSString * const kUserNameKey = @"com.esri.portland.mapattack.userName";
@@ -166,6 +168,46 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
                                                            [self.videoLayer removeFromSuperlayer];
                                                            [self updateEnterButton];
                                                        }];
+}
+
+- (IBAction)enterLobby {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *deviceId = [defaults objectForKey:kDeviceIdKey];
+    NSString *name = [defaults objectForKey:kUserNameKey];
+    NSData *avatar = [defaults dataForKey:kAvatarKey];
+    if (!deviceId) {
+        deviceId = [UIDevice currentDevice].identifierForVendor.UUIDString;
+        [defaults setObject:deviceId forKey:kDeviceIdKey];
+    }
+
+    // this should probably be done in the app delegate or something
+    AFHTTPSessionManager *sessionManager = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:@"http://192.168.10.22:8080"]];
+    sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
+    sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSLog(@"deviceId: %@", deviceId);
+
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.dimBackground = YES;
+    hud.color = self.view.tintColor;
+    hud.square = NO;
+    hud.labelText = @"Registering...";
+    [sessionManager POST:@"/device/register"
+              parameters:@{
+                      @"device_id": deviceId,
+                      @"name": name,
+                      @"avatar": [avatar base64EncodedStringWithOptions:0]
+              }
+                 success:^(NSURLSessionDataTask *task, id responseObject) {
+                     [self performSegueWithIdentifier:@"device-registered" sender:self];
+                     NSLog(@"device registered.");
+                     [hud hide:YES];
+                 }
+                 failure:^(NSURLSessionDataTask *task, NSError *error) {
+                     NSLog(@"Error registering device: %@", [error debugDescription]);
+                     [hud hide:YES];
+                     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error registering device with server" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                 }];
+
 }
 
 @end
