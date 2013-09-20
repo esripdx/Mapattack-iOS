@@ -10,7 +10,7 @@
  
  quick start example:
  
-    MAUdpConnection *udp = [MAUdpConnection getConnectionForHostname:@"192.168.56.160" delegate:self];
+    MAUdpConnection *udp = [MAUdpConnection connectionForHostname:@"192.168.56.160" delegate:self];
     [udp connect];
     [udp beginReceiving];
     [udp sendDictionary:@{@"foo": @42, @"bar": @[@1,@2,@3], @"bat": @YES}];
@@ -37,10 +37,10 @@ extern const int MAMapAttackPort;
 @property (strong, nonatomic) NSError *lastError;
 @property (strong, nonatomic) id <MAUdpConnectionDelegate> delegate;
 
-+ (MAUdpConnection *)getConnectionForHostname:(NSString *)hostname;
-+ (MAUdpConnection *)getConnectionForHostname:(NSString *)hostname delegate:(id <MAUdpConnectionDelegate>)delegate;
-+ (MAUdpConnection *)getConnection;
-+ (MAUdpConnection *)getConnectionWithDelegate:(id <MAUdpConnectionDelegate>)delegate;
++ (instancetype)connectionForHostname:(NSString *)hostname;
++ (instancetype)connectionForHostname:(NSString *)hostname delegate:(id <MAUdpConnectionDelegate>)delegate;
++ (instancetype)connection;
++ (instancetype)connectionWithDelegate:(id <MAUdpConnectionDelegate>)delegate;
 
 - (BOOL)connect;
 - (void)sendDictionary:(NSDictionary *)dictionary;

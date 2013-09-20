@@ -25,27 +25,27 @@ static MAUdpConnection *instance;
 
 // get the singleton instance with a specified hostname to connect to
 //
-+ (MAUdpConnection *)getConnectionForHostname:(NSString *)hostname {
++ (instancetype)connectionForHostname:(NSString *)hostname {
     if (!instance) {
         instance = [[MAUdpConnection alloc] initWithHostname:hostname];
     }
     return instance;
 }
 
-+ (MAUdpConnection *)getConnectionForHostname:(NSString *)hostname delegate:(id <MAUdpConnectionDelegate>)delegate {
-    MAUdpConnection *instance = [MAUdpConnection getConnectionForHostname:hostname];
++ (instancetype)connectionForHostname:(NSString *)hostname delegate:(id <MAUdpConnectionDelegate>)delegate {
+    MAUdpConnection *instance = [MAUdpConnection connectionForHostname:hostname];
     instance.delegate = delegate;
     return instance;
 }
 
 // get the singleton instance with the default hostname to connect to
 //
-+ (MAUdpConnection *)getConnection {
-    return [MAUdpConnection getConnectionForHostname:MAMapAttackHostname];
++ (instancetype)connection {
+    return [MAUdpConnection connectionForHostname:MAMapAttackHostname];
 }
 
-+ (MAUdpConnection *)getConnectionWithDelegate:(id <MAUdpConnectionDelegate>)delegate {
-    MAUdpConnection *instance = [MAUdpConnection getConnectionForHostname:MAMapAttackHostname];
++ (instancetype)connectionWithDelegate:(id <MAUdpConnectionDelegate>)delegate {
+    MAUdpConnection *instance = [MAUdpConnection connectionForHostname:MAMapAttackHostname];
     instance.delegate = delegate;
     return instance;
 }
