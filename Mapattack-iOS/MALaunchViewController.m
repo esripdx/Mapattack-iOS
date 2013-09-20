@@ -34,6 +34,9 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
 {
     [super viewDidLoad];
 
+    self.enterButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.enterButton.titleLabel.minimumScaleFactor = 0.42;
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userName = [defaults objectForKey:kUserNameKey];
     if (userName) {
@@ -80,10 +83,11 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
 }
 
 - (void)startCapture {
-    self.session = [[AVCaptureSession alloc] init];
-    self.session.sessionPreset = AVCaptureSessionPreset640x480;
+    [self updateEnterButton];
+    self.videoCaptureSession = [[AVCaptureSession alloc] init];
+    self.videoCaptureSession.sessionPreset = AVCaptureSessionPreset640x480;
 
-    self.videoLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+    self.videoLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.videoCaptureSession];
 
     self.videoLayer.frame = self.capturedAvatarImage.bounds;
     [self.capturedAvatarImage.layer addSublayer:self.videoLayer];
@@ -91,7 +95,7 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
     self.stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
     NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG, AVVideoCodecKey, nil];
     [self.stillImageOutput setOutputSettings:outputSettings];
-    [self.session addOutput:self.stillImageOutput];
+    [self.videoCaptureSession addOutput:self.stillImageOutput];
 
     for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
         if (device.position == AVCaptureDevicePositionFront) {
@@ -107,21 +111,23 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
                 break;
             }
 
-            [self.session addInput:input];
+            [self.videoCaptureSession addInput:input];
 
-            [self.session startRunning];
+            [self.videoCaptureSession startRunning];
             break;
         }
     }
 
-    if (self.session.inputs.count < 1) {
-        self.session = nil;
+    if (self.videoCaptureSession.inputs.count < 1) {
+        self.videoCaptureSession = nil;
         self.stillImageOutput = nil;
     }
 }
 
 - (IBAction)captureNow {
-    if (!self.session) {
+    if (!self.videoCaptureSession) {
+        _isAvatarSet = NO;
+        [self updateEnterButton];
         [self startCapture];
         return;
     }
@@ -154,8 +160,8 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
                                                            [[NSUserDefaults standardUserDefaults] synchronize];
                                                            _isAvatarSet = YES;
 
-                                                           [self.session stopRunning];
-                                                           self.session = nil;
+                                                           [self.videoCaptureSession stopRunning];
+                                                           self.videoCaptureSession = nil;
                                                            self.stillImageOutput = nil;
                                                            [self.videoLayer removeFromSuperlayer];
                                                            [self updateEnterButton];

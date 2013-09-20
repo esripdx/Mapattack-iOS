@@ -111,11 +111,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rae-6E-aCx">
                                 <rect key="frame" x="20" y="485" width="280" height="63"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Enter Lobby">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="disabled" title="Choose Username and Avatar"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="42"/>
+                                <state key="normal" title="Enter Lobby"/>
+                                <state key="disabled" title="Choose a Username and Avatar"/>
                                 <connections>
                                     <segue destination="SEu-za-KrJ" kind="push" id="YA9-An-YkG"/>
                                 </connections>

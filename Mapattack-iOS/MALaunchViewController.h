@@ -16,7 +16,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *captureAvatarButton;
 @property (strong, nonatomic) IBOutlet UIImageView *capturedAvatarImage;
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
-@property (strong, nonatomic) AVCaptureSession *session;
+@property (strong, nonatomic) AVCaptureSession *videoCaptureSession;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *videoLayer;
 - (IBAction)captureNow;
 
