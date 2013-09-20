@@ -83,9 +83,6 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
     self.session = [[AVCaptureSession alloc] init];
     self.session.sessionPreset = AVCaptureSessionPreset640x480;
 
-    CALayer *viewLayer = self.capturedAvatarImage.layer;
-    NSLog(@"viewLayer = %@", viewLayer);
-
     self.videoLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
 
     self.videoLayer.frame = self.capturedAvatarImage.bounds;
@@ -101,8 +98,13 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
             NSError *error = nil;
             AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
             if (!input) {
-                // Handle the error appropriately.
                 NSLog(@"ERROR: trying to open camera: %@", error);
+                [[[UIAlertView alloc] initWithTitle:@"ERROR!"
+                                           message:[NSString stringWithFormat:@"Error openin camera: %@", [error localizedDescription]]
+                                          delegate:nil
+                                 cancelButtonTitle:@"OK"
+                                 otherButtonTitles:nil] show];
+                break;
             }
 
             [self.session addInput:input];
@@ -110,6 +112,11 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
             [self.session startRunning];
             break;
         }
+    }
+
+    if (self.session.inputs.count < 1) {
+        self.session = nil;
+        self.stillImageOutput = nil;
     }
 }
 
@@ -130,16 +137,13 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
         if (videoConnection) {break;}
     }
 
-    NSLog(@"about to request a capture from: %@", self.stillImageOutput);
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection
                                                        completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
                                                            CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
                                                            if (exifAttachments) {
                                                                // Do something with the attachments.
-                                                               NSLog(@"attachements: %@", exifAttachments);
                                                            }
                                                            else {
-                                                               NSLog(@"no attachments");
                                                            }
 
                                                            NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
