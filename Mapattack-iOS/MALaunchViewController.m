@@ -105,7 +105,7 @@ static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessTo
             NSError *error = nil;
             AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
             if (!input) {
-                NSLog(@"ERROR: trying to open camera: %@", error);
+                DDLogError(@"ERROR: trying to open camera: %@", error);
                 [[[UIAlertView alloc] initWithTitle:@"ERROR!"
                                            message:[NSString stringWithFormat:@"Error openin camera: %@", [error localizedDescription]]
                                           delegate:nil
@@ -198,11 +198,11 @@ static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessTo
                      [defaults setValue:responseObject[@"device_id"] forKey:kDeviceIdKey];
                      [defaults setValue:responseObject[@"access_token"] forKey:kAccessTokenKey];
                      [self performSegueWithIdentifier:@"device-registered" sender:self];
-                     NSLog(@"device registered.");
+                     DDLogVerbose(@"device registered.");
                      [hud hide:YES];
                  }
                  failure:^(NSURLSessionDataTask *task, NSError *error) {
-                     NSLog(@"Error registering device: %@", [error debugDescription]);
+                     DDLogError(@"Error registering device: %@", [error debugDescription]);
                      [hud hide:YES];
                      [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error registering device with server" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                  }];
