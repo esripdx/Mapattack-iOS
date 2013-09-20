@@ -14,6 +14,7 @@
 static NSString * const kDeviceIdKey = @"com.esri.portland.mapattack.deviceId";
 static NSString * const kUserNameKey = @"com.esri.portland.mapattack.userName";
 static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
+static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessToken";
 
 @interface MALaunchViewController () {
     BOOL _isUserNameSet;
@@ -175,16 +176,16 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
     NSString *deviceId = [defaults objectForKey:kDeviceIdKey];
     NSString *name = [defaults objectForKey:kUserNameKey];
     NSData *avatar = [defaults dataForKey:kAvatarKey];
-    if (!deviceId) {
-        deviceId = [UIDevice currentDevice].identifierForVendor.UUIDString;
-        [defaults setObject:deviceId forKey:kDeviceIdKey];
-    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
+            @"name": name,
+            @"avatar": [avatar base64EncodedStringWithOptions:0]
+    }];
+    [params setValue:deviceId forKey:@"device_id"];
 
     // this should probably be done in the app delegate or something
     AFHTTPSessionManager *sessionManager = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:@"http://192.168.10.22:8080"]];
     sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
     sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-    NSLog(@"deviceId: %@", deviceId);
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
@@ -192,12 +193,10 @@ static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
     hud.square = NO;
     hud.labelText = @"Registering...";
     [sessionManager POST:@"/device/register"
-              parameters:@{
-                      @"device_id": deviceId,
-                      @"name": name,
-                      @"avatar": [avatar base64EncodedStringWithOptions:0]
-              }
+              parameters:params
                  success:^(NSURLSessionDataTask *task, id responseObject) {
+                     [defaults setValue:responseObject[@"device_id"] forKey:kDeviceIdKey];
+                     [defaults setValue:responseObject[@"access_token"] forKey:kAccessTokenKey];
                      [self performSegueWithIdentifier:@"device-registered" sender:self];
                      NSLog(@"device registered.");
                      [hud hide:YES];
