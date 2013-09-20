@@ -61,19 +61,19 @@ static MAUdpConnection *instance;
     
     // create the socket instance, stash in ivar
     //
-    NSLog(@"creating socket...");
+    DDLogVerbose(@"creating socket...");
     socket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    NSLog(@"socket created: %@", socket);
+    DDLogVerbose(@"socket created: %@", socket);
     return self;
 }
 
 #pragma mark -
 
 - (BOOL)connect {
-    NSLog(@"connecting socket...");
+    DDLogVerbose(@"connecting socket...");
     NSError *err = nil;
     if (![socket connectToHost:self.hostname onPort:MAMapAttackPort error:&err]) {
-        NSLog(@"error: %@", err);
+        DDLogError(@"error: %@", err);
         return NO;
     }
     return YES;
@@ -91,7 +91,7 @@ static MAUdpConnection *instance;
 }
 
 - (void)setLastError:(NSError *)lastError {
-    NSLog(@"error: %@", lastError);
+    DDLogError(@"error: %@", lastError);
     _lastError = lastError;
 }
 
@@ -100,10 +100,10 @@ static MAUdpConnection *instance;
 }
 
 - (void)beginReceiving {
-    NSLog(@"beginning the receiving...");
+    DDLogVerbose(@"beginning the receiving...");
     NSError *err = nil;
     if (![socket beginReceiving:&err]) {
-        NSLog(@"begin receiving failed!");
+        DDLogCError(@"begin receiving failed!");
         self.lastError = err;
     }
 }
@@ -120,7 +120,7 @@ static MAUdpConnection *instance;
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotConnect:(NSError *)error {
-    NSLog(@"did not connect!");
+    DDLogError(@"did not connect!");
     if (error) {
         self.lastError = error;
     }
@@ -129,9 +129,9 @@ static MAUdpConnection *instance;
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data
                                                fromAddress:(NSData *)address
                                          withFilterContext:(id)filterContext {
-    NSLog(@"received data!");
+    DDLogVerbose(@"received data!");
     id unpacked = [data messagePackParse];
-    NSLog(@"unpacked: %@", unpacked);
+    DDLogVerbose(@"unpacked: %@", unpacked);
     
     if ([unpacked isKindOfClass:[NSDictionary class]] &&
         [self.delegate respondsToSelector:@selector(udpConnection:didReceiveDictionary:)]) {
@@ -147,7 +147,7 @@ static MAUdpConnection *instance;
 }
 
 - (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError *)error {
-    NSLog(@"socket closed!");
+    DDLogVerbose(@"socket closed!");
     if (error) {
         self.lastError = error;
     }

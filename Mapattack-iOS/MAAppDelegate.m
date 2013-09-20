@@ -8,9 +8,23 @@
 
 #import "MAAppDelegate.h"
 
+static const int MAFileLoggerRollingFrequency = 60*60*24;
+static const int MAFileLoggerMaxFiles = 7;
+
 @implementation MAAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    // Override point for customization after application launch.
+    
+    // CocoaLumberjack logging
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    DDFileLogger *fileLogger = [DDFileLogger new];
+    fileLogger.rollingFrequency = MAFileLoggerRollingFrequency;
+    fileLogger.logFileManager.maximumNumberOfLogFiles = MAFileLoggerMaxFiles;
+    [DDLog addLogger:fileLogger];
+    
     return YES;
 }
 
