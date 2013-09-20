@@ -10,4 +10,9 @@
 
 @implementation MAGameStateManager
 
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+
+}
+
+
 @end
