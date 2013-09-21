@@ -56,7 +56,9 @@ static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessTo
     [self updateEnterButton];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBarHidden = YES;
+
     if (!_isAvatarSet) {
         [self startCapture];
     }
