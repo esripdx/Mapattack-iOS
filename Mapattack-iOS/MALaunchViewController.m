@@ -11,11 +11,6 @@
 #import "MALaunchViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
-static NSString * const kDeviceIdKey = @"com.esri.portland.mapattack.deviceId";
-static NSString * const kUserNameKey = @"com.esri.portland.mapattack.userName";
-static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
-static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessToken";
-
 @interface MALaunchViewController () {
     BOOL _isUserNameSet;
     BOOL _isAvatarSet;
@@ -185,7 +180,7 @@ static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessTo
     [params setValue:deviceId forKey:@"device_id"];
 
     // this should probably be done in the app delegate or something
-    AFHTTPSessionManager *sessionManager = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:@"http://192.168.10.22:8080"]];
+    AFHTTPSessionManager *sessionManager = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:kMapAttackURL]];
     sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
     sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
 

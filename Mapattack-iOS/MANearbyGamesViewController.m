@@ -7,6 +7,7 @@
 //
 
 #import "MANearbyGamesViewController.h"
+#import "MAGameStateManager.h"
 
 @interface MANearbyGamesViewController ()
 
@@ -26,6 +27,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
+
+    // TODO: This is just to make testing the GameStateManager easier. This will need to be moved to after a game has been chosen.
+    [[MAGameStateManager sharedManager] startGame:nil];
 }
 
 - (void)viewDidLoad

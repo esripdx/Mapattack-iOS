@@ -20,9 +20,6 @@
 #import <Foundation/Foundation.h>
 #import "GCDAsyncUdpSocket.h"
 
-extern NSString *const MAMapAttackHostname;
-extern const int MAMapAttackPort;
-
 @class MAUdpConnection;
 
 @protocol MAUdpConnectionDelegate <NSObject>

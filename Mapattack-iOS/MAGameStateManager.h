@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "MAUdpConnection.h"
+
+@class MAUdpConnection;
 
 @protocol MAGameStateManagerDelegate
 - (void)coin:(NSString *)identifier didChangeState:(BOOL)claimable;
@@ -17,7 +20,12 @@
 - (void)gameDidEnd;
 @end
 
-@interface MAGameStateManager : NSObject <CLLocationManagerDelegate>
+@interface MAGameStateManager : NSObject <CLLocationManagerDelegate, MAUdpConnectionDelegate>
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) MAUdpConnection *udpConnection;
+
++ (MAGameStateManager *)sharedManager;
+
+- (void)startGame:(NSString *)gameId;
 
 @end
