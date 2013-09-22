@@ -1,5 +1,5 @@
 //
-//  MAGameStateManager.h
+//  MAGameManager.h
 //  Mapattack-iOS
 //
 //  Created by Ryan Arana on 9/19/13.
@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <AFNetworking/AFNetworking.h>
 #import "MAUdpConnection.h"
 
 @class MAUdpConnection;
+@class AFHTTPSessionManager;
 
 @protocol MAGameStateManagerDelegate
 - (void)coin:(NSString *)identifier didChangeState:(BOOL)claimable;
@@ -20,12 +22,14 @@
 - (void)gameDidEnd;
 @end
 
-@interface MAGameStateManager : NSObject <CLLocationManagerDelegate, MAUdpConnectionDelegate>
-@property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) MAUdpConnection *udpConnection;
+@interface MAGameManager : NSObject <CLLocationManagerDelegate, MAUdpConnectionDelegate>
+@property (strong, nonatomic, readonly) CLLocationManager *locationManager;
+@property (strong, nonatomic, readonly) MAUdpConnection *udpConnection;
+@property (strong, nonatomic, readonly) AFHTTPSessionManager *tcpConnection;
 
-+ (MAGameStateManager *)sharedManager;
++ (MAGameManager *)sharedManager;
 
+- (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion;
 - (void)startGame:(NSString *)gameId;
 
 @end
