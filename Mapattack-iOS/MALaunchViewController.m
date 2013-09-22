@@ -178,12 +178,12 @@
 
     [[MAGameManager sharedManager] registerDeviceWithCompletionBlock:^(NSError *error) {
         if (error != nil) {
-            [hud hide:YES];
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error registering device with server" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         } else {
             [self performSegueWithIdentifier:@"device-registered" sender:self];
-            [hud hide:YES];
         }
+
+        [hud hide:YES];
     }];
 }
 
