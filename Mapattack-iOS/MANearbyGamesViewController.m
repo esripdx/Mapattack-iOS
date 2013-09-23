@@ -8,6 +8,7 @@
 
 #import "MANearbyGamesViewController.h"
 #import "MAGameManager.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @interface MANearbyGamesViewController ()
 @property (strong, nonatomic) NSArray *nearbyGames;
@@ -26,6 +27,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
+
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.dimBackground = YES;
+    hud.square = NO;
+    hud.labelText = @"Searching...";
 
     [[MAGameManager sharedManager] fetchNearbyGamesWithCompletionBlock:^(NSArray *games, NSError *error) {
         if (error == nil) {
@@ -46,6 +52,7 @@
             self.nearbyGames = [NSArray array];
         }
         [self.tableView reloadData];
+        [hud hide:YES];
     }];
 }
 

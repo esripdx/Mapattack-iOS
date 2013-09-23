@@ -172,7 +172,6 @@
 - (IBAction)enterLobby {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
-    hud.color = self.view.tintColor;
     hud.square = NO;
     hud.labelText = @"Registering...";
 

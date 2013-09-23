@@ -24,7 +24,9 @@ static const int MAFileLoggerMaxFiles = 7;
     fileLogger.rollingFrequency = MAFileLoggerRollingFrequency;
     fileLogger.logFileManager.maximumNumberOfLogFiles = MAFileLoggerMaxFiles;
     [DDLog addLogger:fileLogger];
-    
+
+    self.window.tintColor = [UIColor orangeColor];
+
     return YES;
 }
 
