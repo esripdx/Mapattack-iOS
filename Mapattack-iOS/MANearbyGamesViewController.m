@@ -10,16 +10,15 @@
 #import "MAGameManager.h"
 
 @interface MANearbyGamesViewController ()
+@property (strong, nonatomic) NSArray *nearbyGames;
 
 @end
 
 @implementation MANearbyGamesViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -28,20 +27,58 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
 
-    // TODO: This is just to make testing the GameStateManager easier. This will need to be moved to after a game has been chosen.
-    [[MAGameManager sharedManager] startGame:nil];
+    [[MAGameManager sharedManager] fetchNearbyGamesWithCompletionBlock:^(NSArray *games, NSError *error) {
+        if (error == nil) {
+            self.nearbyGames = games;
+            if (games.count == 0) {
+                [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
+                                            message:@"No games were found near your current location."
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            }
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error"
+                                        message:[NSString stringWithFormat:@"Failed to retreive nearby games with the following error: %@", [error localizedDescription]]
+                                       delegate:nil
+                              cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            // TODO: Should probably set ourselves as the delegate for the alert view and give a retry button.
+
+            self.nearbyGames = [NSArray array];
+        }
+        [self.tableView reloadData];
+    }];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"gameCell"];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.nearbyGames.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
+
+    cell.textLabel.text = self.nearbyGames[(NSUInteger)indexPath.row][@"name"];
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *game = self.nearbyGames[(NSUInteger)indexPath.row];
+
+    [[MAGameManager sharedManager] joinGame:game];
+    // TODO: advance to appropriate view.
 }
 
 @end

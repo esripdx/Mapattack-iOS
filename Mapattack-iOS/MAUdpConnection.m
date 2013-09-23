@@ -45,6 +45,7 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
         DDLogError(@"error: %@", err);
         return NO;
     }
+    DDLogVerbose(@"connected");
     return YES;
 }
 
@@ -55,11 +56,8 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
         }
     }
 
-    NSMutableDictionary *dictionaryWithAccessToken = [NSMutableDictionary dictionaryWithDictionary:dictionary];
-    [dictionaryWithAccessToken setValue:accessToken forKey:@"access_token"];
-
     queueCounter++;
-    NSData *packed = [dictionaryWithAccessToken messagePack];
+    NSData *packed = [dictionary messagePack];
     [socket sendData:packed withTimeout:MAMapAttackUdpSendDataTimeout tag:queueCounter];
 }
 
