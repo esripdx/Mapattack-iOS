@@ -11,8 +11,6 @@
 
 static const int MAMapAttackUdpSendDataTimeout = -1;
 
-static MAUdpConnection *instance;
-
 @implementation MAUdpConnection {
     GCDAsyncUdpSocket *socket;
     long queueCounter;
@@ -21,44 +19,12 @@ static MAUdpConnection *instance;
 
 #pragma mark -
 
-// get the singleton instance with a specified hostname to connect to
-//
-+ (instancetype)connectionForHostname:(NSString *)hostname {
-    if (!instance) {
-        instance = [[MAUdpConnection alloc] initWithHostname:hostname];
-    }
-    return instance;
-}
-
-+ (instancetype)connectionForHostname:(NSString *)hostname delegate:(id <MAUdpConnectionDelegate>)delegate {
-    MAUdpConnection *instance = [MAUdpConnection connectionForHostname:hostname];
-    instance.delegate = delegate;
-    return instance;
-}
-
-// get the singleton instance with the default hostname to connect to
-//
-+ (instancetype)connection {
-    return [MAUdpConnection connectionForHostname:kMapAttackHostname];
-}
-
-+ (instancetype)connectionWithDelegate:(id <MAUdpConnectionDelegate>)delegate {
-    MAUdpConnection *instance = [MAUdpConnection connectionForHostname:kMapAttackHostname];
-    instance.delegate = delegate;
-    return instance;
-}
-
-#pragma mark -
-
-- (MAUdpConnection *)initWithHostname:(NSString *)hostname {
+- (id)initWithDelegate:(id <MAUdpConnectionDelegate>)delegate {
+    self = [super init];
     queueCounter = 0;
     
-    // set our hostname in the singleton instance
-    //
-    self.hostname = hostname;
+    self.delegate = delegate;
     
-    // create the socket instance, stash in ivar
-    //
     DDLogVerbose(@"creating socket...");
     socket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
     DDLogVerbose(@"socket created: %@", socket);
@@ -75,7 +41,7 @@ static MAUdpConnection *instance;
         DDLogError(@"Tried to connect without an access token.");
         return NO;
     }
-    if (![socket connectToHost:self.hostname onPort:kMapAttackUdpPort error:&err]) {
+    if (![socket connectToHost:kMapAttackHostname onPort:kMapAttackUdpPort error:&err]) {
         DDLogError(@"error: %@", err);
         return NO;
     }
