@@ -69,9 +69,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
 
-    cell.textLabel.text = self.nearbyGames[(NSUInteger)indexPath.row];
+    cell.textLabel.text = self.nearbyGames[(NSUInteger)indexPath.row][@"name"];
 
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *game = self.nearbyGames[(NSUInteger)indexPath.row];
+
+    [[MAGameManager sharedManager] joinGame:game];
+    // TODO: advance to appropriate view.
 }
 
 @end

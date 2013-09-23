@@ -16,6 +16,8 @@
 @property (strong, nonatomic) MAUdpConnection *udpConnection;
 @property (strong, nonatomic) AFHTTPSessionManager *tcpConnection;
 @property (copy, nonatomic) void (^listGamesCompletionBlock)(NSArray *games, NSError *error);
+@property (strong, nonatomic) NSString *joinedGameId;
+@property (strong, nonatomic) NSString *joinedGameName;
 
 @end
 
@@ -137,9 +139,61 @@
     [self.locationManager startUpdatingLocation];
 }
 
-- (void)startGame:(NSString *)gameId {
-    DDLogVerbose(@"Starting game: %@", gameId);
-    [self.locationManager startUpdatingLocation];
+- (void)joinGame:(NSDictionary *)game {
+    NSString *gameId = game[@"id"];
+    NSString *gameName = game[@"name"];
+    DDLogVerbose(@"Joining game: %@", gameId);
+    [self.tcpConnection POST:@"/game/join"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"game_id": gameId
+                  }
+                     success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         if (errorJson != nil) {
+                             DDLogError(@"Error joining game: %@", errorJson);
+                             return;
+                         }
+
+                         // TODO: Currently the response from the server contains only the game_id on successful join. I think this should be
+                         // returning team number, or just a success code, the game_id is what we sent in.
+                         self.joinedGameId = gameId;
+                         self.joinedGameName = gameName;
+                         [self.locationManager startUpdatingLocation];
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *error) {
+                         DDLogError(@"Error joining game: %@", [error debugDescription]);
+                     }];
+}
+
+- (void)syncGameState {
+    [self.tcpConnection GET:@"/game/state"
+                 parameters:@{}
+                    success:^(NSURLSessionDataTask *task, id responseObject) {
+                        NSDictionary *errorJson = responseObject[@"error"];
+                        if (errorJson != nil) {
+                            DDLogError(@"Error syncing game state: %@", errorJson);
+                            return;
+                        }
+
+                        NSArray *players = responseObject[@"players"];
+                        DDLogVerbose(@"Received state sync for %d players", players.count);
+                        for (NSDictionary *player in players) {
+                            DDLogVerbose(@"%@", player);
+                            if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
+                                // TODO: I'm guessing at what these keys are.
+                                [self.delegate player:player[@"id"]
+                                    didMoveToLocation:[[CLLocation alloc] initWithLatitude:[player[@"latitude"] floatValue]
+                                                                                 longitude:[player[@"longitude"] floatValue]]];
+                            }
+                        }
+                    }
+                    failure:^(NSURLSessionDataTask *task, NSError *error) {
+                        DDLogError(@"Error syncing game state: %@", [error debugDescription]);
+
+                        // TODO: Tell the user about this in some way? Maybe just keep track how many times we fail a sync
+                        // and notify the user after missing so many.
+                    }];
 }
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
