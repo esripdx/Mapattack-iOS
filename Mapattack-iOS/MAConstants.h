@@ -1,4 +1,4 @@
-static NSString *const kMapAttackHostname = @"10.20.30.48";
+static NSString *const kMapAttackHostname = @"192.168.10.18";
 static int const kMapAttackUdpPort = 5309;
 static int const kMapAttackTcpPort = 8080;
 #define kMapAttackURL [NSString stringWithFormat:@"http://%@:%d", kMapAttackHostname, kMapAttackTcpPort]

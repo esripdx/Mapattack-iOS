@@ -30,14 +30,10 @@
 
 @interface MAUdpConnection : NSObject <GCDAsyncUdpSocketDelegate>
 
-@property (strong, nonatomic) NSString *hostname;
 @property (strong, nonatomic) NSError *lastError;
 @property (strong, nonatomic) id <MAUdpConnectionDelegate> delegate;
 
-+ (instancetype)connectionForHostname:(NSString *)hostname;
-+ (instancetype)connectionForHostname:(NSString *)hostname delegate:(id <MAUdpConnectionDelegate>)delegate;
-+ (instancetype)connection;
-+ (instancetype)connectionWithDelegate:(id <MAUdpConnectionDelegate>)delegate;
+- (id)initWithDelegate:(id <MAUdpConnectionDelegate>)delegate;
 
 - (BOOL)connect;
 - (void)sendDictionary:(NSDictionary *)dictionary;
