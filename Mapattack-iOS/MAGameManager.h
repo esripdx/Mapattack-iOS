@@ -30,6 +30,7 @@
 + (MAGameManager *)sharedManager;
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion;
+- (void)fetchNearbyGamesWithCompletionBlock:(void (^)(NSArray *games, NSError *))completion;
 - (void)startGame:(NSString *)gameId;
 
 @end

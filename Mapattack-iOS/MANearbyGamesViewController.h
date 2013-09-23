@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MANearbyGamesViewController : UIViewController
+@interface MANearbyGamesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end
