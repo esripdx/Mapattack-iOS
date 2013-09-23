@@ -46,7 +46,7 @@
     self.udpConnection = [MAUdpConnection connectionWithDelegate:self];
 
     self.tcpConnection = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:kMapAttackURL]];
-    self.tcpConnection.requestSerializer = [AFJSONRequestSerializer serializer];
+    self.tcpConnection.requestSerializer = [AFHTTPRequestSerializer serializer];
     self.tcpConnection.responseSerializer = [AFJSONResponseSerializer serializer];
 
     return self;
@@ -75,22 +75,23 @@
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *deviceId = [defaults objectForKey:kDeviceIdKey];
+    NSString *accessToken = [defaults objectForKey:kAccessTokenKey];
     NSString *name = [defaults objectForKey:kUserNameKey];
     NSData *avatar = [defaults dataForKey:kAvatarKey];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
             @"name": name,
             @"avatar": [avatar base64EncodedStringWithOptions:0]
     }];
-    [params setValue:deviceId forKey:@"device_id"];
+    [params setObject:accessToken forKey:@"access_token"];
 
     [self.tcpConnection POST:@"/device/register"
                   parameters:params
                      success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
                          [defaults setValue:responseObject[@"device_id"] forKey:kDeviceIdKey];
                          [defaults setValue:responseObject[@"access_token"] forKey:kAccessTokenKey];
+                         [defaults synchronize];
 
-                         DDLogVerbose(@"Device (%@) registered.", responseObject[@"device_id"]);
+                         DDLogVerbose(@"Device (%@) registered with token: %@.", responseObject[@"device_id"], responseObject[@"access_token"]);
                          if (completion != nil) {
                              completion(nil);
                          }
