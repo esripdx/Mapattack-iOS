@@ -9,9 +9,6 @@
 #import "MAUdpConnection.h"
 #import "MessagePack.h"
 
-NSString *const MAMapAttackHostname = @"mapattack.org";
-int const MAMapAttackPort = 5309;
-
 static const int MAMapAttackUdpSendDataTimeout = -1;
 
 static MAUdpConnection *instance;
@@ -19,6 +16,7 @@ static MAUdpConnection *instance;
 @implementation MAUdpConnection {
     GCDAsyncUdpSocket *socket;
     long queueCounter;
+    NSString *accessToken;
 }
 
 #pragma mark -
@@ -41,11 +39,11 @@ static MAUdpConnection *instance;
 // get the singleton instance with the default hostname to connect to
 //
 + (instancetype)connection {
-    return [MAUdpConnection connectionForHostname:MAMapAttackHostname];
+    return [MAUdpConnection connectionForHostname:kMapAttackHostname];
 }
 
 + (instancetype)connectionWithDelegate:(id <MAUdpConnectionDelegate>)delegate {
-    MAUdpConnection *instance = [MAUdpConnection connectionForHostname:MAMapAttackHostname];
+    MAUdpConnection *instance = [MAUdpConnection connectionForHostname:kMapAttackHostname];
     instance.delegate = delegate;
     return instance;
 }
@@ -72,7 +70,12 @@ static MAUdpConnection *instance;
 - (BOOL)connect {
     DDLogVerbose(@"connecting socket...");
     NSError *err = nil;
-    if (![socket connectToHost:self.hostname onPort:MAMapAttackPort error:&err]) {
+    accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kAccessTokenKey];
+    if (!accessToken) {
+        DDLogError(@"Tried to connect without an access token.");
+        return NO;
+    }
+    if (![socket connectToHost:self.hostname onPort:kMapAttackUdpPort error:&err]) {
         DDLogError(@"error: %@", err);
         return NO;
     }
@@ -85,8 +88,12 @@ static MAUdpConnection *instance;
             return;
         }
     }
+
+    NSMutableDictionary *dictionaryWithAccessToken = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    [dictionaryWithAccessToken setValue:accessToken forKey:@"access_token"];
+
     queueCounter++;
-    NSData *packed = [dictionary messagePack];
+    NSData *packed = [dictionaryWithAccessToken messagePack];
     [socket sendData:packed withTimeout:MAMapAttackUdpSendDataTimeout tag:queueCounter];
 }
 
