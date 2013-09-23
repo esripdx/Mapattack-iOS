@@ -167,33 +167,33 @@
 }
 
 - (void)syncGameState {
-    [self.tcpConnection GET:@"/game/state"
-                 parameters:@{}
-                    success:^(NSURLSessionDataTask *task, id responseObject) {
-                        NSDictionary *errorJson = responseObject[@"error"];
-                        if (errorJson != nil) {
-                            DDLogError(@"Error syncing game state: %@", errorJson);
-                            return;
-                        }
+    [self.tcpConnection POST:@"/game/state"
+                  parameters:@{}
+                     success:^(NSURLSessionDataTask *task, id responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         if (errorJson != nil) {
+                             DDLogError(@"Error syncing game state: %@", errorJson);
+                             return;
+                         }
 
-                        NSArray *players = responseObject[@"players"];
-                        DDLogVerbose(@"Received state sync for %d players", players.count);
-                        for (NSDictionary *player in players) {
-                            DDLogVerbose(@"%@", player);
-                            if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
-                                // TODO: I'm guessing at what these keys are.
-                                [self.delegate player:player[@"id"]
-                                    didMoveToLocation:[[CLLocation alloc] initWithLatitude:[player[@"latitude"] floatValue]
-                                                                                 longitude:[player[@"longitude"] floatValue]]];
-                            }
-                        }
-                    }
-                    failure:^(NSURLSessionDataTask *task, NSError *error) {
-                        DDLogError(@"Error syncing game state: %@", [error debugDescription]);
+                         NSArray *players = responseObject[@"players"];
+                         DDLogVerbose(@"Received state sync for %d players", players.count);
+                         for (NSDictionary *player in players) {
+                             DDLogVerbose(@"%@", player);
+                             if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
+                                 // TODO: I'm guessing at what these keys are.
+                                 [self.delegate player:player[@"id"]
+                                     didMoveToLocation:[[CLLocation alloc] initWithLatitude:[player[@"latitude"] floatValue]
+                                                                                  longitude:[player[@"longitude"] floatValue]]];
+                             }
+                         }
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *error) {
+                         DDLogError(@"Error syncing game state: %@", [error debugDescription]);
 
-                        // TODO: Tell the user about this in some way? Maybe just keep track how many times we fail a sync
-                        // and notify the user after missing so many.
-                    }];
+                         // TODO: Tell the user about this in some way? Maybe just keep track how many times we fail a sync
+                         // and notify the user after missing so many.
+                     }];
 }
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
@@ -205,7 +205,7 @@
             @"name": name,
             @"avatar": [avatar base64EncodedStringWithOptions:0]
     }];
-    [params setObject:accessToken forKey:@"access_token"];
+    [params setValue:accessToken forKey:@"access_token"];
 
     [self.tcpConnection POST:@"/device/register"
                   parameters:params
