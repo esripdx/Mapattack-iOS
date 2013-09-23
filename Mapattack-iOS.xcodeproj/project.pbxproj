@@ -8,7 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		55C3C3CFC6C84F488572B570 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD71C79D415455F8DAB6718 /* libPods.a */; };
-		94A131CE17EB9CA500E1B15D /* MAGameStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameStateManager.m */; };
+		94550A0117EF997A0046B32D /* cgeohash.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509F817EF997A0046B32D /* cgeohash.m */; };
+		94550A0217EF997A0046B32D /* GeoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509FA17EF997A0046B32D /* GeoHash.m */; };
+		94550A0317EF997A0046B32D /* GHArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509FC17EF997A0046B32D /* GHArea.m */; };
+		94550A0417EF997A0046B32D /* GHNeighbors.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509FE17EF997A0046B32D /* GHNeighbors.m */; };
+		94550A0517EF997A0046B32D /* GHRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 94550A0017EF997A0046B32D /* GHRange.m */; };
+		94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameManager.m */; };
 		94C6D22617EBB0F900F30187 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22517EBB0F900F30187 /* CoreLocation.framework */; };
 		94C6D22817EC0D2F00F30187 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22717EC0D2F00F30187 /* AVFoundation.framework */; };
 		94C6D22A17EC151000F30187 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22917EC151000F30187 /* CoreImage.framework */; };
@@ -50,8 +55,19 @@
 
 /* Begin PBXFileReference section */
 		4FD71C79D415455F8DAB6718 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		94A131CC17EB9CA500E1B15D /* MAGameStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameStateManager.h; sourceTree = "<group>"; };
-		94A131CD17EB9CA500E1B15D /* MAGameStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameStateManager.m; sourceTree = "<group>"; };
+		67EF22671CEFC3E013EFBD14 /* MAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAConstants.h; sourceTree = "<group>"; };
+		945509F717EF997A0046B32D /* cgeohash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cgeohash.h; sourceTree = "<group>"; };
+		945509F817EF997A0046B32D /* cgeohash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cgeohash.m; sourceTree = "<group>"; };
+		945509F917EF997A0046B32D /* GeoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoHash.h; sourceTree = "<group>"; };
+		945509FA17EF997A0046B32D /* GeoHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoHash.m; sourceTree = "<group>"; };
+		945509FB17EF997A0046B32D /* GHArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHArea.h; sourceTree = "<group>"; };
+		945509FC17EF997A0046B32D /* GHArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHArea.m; sourceTree = "<group>"; };
+		945509FD17EF997A0046B32D /* GHNeighbors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHNeighbors.h; sourceTree = "<group>"; };
+		945509FE17EF997A0046B32D /* GHNeighbors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHNeighbors.m; sourceTree = "<group>"; };
+		945509FF17EF997A0046B32D /* GHRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHRange.h; sourceTree = "<group>"; };
+		94550A0017EF997A0046B32D /* GHRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHRange.m; sourceTree = "<group>"; };
+		94A131CC17EB9CA500E1B15D /* MAGameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameManager.h; sourceTree = "<group>"; };
+		94A131CD17EB9CA500E1B15D /* MAGameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameManager.m; sourceTree = "<group>"; };
 		94C6D22517EBB0F900F30187 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		94C6D22717EC0D2F00F30187 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		94C6D22917EC151000F30187 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -148,6 +164,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		945509F617EF997A0046B32D /* objc-geohash */ = {
+			isa = PBXGroup;
+			children = (
+				945509F717EF997A0046B32D /* cgeohash.h */,
+				945509F817EF997A0046B32D /* cgeohash.m */,
+				945509F917EF997A0046B32D /* GeoHash.h */,
+				945509FA17EF997A0046B32D /* GeoHash.m */,
+				945509FB17EF997A0046B32D /* GHArea.h */,
+				945509FC17EF997A0046B32D /* GHArea.m */,
+				945509FD17EF997A0046B32D /* GHNeighbors.h */,
+				945509FE17EF997A0046B32D /* GHNeighbors.m */,
+				945509FF17EF997A0046B32D /* GHRange.h */,
+				94550A0017EF997A0046B32D /* GHRange.m */,
+			);
+			path = "objc-geohash";
+			sourceTree = "<group>";
+		};
 		94A131CB17EB9B7B00E1B15D /* Interface */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +243,7 @@
 		BDADFD6B17EA41C000CB11B8 /* Mapattack-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				945509F617EF997A0046B32D /* objc-geohash */,
 				BE2228A917EA457400EFF703 /* msgpack-objectivec */,
 				BDADFD6C17EA41C000CB11B8 /* Supporting Files */,
 				94A131CB17EB9B7B00E1B15D /* Interface */,
@@ -217,8 +251,9 @@
 				BDADFD7517EA41C000CB11B8 /* MAAppDelegate.m */,
 				BE2228E517EA601500EFF703 /* MAUdpConnection.h */,
 				BE2228E617EA601500EFF703 /* MAUdpConnection.m */,
-				94A131CC17EB9CA500E1B15D /* MAGameStateManager.h */,
-				94A131CD17EB9CA500E1B15D /* MAGameStateManager.m */,
+				94A131CC17EB9CA500E1B15D /* MAGameManager.h */,
+				94A131CD17EB9CA500E1B15D /* MAGameManager.m */,
+				67EF22671CEFC3E013EFBD14 /* MAConstants.h */,
 			);
 			path = "Mapattack-iOS";
 			sourceTree = "<group>";
@@ -410,23 +445,28 @@
 				BE2228CD17EA457400EFF703 /* MessagePackPacker.m in Sources */,
 				BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */,
 				BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */,
+				94550A0117EF997A0046B32D /* cgeohash.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
 				BE2228DD17EA457400EFF703 /* NSArray+MessagePack.m in Sources */,
 				BE2228D517EA457400EFF703 /* unpack.c in Sources */,
 				BE2228D917EA457400EFF703 /* vrefbuffer.c in Sources */,
 				BE2228D717EA457400EFF703 /* version.c in Sources */,
-				94A131CE17EB9CA500E1B15D /* MAGameStateManager.m in Sources */,
+				94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */,
+				94550A0217EF997A0046B32D /* GeoHash.m in Sources */,
 				BD69CBD817EA6BF500E63C71 /* MAChooseBoardTableViewController.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
 				BD69CBC617EA691000E63C71 /* MACreateGameViewController.m in Sources */,
 				BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */,
 				BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */,
 				BE2228CF17EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */,
+				94550A0417EF997A0046B32D /* GHNeighbors.m in Sources */,
 				BD69CBC917EA691D00E63C71 /* MAJoinGameViewController.m in Sources */,
 				BE2228D117EA457400EFF703 /* MessagePackParser.m in Sources */,
 				BE2228DB17EA457400EFF703 /* zone.c in Sources */,
 				BE2228E117EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */,
 				BDADFD7617EA41C000CB11B8 /* MAAppDelegate.m in Sources */,
+				94550A0517EF997A0046B32D /* GHRange.m in Sources */,
+				94550A0317EF997A0046B32D /* GHArea.m in Sources */,
 				BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

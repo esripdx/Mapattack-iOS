@@ -9,12 +9,8 @@
 #import <ImageIO/ImageIO.h>
 #import <AFNetworking/AFNetworking.h>
 #import "MALaunchViewController.h"
+#import "MAGameManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-
-static NSString * const kDeviceIdKey = @"com.esri.portland.mapattack.deviceId";
-static NSString * const kUserNameKey = @"com.esri.portland.mapattack.userName";
-static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
-static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessToken";
 
 @interface MALaunchViewController () {
     BOOL _isUserNameSet;
@@ -174,41 +170,21 @@ static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessTo
 }
 
 - (IBAction)enterLobby {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *deviceId = [defaults objectForKey:kDeviceIdKey];
-    NSString *name = [defaults objectForKey:kUserNameKey];
-    NSData *avatar = [defaults dataForKey:kAvatarKey];
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
-            @"name": name,
-            @"avatar": [avatar base64EncodedStringWithOptions:0]
-    }];
-    [params setValue:deviceId forKey:@"device_id"];
-
-    // this should probably be done in the app delegate or something
-    AFHTTPSessionManager *sessionManager = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:@"http://192.168.10.22:8080"]];
-    sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
-    sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.color = self.view.tintColor;
     hud.square = NO;
     hud.labelText = @"Registering...";
-    [sessionManager POST:@"/device/register"
-              parameters:params
-                 success:^(NSURLSessionDataTask *task, id responseObject) {
-                     [defaults setValue:responseObject[@"device_id"] forKey:kDeviceIdKey];
-                     [defaults setValue:responseObject[@"access_token"] forKey:kAccessTokenKey];
-                     [self performSegueWithIdentifier:@"device-registered" sender:self];
-                     DDLogVerbose(@"device registered.");
-                     [hud hide:YES];
-                 }
-                 failure:^(NSURLSessionDataTask *task, NSError *error) {
-                     DDLogError(@"Error registering device: %@", [error debugDescription]);
-                     [hud hide:YES];
-                     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error registering device with server" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-                 }];
 
+    [[MAGameManager sharedManager] registerDeviceWithCompletionBlock:^(NSError *error) {
+        if (error != nil) {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error registering device with server" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        } else {
+            [self performSegueWithIdentifier:@"device-registered" sender:self];
+        }
+
+        [hud hide:YES];
+    }];
 }
 
 @end
