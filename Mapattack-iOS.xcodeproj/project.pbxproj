@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		55C3C3CFC6C84F488572B570 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD71C79D415455F8DAB6718 /* libPods.a */; };
+		67EF2A40EC9114F899AB701D /* MAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF21A8CF822FA5157F20CB /* MAConstants.m */; };
 		94550A0117EF997A0046B32D /* cgeohash.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509F817EF997A0046B32D /* cgeohash.m */; };
 		94550A0217EF997A0046B32D /* GeoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509FA17EF997A0046B32D /* GeoHash.m */; };
 		94550A0317EF997A0046B32D /* GHArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509FC17EF997A0046B32D /* GHArea.m */; };
@@ -55,6 +56,7 @@
 
 /* Begin PBXFileReference section */
 		4FD71C79D415455F8DAB6718 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		67EF21A8CF822FA5157F20CB /* MAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAConstants.m; sourceTree = "<group>"; };
 		67EF22671CEFC3E013EFBD14 /* MAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAConstants.h; sourceTree = "<group>"; };
 		945509F717EF997A0046B32D /* cgeohash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cgeohash.h; sourceTree = "<group>"; };
 		945509F817EF997A0046B32D /* cgeohash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cgeohash.m; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				94A131CC17EB9CA500E1B15D /* MAGameManager.h */,
 				94A131CD17EB9CA500E1B15D /* MAGameManager.m */,
 				67EF22671CEFC3E013EFBD14 /* MAConstants.h */,
+				67EF21A8CF822FA5157F20CB /* MAConstants.m */,
 			);
 			path = "Mapattack-iOS";
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				94550A0517EF997A0046B32D /* GHRange.m in Sources */,
 				94550A0317EF997A0046B32D /* GHArea.m in Sources */,
 				BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */,
+				67EF2A40EC9114F899AB701D /* MAConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
