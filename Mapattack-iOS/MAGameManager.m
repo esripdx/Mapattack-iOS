@@ -49,7 +49,7 @@
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.locationManager.distanceFilter = kCLDistanceFilterNone;
 
-    self.udpConnection = [MAUdpConnection connectionWithDelegate:self];
+    self.udpConnection = [[MAUdpConnection alloc] initWithDelegate:self];
 
     self.tcpConnection = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:kMapAttackURL]];
     self.tcpConnection.requestSerializer = [AFHTTPRequestSerializer serializer];
