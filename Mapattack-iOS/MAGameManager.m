@@ -66,6 +66,14 @@
     return _accessToken;
 }
 
+- (void)udpConnection:(MAUdpConnection *)udpConnection didReceiveArray:(NSArray *)array {
+    DDLogVerbose(@"Received udp array: %@", array);
+}
+
+- (void)udpConnection:(MAUdpConnection *)udpConnection didReceiveDictionary:(NSDictionary *)dictionary {
+    DDLogVerbose(@"Received udp dictionary: %@", dictionary);
+}
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (!self.accessToken) {
         DDLogError(@"Tried to update locations without an access token!");
@@ -78,22 +86,22 @@
         if (!waitingForList) {
             waitingForList = YES;
             DDLogVerbose(@"Fetching nearby games: %@", self.locationManager.location);
-            [self.tcpConnection POST:@"/games"
+            [self.tcpConnection POST:@"/boards"
                           parameters:@{
                                   @"access_token": self.accessToken,
                                   @"latitude": @(self.locationManager.location.coordinate.latitude),
                                   @"longitude": @(self.locationManager.location.coordinate.longitude)
                           }
                              success:^(NSURLSessionDataTask *task, id responseObject) {
-                                 NSArray *games = responseObject[@"games"];
+                                 NSArray *boards = responseObject[@"boards"];
 
-                                 DDLogVerbose(@"Found %d game%@ nearby", games.count, games.count == 1 ? @"" : @"s");
-                                 for (NSDictionary *game in games) {
+                                 DDLogVerbose(@"Found %d board%@ nearby", boards.count, boards.count == 1 ? @"" : @"s");
+                                 for (NSDictionary *game in boards) {
                                      DDLogVerbose(@"got game: %@", game);
                                  }
 
                                  if (self.listGamesCompletionBlock != nil) {
-                                     self.listGamesCompletionBlock(games, nil);
+                                     self.listGamesCompletionBlock(boards, nil);
                                  }
                                  waitingForList = NO;
                                  _listingGames = NO;

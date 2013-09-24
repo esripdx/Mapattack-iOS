@@ -46,6 +46,7 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
         return NO;
     }
     DDLogVerbose(@"connected");
+    [self beginReceiving];
     return YES;
 }
 
