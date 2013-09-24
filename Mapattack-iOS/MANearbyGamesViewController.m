@@ -8,6 +8,7 @@
 
 #import "MANearbyGamesViewController.h"
 #import "MAGameManager.h"
+#import "MAGameListCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @interface MANearbyGamesViewController ()
@@ -60,7 +61,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"gameCell"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,9 +74,24 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
+    MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
 
-    cell.textLabel.text = self.nearbyGames[(NSUInteger)indexPath.row][@"name"];
+    NSDictionary *game = self.nearbyGames[(NSUInteger)indexPath.row];
+    cell.gameNameLabel.text = game[@"name"];
+    NSNumber *bluePlayers = game[@"blue_team"];
+    NSNumber *redPlayers = game[@"red_team"];
+
+    if (bluePlayers == nil) {
+        cell.bluePlayersLabel.text = @"0";
+    } else {
+        cell.bluePlayersLabel.text = [bluePlayers stringValue];
+    }
+
+    if (redPlayers == nil) {
+        cell.redPlayersLabel.text = @"0";
+    } else {
+        cell.redPlayersLabel.text = [redPlayers stringValue];
+    }
 
     return cell;
 }
