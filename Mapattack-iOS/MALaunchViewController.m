@@ -19,6 +19,8 @@
 
 @end
 
+static float const kMAAvatarSize = 256.0f;
+
 @implementation MALaunchViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -48,6 +50,9 @@
         [self.capturedAvatarImage setImage:[UIImage imageWithData:avatarData]];
         _isAvatarSet = YES;
     }
+    
+    self.capturedAvatarImage.layer.borderColor = MA_COLOR_RED.CGColor;
+    self.capturedAvatarImage.layer.borderWidth = 1.0f;
 
     [self updateEnterButton];
 }
@@ -74,17 +79,16 @@
 
 - (void)startCapture {
     [self updateEnterButton];
-    self.videoCaptureSession = [[AVCaptureSession alloc] init];
-    self.videoCaptureSession.sessionPreset = AVCaptureSessionPreset640x480;
+    self.videoCaptureSession = [AVCaptureSession new];
+    self.videoCaptureSession.sessionPreset = AVCaptureSessionPreset352x288;
 
     self.videoLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.videoCaptureSession];
-
-    self.videoLayer.frame = self.capturedAvatarImage.bounds;
+    self.videoLayer.frame = CGRectMake(0.0, 0.0, kMAAvatarSize, kMAAvatarSize);
+    self.videoLayer.bounds = CGRectMake(48.0, 16.0, 288.0, 352.0);
     [self.capturedAvatarImage.layer addSublayer:self.videoLayer];
 
-    self.stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG, AVVideoCodecKey, nil];
-    [self.stillImageOutput setOutputSettings:outputSettings];
+    self.stillImageOutput = [AVCaptureStillImageOutput new];
+    [self.stillImageOutput setOutputSettings:@{AVVideoCodecKey: AVVideoCodecJPEG}];
     [self.videoCaptureSession addOutput:self.stillImageOutput];
 
     for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
@@ -111,6 +115,16 @@
     if (self.videoCaptureSession.inputs.count < 1) {
         self.videoCaptureSession = nil;
         self.stillImageOutput = nil;
+    }
+}
+
+- (void)endCapture {
+    if (self.videoCaptureSession) {
+        [self.videoCaptureSession stopRunning];
+        self.videoCaptureSession = nil;
+        self.stillImageOutput = nil;
+        [self.videoLayer removeFromSuperlayer];
+        [self updateEnterButton];
     }
 }
 
@@ -158,20 +172,16 @@
                                                            }
                                                            else {
                                                            }
-
-                                                           NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-                                                           UIImage *image = [[UIImage alloc] initWithData:imageData];
-
+                                                           
+                                                           UIImage *image = [[UIImage alloc] initWithData:[AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer]];
+                                                           image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage], CGRectMake(48.0, 16.0, kMAAvatarSize, kMAAvatarSize)) scale:0.0 orientation:image.imageOrientation];
                                                            self.capturedAvatarImage.image = image;
-                                                           [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kAvatarKey];
+                                                           [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
+                                                                                                     forKey:kAvatarKey];
                                                            [[NSUserDefaults standardUserDefaults] synchronize];
                                                            _isAvatarSet = YES;
 
-                                                           [self.videoCaptureSession stopRunning];
-                                                           self.videoCaptureSession = nil;
-                                                           self.stillImageOutput = nil;
-                                                           [self.videoLayer removeFromSuperlayer];
-                                                           [self updateEnterButton];
+                                                           [self endCapture];
                                                        }];
 }
 
@@ -194,6 +204,7 @@
 
 - (IBAction)pickFromCameraRoll {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+        [self endCapture];
         UIImagePickerController *picker = [UIImagePickerController new];
         picker.delegate = self;
         picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
@@ -209,10 +220,16 @@
     DDLogVerbose(@"didFinishPickingMediaWithInfo: %@", info);
     
     UIImage *editedImage = (UIImage *) info[UIImagePickerControllerEditedImage];
-    self.capturedAvatarImage.image = editedImage;
+    
+    UIGraphicsBeginImageContext(CGSizeMake(kMAAvatarSize, kMAAvatarSize));
+    [editedImage drawInRect:CGRectMake(0.0, 0.0, kMAAvatarSize, kMAAvatarSize)];
+    UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    self.capturedAvatarImage.image = resizedImage;
     
     DDLogVerbose(@"setting imageData in defaults...");
-    NSData *imageData = UIImageJPEGRepresentation(editedImage, 1.0f);
+    NSData *imageData = UIImageJPEGRepresentation(resizedImage, 1.0f);
     [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kAvatarKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _isAvatarSet = YES;
