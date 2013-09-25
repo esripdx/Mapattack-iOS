@@ -21,6 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="1" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="gameCell" rowHeight="285" id="MQ3-dc-CQK" customClass="MAGameListCell">
                                         <rect key="frame" x="0.0" y="86" width="320" height="285"/>
@@ -29,7 +30,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="284"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="txe-F4-0CS">
+                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="txe-F4-0CS">
                                                     <rect key="frame" x="0.0" y="46" width="320" height="218"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
@@ -75,6 +76,7 @@
                                                 <constraint firstItem="txe-F4-0CS" firstAttribute="top" secondItem="Sy1-9L-AlK" secondAttribute="top" constant="46" id="pAg-kk-fsE"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="bluePlayersLabel" destination="DxA-Rt-2WZ" id="FXW-EC-oTl"/>
                                             <outlet property="gameNameLabel" destination="2ls-wy-idn" id="8nO-zN-SrQ"/>
