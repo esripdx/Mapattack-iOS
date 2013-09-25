@@ -148,7 +148,7 @@
 }
 
 - (void)joinGame:(NSDictionary *)game {
-    NSString *gameId = game[@"id"];
+    NSString *gameId = game[@"board_id"];
     NSString *gameName = game[@"name"];
     DDLogVerbose(@"Joining game: %@", gameId);
     [self.tcpConnection POST:@"/game/join"

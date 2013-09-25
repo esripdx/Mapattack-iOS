@@ -141,7 +141,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == _selectedIndex) {
-        return 285;
+        return 326;
     } else {
         return 44;
     }
@@ -149,5 +149,15 @@
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay {
     return [[MKTileOverlayRenderer alloc] initWithTileOverlay:(MKTileOverlay *)overlay];
+}
+
+- (IBAction)joinGame:(id)sender {
+    if (_selectedIndex >= 0 && _selectedIndex < self.nearbyGames.count) {
+        NSDictionary *game = self.nearbyGames[(NSUInteger)_selectedIndex];
+        [[MAGameManager sharedManager] joinGame:game];
+        // TODO: Advance to game view
+    } else {
+        // TODO: I don't know how they'd get here but should probably do something about it? Maybe?
+    }
 }
 @end
