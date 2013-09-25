@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
 @interface MAGameListCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *bluePlayersLabel;
 @property (strong, nonatomic) IBOutlet UILabel *redPlayersLabel;
 @property (strong, nonatomic) IBOutlet UILabel *gameNameLabel;
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 
 @end

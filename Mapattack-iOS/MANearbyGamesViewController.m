@@ -11,8 +11,11 @@
 #import "MAGameListCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
-@interface MANearbyGamesViewController ()
+@interface MANearbyGamesViewController () {
+    NSInteger _selectedIndex;
+}
 @property (strong, nonatomic) NSArray *nearbyGames;
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 
 @end
 
@@ -28,6 +31,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
+    _selectedIndex = -1;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
@@ -97,10 +101,53 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *game = self.nearbyGames[(NSUInteger)indexPath.row];
+    if (indexPath.row != _selectedIndex) {
+        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
+        _selectedIndex = indexPath.row;
+        NSDictionary *game = self.nearbyGames[(NSUInteger)indexPath.row];
+        NSArray *bbox = game[@"bbox"];
 
-    [[MAGameManager sharedManager] joinGame:game];
-    // TODO: advance to appropriate view.
+        if (bbox != nil) {
+            double lng1 = [bbox[0] doubleValue];
+            double lat1 = [bbox[1] doubleValue];
+            double lng2 = [bbox[2] doubleValue];
+            double lat2 = [bbox[3] doubleValue];
+
+            MKCoordinateSpan span;
+            span.latitudeDelta = fabs(lat2 - lat1);
+            span.longitudeDelta = fabs(lng2 - lng1);
+
+            CLLocationCoordinate2D center;
+            center.latitude = fmax(lat1, lat2) - (span.latitudeDelta/2.0);
+            center.longitude = fmax(lng1, lng2) - (span.longitudeDelta/2.0);
+
+            MKCoordinateRegion region;
+            region.span = span;
+            region.center = center;
+
+            NSString *template = @"http://mapattack-tiles-0.pdx.esri.com/dark/{z}/{y}/{x}";
+            MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
+            overlay.canReplaceMapContent = YES;
+            [cell.mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
+            cell.mapView.showsUserLocation = YES;
+            [cell.mapView setRegion:region animated:NO];
+        }
+    }
+
+    // these cause the tableview to animate the cell expanding to show the map
+    [tableView beginUpdates];
+    [tableView endUpdates];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == _selectedIndex) {
+        return 285;
+    } else {
+        return 44;
+    }
+}
+
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay {
+    return [[MKTileOverlayRenderer alloc] initWithTileOverlay:(MKTileOverlay *)overlay];
+}
 @end

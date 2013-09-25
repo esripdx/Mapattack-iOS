@@ -24,6 +24,7 @@
 		94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D23117EC15D000F30187 /* QuartzCore.framework */; };
 		94FDAF0817F220BC00D284D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF0717F220BC00D284D4 /* Images.xcassets */; };
 		94FDAF0B17F2245C00D284D4 /* MAGameListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */; };
+		94FDAF0D17F236C100D284D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94FDAF0C17F236C100D284D4 /* MapKit.framework */; };
 		BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */; };
 		BD69CBC617EA691000E63C71 /* MACreateGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC517EA691000E63C71 /* MACreateGameViewController.m */; };
 		BD69CBC917EA691D00E63C71 /* MAJoinGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC817EA691D00E63C71 /* MAJoinGameViewController.m */; };
@@ -82,6 +83,7 @@
 		94FDAF0717F220BC00D284D4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		94FDAF0917F2245C00D284D4 /* MAGameListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameListCell.h; sourceTree = "<group>"; };
 		94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameListCell.m; sourceTree = "<group>"; };
+		94FDAF0C17F236C100D284D4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MANearbyGamesViewController.h; sourceTree = "<group>"; };
 		BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MANearbyGamesViewController.m; sourceTree = "<group>"; };
 		BD69CBC417EA691000E63C71 /* MACreateGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACreateGameViewController.h; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94FDAF0D17F236C100D284D4 /* MapKit.framework in Frameworks */,
 				94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */,
 				94C6D23017EC15AA00F30187 /* ImageIO.framework in Frameworks */,
 				94C6D22E17EC152E00F30187 /* CoreVideo.framework in Frameworks */,
@@ -233,6 +236,7 @@
 		BDADFD6417EA41C000CB11B8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				94FDAF0C17F236C100D284D4 /* MapKit.framework */,
 				94C6D23117EC15D000F30187 /* QuartzCore.framework */,
 				94C6D22F17EC15AA00F30187 /* ImageIO.framework */,
 				94C6D22D17EC152E00F30187 /* CoreVideo.framework */,
