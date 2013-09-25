@@ -66,21 +66,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark -
+
 - (void)updateEnterButton {
     self.enterButton.enabled = (_isUserNameSet && _isAvatarSet);
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField endEditing:NO];
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    [[NSUserDefaults standardUserDefaults] setObject:self.userNameField.text forKey:kUserNameKey];
-    _isUserNameSet = ![self.userNameField.text isEqualToString:@""];
-
-    [self updateEnterButton];
-    [self.userNameField resignFirstResponder];
 }
 
 - (void)startCapture {
@@ -124,6 +113,23 @@
         self.stillImageOutput = nil;
     }
 }
+
+#pragma mark - UITextFieldDelegate methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField endEditing:NO];
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [[NSUserDefaults standardUserDefaults] setObject:self.userNameField.text forKey:kUserNameKey];
+    _isUserNameSet = ![self.userNameField.text isEqualToString:@""];
+
+    [self updateEnterButton];
+    [self.userNameField resignFirstResponder];
+}
+
+#pragma mark - IBActions
 
 - (IBAction)captureNow {
     if (!self.videoCaptureSession) {
@@ -184,6 +190,39 @@
 
         [hud hide:YES];
     }];
+}
+
+- (IBAction)pickFromCameraRoll {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+        UIImagePickerController *picker = [UIImagePickerController new];
+        picker.delegate = self;
+        picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        picker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType: UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+        picker.allowsEditing = YES;
+        [self presentViewController:picker animated:YES completion:nil];
+    }
+}
+
+#pragma mark - UIImagePickerControllerDelegate methods
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    DDLogVerbose(@"didFinishPickingMediaWithInfo: %@", info);
+    
+    UIImage *editedImage = (UIImage *) info[UIImagePickerControllerEditedImage];
+    self.capturedAvatarImage.image = editedImage;
+    
+    DDLogVerbose(@"setting imageData in defaults...");
+    NSData *imageData = UIImageJPEGRepresentation(editedImage, 1.0f);
+    [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kAvatarKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    _isAvatarSet = YES;
+    
+    [self updateEnterButton];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
