@@ -84,7 +84,7 @@ static float const kMAAvatarSize = 256.0f;
 
     self.videoLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.videoCaptureSession];
     self.videoLayer.frame = CGRectMake(0.0, 0.0, kMAAvatarSize, kMAAvatarSize);
-    self.videoLayer.bounds = CGRectMake(48.0, 16.0, 288.0, 352.0);
+    self.videoLayer.bounds = CGRectMake((352.0 - kMAAvatarSize)/2, (288.0 - kMAAvatarSize)/2, 288.0, 352.0);
     [self.capturedAvatarImage.layer addSublayer:self.videoLayer];
 
     self.stillImageOutput = [AVCaptureStillImageOutput new];
@@ -174,7 +174,9 @@ static float const kMAAvatarSize = 256.0f;
                                                            }
                                                            
                                                            UIImage *image = [[UIImage alloc] initWithData:[AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer]];
-                                                           image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage], CGRectMake(48.0, 16.0, kMAAvatarSize, kMAAvatarSize)) scale:0.0 orientation:image.imageOrientation];
+                                                           image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage], CGRectMake((352.0 - kMAAvatarSize)/2, (288.0 - kMAAvatarSize)/2, kMAAvatarSize, kMAAvatarSize))
+                                                                                       scale:0.0
+                                                                                 orientation:image.imageOrientation];
                                                            self.capturedAvatarImage.image = image;
                                                            [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
                                                                                                      forKey:kAvatarKey];
