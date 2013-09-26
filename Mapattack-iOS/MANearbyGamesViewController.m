@@ -77,7 +77,7 @@
                 // TODO: Not sure what happens here. Join the game and go to an intermediary screen with a start button?
             }
         } else {
-            [[MAGameManager sharedManager] createGame:game completion:nil];
+            [[MAGameManager sharedManager] createGameForBoard:board completion:nil];
             // TODO: completion block that does the things. I'm not exactly sure where the game is supposed to go from here,
             // to an intermediary screen with a start button?
         }
@@ -99,8 +99,8 @@
     cell.gameNameLabel.text = board[@"name"];
     NSDictionary *game = board[@"game"];
     if (game != nil) {
-        cell.bluePlayersLabel.text = [game[@"blue_players"] stringValue];
-        cell.redPlayersLabel.text = [game[@"red_players"] stringValue];
+        cell.bluePlayersLabel.text = [game[@"blue_team"] stringValue];
+        cell.redPlayersLabel.text = [game[@"red_team"] stringValue];
     } else {
         cell.bluePlayersLabel.text = @"0";
         cell.redPlayersLabel.text = @"0";

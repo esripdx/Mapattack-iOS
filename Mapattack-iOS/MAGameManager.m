@@ -172,7 +172,7 @@
                      }];
 }
 
-- (void)createGame:(NSDictionary *)board completion:(void (^)(NSError *error))completion {
+- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error))completion {
     NSString *boardId = board[@"board_id"];
     DDLogVerbose(@"Creating game for board: %@", boardId);
     [self.tcpConnection POST:@"game/create"

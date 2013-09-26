@@ -37,7 +37,7 @@
 - (void)stopMonitoringNearbyGames;
 
 - (void)joinGame:(NSDictionary *)game;
-- (void)createGame:(NSDictionary *)board completion:(void (^)(NSError *error))completion;
+- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error))completion;
 - (void)startGame:(NSDictionary *)game;
 
 @end
