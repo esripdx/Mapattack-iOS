@@ -356,7 +356,7 @@
 		BDADFD5A17EA41C000CB11B8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = GL;
+				CLASSPREFIX = MA;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Geoloqi;
 				TargetAttributes = {
