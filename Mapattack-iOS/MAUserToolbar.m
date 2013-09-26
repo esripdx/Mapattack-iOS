@@ -7,6 +7,7 @@
 //
 
 #import "MAUserToolbar.h"
+#import "MAHelpViewController.h"
 
 @implementation MAUserToolbar
 
@@ -30,6 +31,12 @@
     return self;
 }
 
+- (IBAction)halp:(id)sender
+{
+    NSLog(@"sender is %@", sender);
+    MAHelpViewController *halpController = [[MAHelpViewController alloc] init];
+    //[sender.target.navigationController pushViewController:halpController animated:YES];
+}
 - (NSArray *)getButtonItems
 {
     self.username = [[NSUserDefaults standardUserDefaults] objectForKey:kUserNameKey];
@@ -38,7 +45,7 @@
 
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self.target.navigationController action:@selector(popViewControllerAnimated:)];
     UIBarButtonItem *usernameButton = [[UIBarButtonItem alloc] initWithTitle:self.username style:UIBarButtonItemStylePlain target:nil action:nil];
-    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithTitle:@"?" style:UIBarButtonItemStyleDone target:nil action:nil];
+    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithTitle:@"?" style:UIBarButtonItemStyleDone target:[[UIApplication sharedApplication] delegate] action:@selector(halp:)];
 
     NSArray *toolbarItems = @[backButton, space, usernameButton, space, helpButton];
 

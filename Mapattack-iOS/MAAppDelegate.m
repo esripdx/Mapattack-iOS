@@ -7,6 +7,8 @@
 //
 
 #import "MAAppDelegate.h"
+#import "MAHelpViewController.h"
+#import "MAUserToolbar.h"
 
 static const int MAFileLoggerRollingFrequency = 60*60*24;
 static const int MAFileLoggerMaxFiles = 7;
@@ -75,4 +77,14 @@ static const int MAFileLoggerMaxFiles = 7;
     [rvc.navigationController popViewControllerAnimated:YES];
 }
 
+- (IBAction)halp:(id)sender
+{
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    UIViewController *halpController = [sb instantiateViewControllerWithIdentifier:@"HalpController"];
+    MAUserToolbar *tb = [[MAUserToolbar alloc] initWithTarget:halpController];
+    halpController.toolbarItems = tb.items;
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+
+    [navigationController pushViewController:halpController animated:YES];
+}
 @end
