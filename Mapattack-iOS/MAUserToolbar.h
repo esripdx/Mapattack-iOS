@@ -13,6 +13,5 @@
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) UIViewController *target;
 
-- (id)initWithUsername:(NSString *)username andTarget:(UIViewController *)target;
-
+- (id)initWithTarget:(UIViewController *)target;
 @end

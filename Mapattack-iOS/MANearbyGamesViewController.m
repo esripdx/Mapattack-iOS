@@ -37,7 +37,7 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.navigationController.toolbarHidden = NO;
-    MAUserToolbar *toolbar = [[MAUserToolbar alloc] initWithUsername:@"This" andTarget:self];
+    MAUserToolbar *toolbar = [[MAUserToolbar alloc] initWithTarget:self];
     self.toolbarItems = toolbar.items;
     _selectedIndex = -1;
 

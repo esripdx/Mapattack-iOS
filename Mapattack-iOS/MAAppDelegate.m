@@ -57,4 +57,22 @@ static const int MAFileLoggerMaxFiles = 7;
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
++ (MAAppDelegate *)appDelegate
+{
+    return (MAAppDelegate *)[UIApplication sharedApplication].delegate;
+}
+
++ (UIViewController *)root
+{
+    return [[[UIApplication sharedApplication] keyWindow] rootViewController];
+}
+
+- (void)goBack
+{
+    UIViewController *rvc = [MAAppDelegate root];
+    UINavigationController *nav = [rvc navigationController];
+    NSLog(@"Testing back functionality %@", nav.viewControllers);
+    [rvc.navigationController popViewControllerAnimated:YES];
+}
+
 @end

@@ -63,6 +63,7 @@ static float const kMAAvatarSize = 256.0f;
     if (!_isAvatarSet) {
         [self startCapture];
     }
+    self.navigationController.toolbarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning
