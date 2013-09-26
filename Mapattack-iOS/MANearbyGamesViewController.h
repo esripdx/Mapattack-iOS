@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
-@interface MANearbyGamesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface MANearbyGamesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 

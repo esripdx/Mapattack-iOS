@@ -22,13 +22,13 @@
 		94C6D22E17EC152E00F30187 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22D17EC152E00F30187 /* CoreVideo.framework */; };
 		94C6D23017EC15AA00F30187 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22F17EC15AA00F30187 /* ImageIO.framework */; };
 		94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D23117EC15D000F30187 /* QuartzCore.framework */; };
+		94FDAF0817F220BC00D284D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF0717F220BC00D284D4 /* Images.xcassets */; };
+		94FDAF0B17F2245C00D284D4 /* MAGameListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */; };
+		94FDAF0D17F236C100D284D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94FDAF0C17F236C100D284D4 /* MapKit.framework */; };
 		BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */; };
-		BD69CBC617EA691000E63C71 /* MACreateGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC517EA691000E63C71 /* MACreateGameViewController.m */; };
-		BD69CBC917EA691D00E63C71 /* MAJoinGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC817EA691D00E63C71 /* MAJoinGameViewController.m */; };
 		BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */; };
 		BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */; };
 		BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */; };
-		BD69CBD817EA6BF500E63C71 /* MAChooseBoardTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD717EA6BF500E63C71 /* MAChooseBoardTableViewController.m */; };
 		BDADFD6617EA41C000CB11B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6517EA41C000CB11B8 /* UIKit.framework */; };
 		BDADFD6817EA41C000CB11B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6717EA41C000CB11B8 /* Foundation.framework */; };
 		BDADFD6A17EA41C000CB11B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6917EA41C000CB11B8 /* CoreGraphics.framework */; };
@@ -77,20 +77,18 @@
 		94C6D22D17EC152E00F30187 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		94C6D22F17EC15AA00F30187 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		94C6D23117EC15D000F30187 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		94FDAF0717F220BC00D284D4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		94FDAF0917F2245C00D284D4 /* MAGameListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameListCell.h; sourceTree = "<group>"; };
+		94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameListCell.m; sourceTree = "<group>"; };
+		94FDAF0C17F236C100D284D4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MANearbyGamesViewController.h; sourceTree = "<group>"; };
 		BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MANearbyGamesViewController.m; sourceTree = "<group>"; };
-		BD69CBC417EA691000E63C71 /* MACreateGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACreateGameViewController.h; sourceTree = "<group>"; };
-		BD69CBC517EA691000E63C71 /* MACreateGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACreateGameViewController.m; sourceTree = "<group>"; };
-		BD69CBC717EA691D00E63C71 /* MAJoinGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAJoinGameViewController.h; sourceTree = "<group>"; };
-		BD69CBC817EA691D00E63C71 /* MAJoinGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAJoinGameViewController.m; sourceTree = "<group>"; };
 		BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MALaunchViewController.h; sourceTree = "<group>"; };
 		BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MALaunchViewController.m; sourceTree = "<group>"; };
 		BD69CBD017EA69D200E63C71 /* MAHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAHelpViewController.h; sourceTree = "<group>"; };
 		BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAHelpViewController.m; sourceTree = "<group>"; };
 		BD69CBD317EA6B9C00E63C71 /* MAGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameViewController.h; sourceTree = "<group>"; };
 		BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameViewController.m; sourceTree = "<group>"; };
-		BD69CBD617EA6BF500E63C71 /* MAChooseBoardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAChooseBoardTableViewController.h; sourceTree = "<group>"; };
-		BD69CBD717EA6BF500E63C71 /* MAChooseBoardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAChooseBoardTableViewController.m; sourceTree = "<group>"; };
 		BDADFD6217EA41C000CB11B8 /* Mapattack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mapattack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDADFD6517EA41C000CB11B8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BDADFD6717EA41C000CB11B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -149,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94FDAF0D17F236C100D284D4 /* MapKit.framework in Frameworks */,
 				94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */,
 				94C6D23017EC15AA00F30187 /* ImageIO.framework in Frameworks */,
 				94C6D22E17EC152E00F30187 /* CoreVideo.framework in Frameworks */,
@@ -189,18 +188,14 @@
 				BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */,
 				BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */,
 				BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */,
-				BD69CBC417EA691000E63C71 /* MACreateGameViewController.h */,
-				BD69CBC517EA691000E63C71 /* MACreateGameViewController.m */,
-				BD69CBC717EA691D00E63C71 /* MAJoinGameViewController.h */,
-				BD69CBC817EA691D00E63C71 /* MAJoinGameViewController.m */,
+				94FDAF0917F2245C00D284D4 /* MAGameListCell.h */,
+				94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */,
 				BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */,
 				BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */,
 				BD69CBD017EA69D200E63C71 /* MAHelpViewController.h */,
 				BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */,
 				BD69CBD317EA6B9C00E63C71 /* MAGameViewController.h */,
 				BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */,
-				BD69CBD617EA6BF500E63C71 /* MAChooseBoardTableViewController.h */,
-				BD69CBD717EA6BF500E63C71 /* MAChooseBoardTableViewController.m */,
 			);
 			name = Interface;
 			sourceTree = "<group>";
@@ -226,6 +221,7 @@
 		BDADFD6417EA41C000CB11B8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				94FDAF0C17F236C100D284D4 /* MapKit.framework */,
 				94C6D23117EC15D000F30187 /* QuartzCore.framework */,
 				94C6D22F17EC15AA00F30187 /* ImageIO.framework */,
 				94C6D22D17EC152E00F30187 /* CoreVideo.framework */,
@@ -257,6 +253,7 @@
 				94A131CD17EB9CA500E1B15D /* MAGameManager.m */,
 				67EF22671CEFC3E013EFBD14 /* MAConstants.h */,
 				67EF21A8CF822FA5157F20CB /* MAConstants.m */,
+				94FDAF0717F220BC00D284D4 /* Images.xcassets */,
 			);
 			path = "Mapattack-iOS";
 			sourceTree = "<group>";
@@ -395,6 +392,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94FDAF0817F220BC00D284D4 /* Images.xcassets in Resources */,
 				BDADFD7017EA41C000CB11B8 /* InfoPlist.strings in Resources */,
 				BDADFD7817EA41C000CB11B8 /* Default.png in Resources */,
 				BDADFD7A17EA41C000CB11B8 /* Default@2x.png in Resources */,
@@ -456,16 +454,14 @@
 				BE2228D717EA457400EFF703 /* version.c in Sources */,
 				94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */,
 				94550A0217EF997A0046B32D /* GeoHash.m in Sources */,
-				BD69CBD817EA6BF500E63C71 /* MAChooseBoardTableViewController.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
-				BD69CBC617EA691000E63C71 /* MACreateGameViewController.m in Sources */,
 				BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */,
 				BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */,
 				BE2228CF17EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */,
 				94550A0417EF997A0046B32D /* GHNeighbors.m in Sources */,
-				BD69CBC917EA691D00E63C71 /* MAJoinGameViewController.m in Sources */,
 				BE2228D117EA457400EFF703 /* MessagePackParser.m in Sources */,
 				BE2228DB17EA457400EFF703 /* zone.c in Sources */,
+				94FDAF0B17F2245C00D284D4 /* MAGameListCell.m in Sources */,
 				BE2228E117EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */,
 				BDADFD7617EA41C000CB11B8 /* MAAppDelegate.m in Sources */,
 				94550A0517EF997A0046B32D /* GHRange.m in Sources */,
@@ -558,6 +554,8 @@
 			baseConfigurationReference = D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -575,6 +573,8 @@
 			baseConfigurationReference = D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
