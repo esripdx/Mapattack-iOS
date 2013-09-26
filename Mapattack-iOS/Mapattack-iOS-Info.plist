@@ -43,5 +43,11 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>karla.otf</string>
+		<string>lovebit.ttf</string>
+		<string>mensch.ttf</string>
+	</array>
 </dict>
 </plist>

@@ -25,6 +25,9 @@
 		94FDAF0817F220BC00D284D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF0717F220BC00D284D4 /* Images.xcassets */; };
 		94FDAF0B17F2245C00D284D4 /* MAGameListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */; };
 		94FDAF0D17F236C100D284D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94FDAF0C17F236C100D284D4 /* MapKit.framework */; };
+		94FDAF1217F4A60B00D284D4 /* karla.otf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF0F17F4A60B00D284D4 /* karla.otf */; };
+		94FDAF1317F4A60B00D284D4 /* lovebit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF1017F4A60B00D284D4 /* lovebit.ttf */; };
+		94FDAF1417F4A60B00D284D4 /* mensch.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF1117F4A60B00D284D4 /* mensch.ttf */; };
 		BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */; };
 		BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */; };
 		BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */; };
@@ -84,6 +87,9 @@
 		94FDAF0917F2245C00D284D4 /* MAGameListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameListCell.h; sourceTree = "<group>"; };
 		94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameListCell.m; sourceTree = "<group>"; };
 		94FDAF0C17F236C100D284D4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		94FDAF0F17F4A60B00D284D4 /* karla.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = karla.otf; sourceTree = "<group>"; };
+		94FDAF1017F4A60B00D284D4 /* lovebit.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = lovebit.ttf; sourceTree = "<group>"; };
+		94FDAF1117F4A60B00D284D4 /* mensch.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = mensch.ttf; sourceTree = "<group>"; };
 		BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MANearbyGamesViewController.h; sourceTree = "<group>"; };
 		BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MANearbyGamesViewController.m; sourceTree = "<group>"; };
 		BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MALaunchViewController.h; sourceTree = "<group>"; };
@@ -211,6 +217,16 @@
 			name = Interface;
 			sourceTree = "<group>";
 		};
+		94FDAF0E17F4A60B00D284D4 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				94FDAF0F17F4A60B00D284D4 /* karla.otf */,
+				94FDAF1017F4A60B00D284D4 /* lovebit.ttf */,
+				94FDAF1117F4A60B00D284D4 /* mensch.ttf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
 		BDADFD5917EA41C000CB11B8 = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +289,7 @@
 		BDADFD6C17EA41C000CB11B8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				94FDAF0E17F4A60B00D284D4 /* fonts */,
 				BDADFD6D17EA41C000CB11B8 /* Mapattack-iOS-Info.plist */,
 				BDADFD6E17EA41C000CB11B8 /* InfoPlist.strings */,
 				BDADFD7117EA41C000CB11B8 /* main.m */,
@@ -416,10 +433,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				94FDAF0817F220BC00D284D4 /* Images.xcassets in Resources */,
+				94FDAF1417F4A60B00D284D4 /* mensch.ttf in Resources */,
+				94FDAF1317F4A60B00D284D4 /* lovebit.ttf in Resources */,
 				BDADFD7017EA41C000CB11B8 /* InfoPlist.strings in Resources */,
 				BDADFD7817EA41C000CB11B8 /* Default.png in Resources */,
 				BDADFD7A17EA41C000CB11B8 /* Default@2x.png in Resources */,
 				BDADFD7C17EA41C000CB11B8 /* Default-568h@2x.png in Resources */,
+				94FDAF1217F4A60B00D284D4 /* karla.otf in Resources */,
 				BE2228E317EA457400EFF703 /* readme.md in Resources */,
 				BDADFD7F17EA41C000CB11B8 /* MainStoryboard.storyboard in Resources */,
 			);
@@ -581,7 +601,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = MapAttackLaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -600,7 +620,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = MapAttackLaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
