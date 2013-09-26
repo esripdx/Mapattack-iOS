@@ -130,7 +130,7 @@
     }];
 }
 
-- (void)fetchNearbyGamesWithCompletionBlock:(void (^)(NSArray *games, NSError *))completion {
+- (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion {
     if (!self.accessToken) {
         DDLogError(@"Tried to get nearby games without an access token!");
         // TODO: Send user back to launch view with an alert telling them to try logging in again.
@@ -142,9 +142,14 @@
     [self.gameListLocationManager startUpdatingLocation];
 }
 
+- (void)stopMonitoringNearbyGames {
+    DDLogVerbose(@"Stopping game list location updates.");
+    [self.gameListLocationManager stopUpdatingLocation];
+    self.listGamesCompletionBlock = nil;
+}
+
 - (void)joinGame:(NSDictionary *)game {
-    NSString *gameId = game[@"board_id"];
-    NSString *gameName = game[@"name"];
+    NSString *gameId = game[@"game_id"];
     DDLogVerbose(@"Joining game: %@", gameId);
     [self.tcpConnection POST:@"/game/join"
                   parameters:@{
@@ -158,14 +163,63 @@
                              return;
                          }
 
-                         // TODO: Currently the response from the server contains only the game_id on successful join. I think this should be
-                         // returning team number, or just a success code, the game_id is what we sent in.
                          self.joinedGameId = gameId;
-                         self.joinedGameName = gameName;
-                         [self.locationManager startUpdatingLocation];
+                         // TODO: Figure out what exactly should happen here? Check if game is active, start location updates if so, what do if not?
+                         // [self.locationManager startUpdatingLocation];
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error joining game: %@", [error debugDescription]);
+                     }];
+}
+
+- (void)createGame:(NSDictionary *)board completion:(void (^)(NSError *error))completion {
+    NSString *boardId = board[@"board_id"];
+    DDLogVerbose(@"Creating game for board: %@", boardId);
+    [self.tcpConnection POST:@"game/create"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"board_id": boardId
+                  }
+                     success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         if (errorJson != nil) {
+                             DDLogError(@"Error creating game: %@", errorJson);
+                             if (completion != nil) {
+                                 completion([NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson]);
+                             }
+                             return;
+                         }
+
+                         self.joinedGameId = responseObject[@"game_id"];
+                         if (completion != nil) {
+                             completion(nil);
+                         }
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *error) {
+                         DDLogError(@"Error creating game: %@", [error debugDescription]);
+                         if (completion != nil) {
+                             completion(error);
+                         }
+                     }];
+}
+
+- (void)startGame:(NSDictionary *)game {
+    [self.tcpConnection POST:@"game/start"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"game_id": self.joinedGameId
+                  }
+                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         if (errorJson != nil) {
+                             DDLogError(@"Error starting game: %@", errorJson);
+                             return;
+                         }
+
+                         [self.locationManager startUpdatingLocation];
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *error) {
+                         DDLogError(@"Error starting game: %@", [error debugDescription]);
                      }];
 }
 

@@ -33,7 +33,11 @@
 + (MAGameManager *)sharedManager;
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion;
-- (void)fetchNearbyGamesWithCompletionBlock:(void (^)(NSArray *games, NSError *))completion;
+- (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion;
+- (void)stopMonitoringNearbyGames;
+
 - (void)joinGame:(NSDictionary *)game;
+- (void)createGame:(NSDictionary *)board completion:(void (^)(NSError *error))completion;
+- (void)startGame:(NSDictionary *)game;
 
 @end

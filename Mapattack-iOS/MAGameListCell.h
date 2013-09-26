@@ -16,6 +16,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *gameNameLabel;
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 
-@property (copy, nonatomic) NSDictionary *game;
+@property (copy, nonatomic) NSDictionary *board;
 
 @end

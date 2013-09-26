@@ -34,7 +34,7 @@
 
     // Configure the view for the selected state
     if (selected) {
-        NSArray *bbox = self.game[@"bbox"];
+        NSArray *bbox = self.board[@"bbox"];
 
         if (bbox != nil) {
             double lng1 = [bbox[0] doubleValue];
