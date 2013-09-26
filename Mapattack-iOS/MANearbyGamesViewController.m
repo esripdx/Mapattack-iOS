@@ -8,10 +8,13 @@
 
 #import "MANearbyGamesViewController.h"
 #import "MAGameManager.h"
+#import "MAGameListCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
-@interface MANearbyGamesViewController ()
-@property (strong, nonatomic) NSArray *nearbyGames;
+@interface MANearbyGamesViewController () {
+    NSInteger _selectedIndex;
+}
+@property (strong, nonatomic) NSArray *nearbyBoards;
 
 @end
 
@@ -27,16 +30,17 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
+    _selectedIndex = -1;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Searching...";
 
-    [[MAGameManager sharedManager] fetchNearbyGamesWithCompletionBlock:^(NSArray *games, NSError *error) {
+    [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
-            self.nearbyGames = games;
-            if (games.count == 0) {
+            self.nearbyBoards = boards;
+            if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
                                             message:@"No games were found near your current location."
                                            delegate:nil
@@ -49,43 +53,90 @@
                               cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             // TODO: Should probably set ourselves as the delegate for the alert view and give a retry button.
 
-            self.nearbyGames = [NSArray array];
+            self.nearbyBoards = [NSArray array];
         }
         [self.tableView reloadData];
         [hud hide:YES];
     }];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"gameCell"];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[MAGameManager sharedManager] stopMonitoringNearbyGames];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+- (IBAction)joinGame:(id)sender {
+    if (_selectedIndex >= 0 && _selectedIndex < self.nearbyBoards.count) {
+        NSDictionary *board = self.nearbyBoards[(NSUInteger)_selectedIndex];
+        NSDictionary *game = board[@"game"];
+        if (game != nil) {
+            if (game[@"is_active"]) {
+                [[MAGameManager sharedManager] joinGame:game];
+            } else {
+                // TODO: Not sure what happens here. Join the game and go to an intermediary screen with a start button?
+            }
+        } else {
+            [[MAGameManager sharedManager] createGameForBoard:board completion:nil];
+            // TODO: completion block that does the things. I'm not exactly sure where the game is supposed to go from here,
+            // to an intermediary screen with a start button?
+        }
+    } else {
+        // TODO: I don't know how they'd get here but should probably do something about it? Maybe?
+    }
 }
+
+#pragma mark - UITableViewDelegate/Datasource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.nearbyGames.count;
+    return self.nearbyBoards.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
+    MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
 
-    cell.textLabel.text = self.nearbyGames[(NSUInteger)indexPath.row][@"name"];
+    NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
+    cell.gameNameLabel.text = board[@"name"];
+    NSDictionary *game = board[@"game"];
+    if (game != nil) {
+        cell.bluePlayersLabel.text = [game[@"blue_team"] stringValue];
+        cell.redPlayersLabel.text = [game[@"red_team"] stringValue];
+    } else {
+        cell.bluePlayersLabel.text = @"0";
+        cell.redPlayersLabel.text = @"0";
+    }
 
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *game = self.nearbyGames[(NSUInteger)indexPath.row];
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row != _selectedIndex) {
+        _selectedIndex = indexPath.row;
+        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
+        NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
+        cell.board = board;
+    }
+    return indexPath;
+}
 
-    [[MAGameManager sharedManager] joinGame:game];
-    // TODO: advance to appropriate view.
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // these cause the tableview to animate the cell expanding to show the map
+    [tableView beginUpdates];
+    [tableView endUpdates];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == _selectedIndex) {
+        return 326;
+    } else {
+        return 44;
+    }
+}
+
+#pragma mark MKMapViewDelegate
+
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay {
+    return [[MKTileOverlayRenderer alloc] initWithTileOverlay:(MKTileOverlay *)overlay];
 }
 
 @end

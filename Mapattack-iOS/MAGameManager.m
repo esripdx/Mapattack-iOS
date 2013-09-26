@@ -13,6 +13,7 @@
 @interface MAGameManager()
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLLocationManager *gameListLocationManager;
 @property (strong, nonatomic) MAUdpConnection *udpConnection;
 @property (strong, nonatomic) AFHTTPSessionManager *tcpConnection;
 @property (copy, nonatomic) void (^listGamesCompletionBlock)(NSArray *games, NSError *error);
@@ -23,7 +24,6 @@
 
 @implementation MAGameManager {
     NSString *_accessToken;
-    BOOL _listingGames;
 }
 
 + (MAGameManager *)sharedManager {
@@ -48,6 +48,11 @@
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.locationManager.distanceFilter = kCLDistanceFilterNone;
+
+    self.gameListLocationManager = [[CLLocationManager alloc] init];
+    self.gameListLocationManager.delegate = self;
+    self.gameListLocationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    self.gameListLocationManager.distanceFilter = 50;
 
     self.udpConnection = [[MAUdpConnection alloc] initWithDelegate:self];
 
@@ -80,41 +85,32 @@
         return;
     }
 
-    static BOOL waitingForList;
-    if (_listingGames) {
-        [self.locationManager stopUpdatingLocation];
-        if (!waitingForList) {
-            waitingForList = YES;
-            DDLogVerbose(@"Fetching nearby games: %@", self.locationManager.location);
-            [self.tcpConnection POST:@"/boards"
-                          parameters:@{
-                                  @"access_token": self.accessToken,
-                                  @"latitude": @(self.locationManager.location.coordinate.latitude),
-                                  @"longitude": @(self.locationManager.location.coordinate.longitude)
-                          }
-                             success:^(NSURLSessionDataTask *task, id responseObject) {
-                                 NSArray *boards = responseObject[@"boards"];
+    if (manager == self.gameListLocationManager) {
+        DDLogVerbose(@"Fetching nearby games: %@", self.gameListLocationManager.location);
+        [self.tcpConnection POST:@"/board/list"
+                      parameters:@{
+                              @"access_token": self.accessToken,
+                              @"latitude": @(self.gameListLocationManager.location.coordinate.latitude),
+                              @"longitude": @(self.gameListLocationManager.location.coordinate.longitude)
+                      }
+                         success:^(NSURLSessionDataTask *task, id responseObject) {
+                             NSArray *boards = responseObject[@"boards"];
 
-                                 DDLogVerbose(@"Found %d board%@ nearby", boards.count, boards.count == 1 ? @"" : @"s");
-                                 for (NSDictionary *game in boards) {
-                                     DDLogVerbose(@"got game: %@", game);
-                                 }
-
-                                 if (self.listGamesCompletionBlock != nil) {
-                                     self.listGamesCompletionBlock(boards, nil);
-                                 }
-                                 waitingForList = NO;
-                                 _listingGames = NO;
+                             DDLogVerbose(@"Found %d board%@ nearby", boards.count, boards.count == 1 ? @"" : @"s");
+                             for (NSDictionary *game in boards) {
+                                 DDLogVerbose(@"got game: %@", game);
                              }
-                             failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                 DDLogError(@"Failed to retrieve nearby games: %@", [error debugDescription]);
-                                 if (self.listGamesCompletionBlock != nil) {
-                                     self.listGamesCompletionBlock(nil, error);
-                                 }
-                                 waitingForList = NO;
-                                 _listingGames = NO;
-                             }];
-        }
+
+                             if (self.listGamesCompletionBlock != nil) {
+                                 self.listGamesCompletionBlock(boards, nil);
+                             }
+                         }
+                         failure:^(NSURLSessionDataTask *task, NSError *error) {
+                             DDLogError(@"Failed to retrieve nearby games: %@", [error debugDescription]);
+                             if (self.listGamesCompletionBlock != nil) {
+                                 self.listGamesCompletionBlock(nil, error);
+                             }
+                         }];
         return;
     }
 
@@ -134,22 +130,26 @@
     }];
 }
 
-- (void)fetchNearbyGamesWithCompletionBlock:(void (^)(NSArray *games, NSError *))completion {
+- (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion {
     if (!self.accessToken) {
         DDLogError(@"Tried to get nearby games without an access token!");
         // TODO: Send user back to launch view with an alert telling them to try logging in again.
         return;
     }
 
-    _listingGames = YES;
     self.listGamesCompletionBlock = completion;
     DDLogVerbose(@"Getting user's location for game list...");
-    [self.locationManager startUpdatingLocation];
+    [self.gameListLocationManager startUpdatingLocation];
+}
+
+- (void)stopMonitoringNearbyGames {
+    DDLogVerbose(@"Stopping game list location updates.");
+    [self.gameListLocationManager stopUpdatingLocation];
+    self.listGamesCompletionBlock = nil;
 }
 
 - (void)joinGame:(NSDictionary *)game {
-    NSString *gameId = game[@"id"];
-    NSString *gameName = game[@"name"];
+    NSString *gameId = game[@"game_id"];
     DDLogVerbose(@"Joining game: %@", gameId);
     [self.tcpConnection POST:@"/game/join"
                   parameters:@{
@@ -163,14 +163,63 @@
                              return;
                          }
 
-                         // TODO: Currently the response from the server contains only the game_id on successful join. I think this should be
-                         // returning team number, or just a success code, the game_id is what we sent in.
                          self.joinedGameId = gameId;
-                         self.joinedGameName = gameName;
-                         [self.locationManager startUpdatingLocation];
+                         // TODO: Figure out what exactly should happen here? Check if game is active, start location updates if so, what do if not?
+                         // [self.locationManager startUpdatingLocation];
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error joining game: %@", [error debugDescription]);
+                     }];
+}
+
+- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error))completion {
+    NSString *boardId = board[@"board_id"];
+    DDLogVerbose(@"Creating game for board: %@", boardId);
+    [self.tcpConnection POST:@"game/create"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"board_id": boardId
+                  }
+                     success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         if (errorJson != nil) {
+                             DDLogError(@"Error creating game: %@", errorJson);
+                             if (completion != nil) {
+                                 completion([NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson]);
+                             }
+                             return;
+                         }
+
+                         self.joinedGameId = responseObject[@"game_id"];
+                         if (completion != nil) {
+                             completion(nil);
+                         }
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *error) {
+                         DDLogError(@"Error creating game: %@", [error debugDescription]);
+                         if (completion != nil) {
+                             completion(error);
+                         }
+                     }];
+}
+
+- (void)startGame:(NSDictionary *)game {
+    [self.tcpConnection POST:@"game/start"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"game_id": self.joinedGameId
+                  }
+                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         if (errorJson != nil) {
+                             DDLogError(@"Error starting game: %@", errorJson);
+                             return;
+                         }
+
+                         [self.locationManager startUpdatingLocation];
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *error) {
+                         DDLogError(@"Error starting game: %@", [error debugDescription]);
                      }];
 }
 
