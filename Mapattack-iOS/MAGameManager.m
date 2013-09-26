@@ -13,6 +13,7 @@
 @interface MAGameManager()
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLLocationManager *gameListLocationManager;
 @property (strong, nonatomic) MAUdpConnection *udpConnection;
 @property (strong, nonatomic) AFHTTPSessionManager *tcpConnection;
 @property (copy, nonatomic) void (^listGamesCompletionBlock)(NSArray *games, NSError *error);
@@ -23,7 +24,6 @@
 
 @implementation MAGameManager {
     NSString *_accessToken;
-    BOOL _listingGames;
 }
 
 + (MAGameManager *)sharedManager {
@@ -48,6 +48,11 @@
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.locationManager.distanceFilter = kCLDistanceFilterNone;
+
+    self.gameListLocationManager = [[CLLocationManager alloc] init];
+    self.gameListLocationManager.delegate = self;
+    self.gameListLocationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    self.gameListLocationManager.distanceFilter = 50;
 
     self.udpConnection = [[MAUdpConnection alloc] initWithDelegate:self];
 
@@ -80,41 +85,32 @@
         return;
     }
 
-    static BOOL waitingForList;
-    if (_listingGames) {
-        [self.locationManager stopUpdatingLocation];
-        if (!waitingForList) {
-            waitingForList = YES;
-            DDLogVerbose(@"Fetching nearby games: %@", self.locationManager.location);
-            [self.tcpConnection POST:@"/boards"
-                          parameters:@{
-                                  @"access_token": self.accessToken,
-                                  @"latitude": @(self.locationManager.location.coordinate.latitude),
-                                  @"longitude": @(self.locationManager.location.coordinate.longitude)
-                          }
-                             success:^(NSURLSessionDataTask *task, id responseObject) {
-                                 NSArray *boards = responseObject[@"boards"];
+    if (manager == self.gameListLocationManager) {
+        DDLogVerbose(@"Fetching nearby games: %@", self.gameListLocationManager.location);
+        [self.tcpConnection POST:@"/board/list"
+                      parameters:@{
+                              @"access_token": self.accessToken,
+                              @"latitude": @(self.gameListLocationManager.location.coordinate.latitude),
+                              @"longitude": @(self.gameListLocationManager.location.coordinate.longitude)
+                      }
+                         success:^(NSURLSessionDataTask *task, id responseObject) {
+                             NSArray *boards = responseObject[@"boards"];
 
-                                 DDLogVerbose(@"Found %d board%@ nearby", boards.count, boards.count == 1 ? @"" : @"s");
-                                 for (NSDictionary *game in boards) {
-                                     DDLogVerbose(@"got game: %@", game);
-                                 }
-
-                                 if (self.listGamesCompletionBlock != nil) {
-                                     self.listGamesCompletionBlock(boards, nil);
-                                 }
-                                 waitingForList = NO;
-                                 _listingGames = NO;
+                             DDLogVerbose(@"Found %d board%@ nearby", boards.count, boards.count == 1 ? @"" : @"s");
+                             for (NSDictionary *game in boards) {
+                                 DDLogVerbose(@"got game: %@", game);
                              }
-                             failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                 DDLogError(@"Failed to retrieve nearby games: %@", [error debugDescription]);
-                                 if (self.listGamesCompletionBlock != nil) {
-                                     self.listGamesCompletionBlock(nil, error);
-                                 }
-                                 waitingForList = NO;
-                                 _listingGames = NO;
-                             }];
-        }
+
+                             if (self.listGamesCompletionBlock != nil) {
+                                 self.listGamesCompletionBlock(boards, nil);
+                             }
+                         }
+                         failure:^(NSURLSessionDataTask *task, NSError *error) {
+                             DDLogError(@"Failed to retrieve nearby games: %@", [error debugDescription]);
+                             if (self.listGamesCompletionBlock != nil) {
+                                 self.listGamesCompletionBlock(nil, error);
+                             }
+                         }];
         return;
     }
 
@@ -141,10 +137,9 @@
         return;
     }
 
-    _listingGames = YES;
     self.listGamesCompletionBlock = completion;
     DDLogVerbose(@"Getting user's location for game list...");
-    [self.locationManager startUpdatingLocation];
+    [self.gameListLocationManager startUpdatingLocation];
 }
 
 - (void)joinGame:(NSDictionary *)game {
