@@ -21,11 +21,6 @@
 
 @implementation MANearbyGamesViewController
 
-- (void)back
-{
-    NSLog(@"Testing back functionality");
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
