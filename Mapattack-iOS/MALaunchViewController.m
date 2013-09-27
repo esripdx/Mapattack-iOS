@@ -22,6 +22,7 @@
 
 @end
 
+static NSUInteger const kMAMaxUsernameLength = 3;
 static float const kMAAvatarSize = 256.0f;
 
 @implementation MALaunchViewController
@@ -304,6 +305,10 @@ static float const kMAAvatarSize = 256.0f;
 
 - (IBAction)dismissKeyboard:(id)sender {
     [self.userNameField resignFirstResponder];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    return textField.text.length + string.length <= kMAMaxUsernameLength;
 }
 
 - (void)registerForKeyboardNotifications
