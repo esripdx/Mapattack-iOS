@@ -31,7 +31,7 @@
 @interface MAUdpConnection : NSObject <GCDAsyncUdpSocketDelegate>
 
 @property (strong, nonatomic) NSError *lastError;
-@property (strong, nonatomic) id <MAUdpConnectionDelegate> delegate;
+@property (weak, nonatomic) id <MAUdpConnectionDelegate> delegate;
 
 - (id)initWithDelegate:(id <MAUdpConnectionDelegate>)delegate;
 
