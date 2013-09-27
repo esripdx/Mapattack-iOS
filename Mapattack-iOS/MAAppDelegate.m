@@ -85,4 +85,8 @@ static const int MAFileLoggerMaxFiles = 7;
     [[MAGameManager sharedManager] registerPushToken:deviceToken];
 }
 
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    DDLogError(@"push registration failed: %@", [error debugDescription]);
+}
+
 @end
