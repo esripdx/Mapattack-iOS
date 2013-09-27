@@ -87,6 +87,7 @@ static float const kMAAvatarSize = 256.0f;
     self.userNameField.textColor = MA_COLOR_RED;
     self.userNameField.layer.borderColor = MA_COLOR_RED.CGColor;
     self.userNameField.layer.borderWidth = 2.0f;
+    self.userNameField.backgroundColor = MA_COLOR_WHITE;
 
     self.enterButton.titleLabel.font = lovebit;
     self.enterButton.tintColor = MA_COLOR_BLUE;
