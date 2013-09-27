@@ -10,6 +10,7 @@
 #import "MAGameManager.h"
 #import "MAGameListCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "MAUserToolbar.h"
 
 @interface MANearbyGamesViewController () {
     NSInteger _selectedIndex;
@@ -29,7 +30,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.toolbarHidden = NO;
+    MAUserToolbar *toolbar = [[MAUserToolbar alloc] initWithTarget:self];
+    self.toolbarItems = toolbar.items;
     _selectedIndex = -1;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
