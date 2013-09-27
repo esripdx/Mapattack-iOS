@@ -127,7 +127,7 @@
                         <viewControllerLayoutGuide type="top" id="tlU-nE-J5k"/>
                         <viewControllerLayoutGuide type="bottom" id="RLk-Ep-cv2"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="HEN-s2-GYh">
+                    <view key="view" contentMode="scaleToFill" id="HEN-s2-GYh" customClass="UIControl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -152,7 +152,7 @@
                                     <outlet property="delegate" destination="XDp-c9-Qyj" id="NKb-Zk-Dwt"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rae-6E-aCx">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rae-6E-aCx">
                                 <rect key="frame" x="44" y="421" width="230" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -272,6 +272,9 @@
                             <constraint firstItem="0Al-bP-gv9" firstAttribute="top" relation="lessThanOrEqual" secondItem="56u-2v-fCg" secondAttribute="bottom" constant="14" id="uUw-ft-a2f"/>
                             <constraint firstItem="rV0-6Y-xHR" firstAttribute="leading" secondItem="HEN-s2-GYh" secondAttribute="leading" constant="44" id="yex-bj-WiW"/>
                         </constraints>
+                        <connections>
+                            <action selector="dismissKeyboard:" destination="XDp-c9-Qyj" eventType="touchUpInside" id="eGX-Ab-g3J"/>
+                        </connections>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="Ie6-rr-egm"/>
@@ -389,6 +392,7 @@
     <resources>
         <image name="blue" width="200" height="200"/>
         <image name="red" width="200" height="200"/>
+        <image name="tiny-camera" width="48" height="48"/>
         <image name="tiny-camera" width="48" height="48"/>
         <image name="user-setup-logotype" width="184" height="31"/>
     </resources>

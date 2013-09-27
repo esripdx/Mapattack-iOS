@@ -53,7 +53,7 @@ static float const kMAAvatarSize = 256.0f;
         [self.capturedAvatarImage setImage:[UIImage imageWithData:avatarData]];
         _isAvatarSet = YES;
     }
-    
+
     self.view.backgroundColor = MA_COLOR_CREAM;
 
     self.avatarContainer.layer.borderColor = MA_COLOR_RED.CGColor;
@@ -98,14 +98,20 @@ static float const kMAAvatarSize = 256.0f;
     [self updateEnterButton];
 }
 
-
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBarHidden = YES;
 
     if (!_isAvatarSet) {
         [self startCapture];
     }
+
     self.navigationController.toolbarHidden = YES;
+
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -292,6 +298,50 @@ static float const kMAAvatarSize = 256.0f;
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Keyboard methods
+
+- (IBAction)dismissKeyboard:(id)sender {
+    [self.userNameField resignFirstResponder];
+}
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+    [self moveViewForKeyboardHeight:kbSize.height];
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    [self moveViewForKeyboardHeight:-kbSize.height];
+}
+
+- (void)moveViewForKeyboardHeight:(CGFloat)height {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:0.5];
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y-height,
+            self.view.frame.size.width, self.view.frame.size.height);
+    [UIView commitAnimations];
 }
 
 @end
