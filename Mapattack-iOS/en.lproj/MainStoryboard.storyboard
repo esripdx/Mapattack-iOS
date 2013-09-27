@@ -139,20 +139,23 @@
                                     <constraint firstAttribute="width" constant="184" id="cVj-2l-rO2"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="_ _ _" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0Al-bP-gv9">
-                                <rect key="frame" x="45" y="418" width="51" height="22"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="line" placeholder="Initials" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Al-bP-gv9" customClass="MALovebitTextField">
+                                <rect key="frame" x="44" y="377" width="230" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="6PW-Wm-ske"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="32"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="XDp-c9-Qyj" id="NKb-Zk-Dwt"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rae-6E-aCx">
-                                <rect key="frame" x="45" y="487" width="229" height="61"/>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rae-6E-aCx">
+                                <rect key="frame" x="44" y="512" width="230" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="42"/>
-                                <state key="normal" title="Enter Lobby"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
+                                <state key="normal" title="GO!"/>
                                 <connections>
                                     <action selector="enterLobby" destination="XDp-c9-Qyj" eventType="touchUpInside" id="iVY-Fe-EXr"/>
                                 </connections>
@@ -254,8 +257,15 @@
                             <constraint firstItem="rV0-6Y-xHR" firstAttribute="top" secondItem="L3L-Ch-e3n" secondAttribute="bottom" constant="20" id="GWt-AW-1YO"/>
                             <constraint firstAttribute="trailing" secondItem="L3L-Ch-e3n" secondAttribute="trailing" constant="92" id="I3y-ZG-ZMo"/>
                             <constraint firstItem="rV0-6Y-xHR" firstAttribute="width" secondItem="56u-2v-fCg" secondAttribute="width" id="VzZ-S0-P18"/>
+                            <constraint firstItem="0Al-bP-gv9" firstAttribute="width" secondItem="56u-2v-fCg" secondAttribute="width" id="c5g-Gh-qs2"/>
+                            <constraint firstItem="0Al-bP-gv9" firstAttribute="centerX" secondItem="rae-6E-aCx" secondAttribute="centerX" id="e5J-q4-ktJ"/>
+                            <constraint firstItem="RLk-Ep-cv2" firstAttribute="top" secondItem="rae-6E-aCx" secondAttribute="bottom" constant="10" id="fsP-9Z-8FU"/>
+                            <constraint firstItem="0Al-bP-gv9" firstAttribute="centerX" secondItem="56u-2v-fCg" secondAttribute="centerX" id="ftY-51-xrk"/>
                             <constraint firstItem="L3L-Ch-e3n" firstAttribute="leading" secondItem="HEN-s2-GYh" secondAttribute="leading" constant="44" id="mF2-YZ-SMs"/>
                             <constraint firstItem="56u-2v-fCg" firstAttribute="top" secondItem="rV0-6Y-xHR" secondAttribute="bottom" constant="-1" id="pkU-ak-j9c"/>
+                            <constraint firstItem="0Al-bP-gv9" firstAttribute="height" secondItem="rae-6E-aCx" secondAttribute="height" id="rNK-yE-UPY"/>
+                            <constraint firstItem="0Al-bP-gv9" firstAttribute="width" secondItem="rae-6E-aCx" secondAttribute="width" id="s8Y-kz-bk5"/>
+                            <constraint firstItem="0Al-bP-gv9" firstAttribute="top" secondItem="56u-2v-fCg" secondAttribute="bottom" constant="14" id="uUw-ft-a2f"/>
                             <constraint firstItem="rV0-6Y-xHR" firstAttribute="leading" secondItem="HEN-s2-GYh" secondAttribute="leading" constant="44" id="yex-bj-WiW"/>
                         </constraints>
                     </view>
@@ -375,7 +385,6 @@
     <resources>
         <image name="blue" width="200" height="200"/>
         <image name="red" width="200" height="200"/>
-        <image name="tiny-camera" width="48" height="48"/>
         <image name="tiny-camera" width="48" height="48"/>
         <image name="user-setup-logotype" width="184" height="31"/>
     </resources>

@@ -28,6 +28,7 @@
 		94FDAF1217F4A60B00D284D4 /* karla.otf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF0F17F4A60B00D284D4 /* karla.otf */; };
 		94FDAF1317F4A60B00D284D4 /* lovebit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF1017F4A60B00D284D4 /* lovebit.ttf */; };
 		94FDAF1417F4A60B00D284D4 /* mensch.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF1117F4A60B00D284D4 /* mensch.ttf */; };
+		94FDAF2017F5660F00D284D4 /* MALovebitTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */; };
 		BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */; };
 		BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */; };
 		BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */; };
@@ -90,6 +91,8 @@
 		94FDAF0F17F4A60B00D284D4 /* karla.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = karla.otf; sourceTree = "<group>"; };
 		94FDAF1017F4A60B00D284D4 /* lovebit.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = lovebit.ttf; sourceTree = "<group>"; };
 		94FDAF1117F4A60B00D284D4 /* mensch.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = mensch.ttf; sourceTree = "<group>"; };
+		94FDAF1E17F5660E00D284D4 /* MALovebitTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MALovebitTextField.h; sourceTree = "<group>"; };
+		94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MALovebitTextField.m; sourceTree = "<group>"; };
 		BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MANearbyGamesViewController.h; sourceTree = "<group>"; };
 		BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MANearbyGamesViewController.m; sourceTree = "<group>"; };
 		BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MALaunchViewController.h; sourceTree = "<group>"; };
@@ -213,6 +216,8 @@
 				BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */,
 				BD986E6517F4DAC100FBB026 /* MAUserToolbar.h */,
 				BD986E6617F4DAC100FBB026 /* MAUserToolbar.m */,
+				94FDAF1E17F5660E00D284D4 /* MALovebitTextField.h */,
+				94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */,
 			);
 			name = Interface;
 			sourceTree = "<group>";
@@ -501,6 +506,7 @@
 				94550A0217EF997A0046B32D /* GeoHash.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
 				BD986E6717F4DAC100FBB026 /* MAUserToolbar.m in Sources */,
+				94FDAF2017F5660F00D284D4 /* MALovebitTextField.m in Sources */,
 				BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */,
 				BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */,
 				BE2228CF17EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */,

@@ -83,6 +83,17 @@ static float const kMAAvatarSize = 256.0f;
     self.pickFromRollButton.layer.borderColor = MA_COLOR_RED.CGColor;
     self.pickFromRollButton.layer.borderWidth = 2.0f;
 
+    self.userNameField.font = lovebit;
+    self.userNameField.textColor = MA_COLOR_RED;
+    self.userNameField.layer.borderColor = MA_COLOR_RED.CGColor;
+    self.userNameField.layer.borderWidth = 2.0f;
+
+    self.enterButton.titleLabel.font = lovebit;
+    self.enterButton.tintColor = MA_COLOR_BLUE;
+    self.enterButton.layer.borderColor = MA_COLOR_BLUE.CGColor;
+    self.enterButton.layer.borderWidth = 2.0f;
+    self.enterButton.contentEdgeInsets = UIEdgeInsetsMake(8.0, 0, 0, 0);
+
     [self updateEnterButton];
 }
 
@@ -106,6 +117,13 @@ static float const kMAAvatarSize = 256.0f;
 
 - (void)updateEnterButton {
     self.enterButton.enabled = (_isUserNameSet && _isAvatarSet);
+    if (self.enterButton.enabled) {
+        self.enterButton.backgroundColor = MA_COLOR_BLUE;
+        self.enterButton.tintColor = MA_COLOR_WHITE;
+    } else {
+        self.enterButton.backgroundColor = [UIColor clearColor];
+        self.enterButton.tintColor = MA_COLOR_BLUE;
+    }
 }
 
 - (void)startCapture {
