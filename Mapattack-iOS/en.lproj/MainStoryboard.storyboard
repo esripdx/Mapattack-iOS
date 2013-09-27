@@ -198,10 +198,10 @@
             </objects>
             <point key="canvasLocation" x="489" y="38"/>
         </scene>
-        <!--Help View Controller-->
+        <!--Help View Controller - HelpController-->
         <scene sceneID="TIi-O1-lxo">
             <objects>
-                <viewController id="a0y-hW-1Sj" customClass="MAHelpViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HalpController" title="HelpController" id="a0y-hW-1Sj" customClass="MAHelpViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jFB-kk-4ew"/>
                         <viewControllerLayoutGuide type="bottom" id="nBB-Mf-YNn"/>
