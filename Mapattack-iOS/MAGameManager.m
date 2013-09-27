@@ -10,6 +10,31 @@
 #import "GeoHash.h"
 #import "MAGameManager.h"
 
+// http://stackoverflow.com/questions/8088473/url-encode-an-nsstring
+@implementation NSString (NSString_Extended)
+
+- (NSString *)urlencode {
+    NSMutableString *output = [NSMutableString string];
+    const unsigned char *source = (const unsigned char *)[self UTF8String];
+    int sourceLen = strlen((const char *)source);
+    for (int i = 0; i < sourceLen; ++i) {
+        const unsigned char thisChar = source[i];
+        if (thisChar == ' '){
+            [output appendString:@"+"];
+        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
+                   (thisChar >= 'a' && thisChar <= 'z') ||
+                   (thisChar >= 'A' && thisChar <= 'Z') ||
+                   (thisChar >= '0' && thisChar <= '9')) {
+            [output appendFormat:@"%c", thisChar];
+        } else {
+            [output appendFormat:@"%%%02X", thisChar];
+        }
+    }
+    return output;
+}
+
+@end
+
 @interface MAGameManager()
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
@@ -67,9 +92,10 @@
     if (!_accessToken) {
         _accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kAccessTokenKey];
     }
-
     return _accessToken;
 }
+
+#pragma mark - MAUdpConnectionDelegate methods
 
 - (void)udpConnection:(MAUdpConnection *)udpConnection didReceiveArray:(NSArray *)array {
     DDLogVerbose(@"Received udp array: %@", array);
@@ -78,6 +104,8 @@
 - (void)udpConnection:(MAUdpConnection *)udpConnection didReceiveDictionary:(NSDictionary *)dictionary {
     DDLogVerbose(@"Received udp dictionary: %@", dictionary);
 }
+
+#pragma mark - CLLocationManagerDelegate methods
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (!self.accessToken) {
@@ -129,6 +157,8 @@
         [self.udpConnection sendDictionary:update];
     }];
 }
+
+# pragma mark - Game Mechanics
 
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion {
     if (!self.accessToken) {
@@ -255,14 +285,13 @@
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *accessToken = [defaults objectForKey:kAccessTokenKey];
-    NSString *name = [defaults objectForKey:kUserNameKey];
-    NSData *avatar = [defaults dataForKey:kAvatarKey];
+    NSString *userName = [defaults stringForKey:kUserNameKey];
+    NSString *avatar = [[[defaults dataForKey:kAvatarKey] base64EncodedStringWithOptions:0] urlencode];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
-            @"name": name,
-            @"avatar": [avatar base64EncodedStringWithOptions:0]
+        @"name": userName,
+        @"avatar": avatar
     }];
-    [params setValue:accessToken forKey:@"access_token"];
+    [params setValue:self.accessToken forKey:kAccessTokenKey];
 
     [self.tcpConnection POST:@"/device/register"
                   parameters:params
