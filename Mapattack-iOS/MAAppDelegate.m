@@ -9,6 +9,7 @@
 #import "MAAppDelegate.h"
 #import "MAHelpViewController.h"
 #import "MAUserToolbar.h"
+#import "MAGameManager.h"
 
 static const int MAFileLoggerRollingFrequency = 60*60*24;
 static const int MAFileLoggerMaxFiles = 7;
@@ -59,6 +60,8 @@ static const int MAFileLoggerMaxFiles = 7;
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark -
+
 + (MAAppDelegate *)appDelegate
 {
     return (MAAppDelegate *)[UIApplication sharedApplication].delegate;
@@ -74,4 +77,12 @@ static const int MAFileLoggerMaxFiles = 7;
 
     [navigationController pushViewController:halpController animated:YES];
 }
+
+#pragma mark - Totes Potes
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    DDLogVerbose(@"did register for push token");
+    [[MAGameManager sharedManager] registerPushToken:deviceToken];
+}
+
 @end
