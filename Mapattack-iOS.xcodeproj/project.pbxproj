@@ -53,6 +53,8 @@
 		BE2228E117EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */; };
 		BE2228E317EA457400EFF703 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = BE2228CC17EA457400EFF703 /* readme.md */; };
 		BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* MAUdpConnection.m */; };
+		BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39C17F600E00033EFDE /* NSData+Conversion.m */; };
+		BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,7 +94,7 @@
 		BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameViewController.m; sourceTree = "<group>"; };
 		BD986E6517F4DAC100FBB026 /* MAUserToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAUserToolbar.h; sourceTree = "<group>"; };
 		BD986E6617F4DAC100FBB026 /* MAUserToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAUserToolbar.m; sourceTree = "<group>"; };
-		BDADFD6217EA41C000CB11B8 /* Mapattack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mapattack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDADFD6217EA41C000CB11B8 /* MapAttack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapAttack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDADFD6517EA41C000CB11B8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BDADFD6717EA41C000CB11B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BDADFD6917EA41C000CB11B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -142,6 +144,10 @@
 		BE2228CC17EA457400EFF703 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.md; sourceTree = "<group>"; };
 		BE2228E517EA601500EFF703 /* MAUdpConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAUdpConnection.h; sourceTree = "<group>"; };
 		BE2228E617EA601500EFF703 /* MAUdpConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAUdpConnection.m; sourceTree = "<group>"; };
+		BE33B39B17F600E00033EFDE /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Conversion.h"; path = "ext/NSData+Conversion.h"; sourceTree = "<group>"; };
+		BE33B39C17F600E00033EFDE /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Conversion.m"; path = "ext/NSData+Conversion.m"; sourceTree = "<group>"; };
+		BE33B39E17F602900033EFDE /* NSString+UrlEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+UrlEncoding.h"; path = "ext/NSString+UrlEncoding.h"; sourceTree = "<group>"; };
+		BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+UrlEncoding.m"; path = "ext/NSString+UrlEncoding.m"; sourceTree = "<group>"; };
 		D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -218,7 +224,7 @@
 		BDADFD6317EA41C000CB11B8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BDADFD6217EA41C000CB11B8 /* Mapattack-iOS.app */,
+				BDADFD6217EA41C000CB11B8 /* MapAttack.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -246,6 +252,7 @@
 		BDADFD6B17EA41C000CB11B8 /* Mapattack-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				BE33B39717F6006F0033EFDE /* ext */,
 				945509F617EF997A0046B32D /* objc-geohash */,
 				BE2228A917EA457400EFF703 /* msgpack-objectivec */,
 				BDADFD6C17EA41C000CB11B8 /* Supporting Files */,
@@ -333,12 +340,23 @@
 			path = msgpack;
 			sourceTree = "<group>";
 		};
+		BE33B39717F6006F0033EFDE /* ext */ = {
+			isa = PBXGroup;
+			children = (
+				BE33B39B17F600E00033EFDE /* NSData+Conversion.h */,
+				BE33B39C17F600E00033EFDE /* NSData+Conversion.m */,
+				BE33B39E17F602900033EFDE /* NSString+UrlEncoding.h */,
+				BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */,
+			);
+			name = ext;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BDADFD6117EA41C000CB11B8 /* Mapattack-iOS */ = {
+		BDADFD6117EA41C000CB11B8 /* MapAttack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BDADFD9A17EA41C000CB11B8 /* Build configuration list for PBXNativeTarget "Mapattack-iOS" */;
+			buildConfigurationList = BDADFD9A17EA41C000CB11B8 /* Build configuration list for PBXNativeTarget "MapAttack" */;
 			buildPhases = (
 				52E1803383C740E59BF009AA /* Check Pods Manifest.lock */,
 				BDADFD5E17EA41C000CB11B8 /* Sources */,
@@ -350,9 +368,9 @@
 			);
 			dependencies = (
 			);
-			name = "Mapattack-iOS";
+			name = MapAttack;
 			productName = "Mapattack-iOS";
-			productReference = BDADFD6217EA41C000CB11B8 /* Mapattack-iOS.app */;
+			productReference = BDADFD6217EA41C000CB11B8 /* MapAttack.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -387,7 +405,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BDADFD6117EA41C000CB11B8 /* Mapattack-iOS */,
+				BDADFD6117EA41C000CB11B8 /* MapAttack */,
 			);
 		};
 /* End PBXProject section */
@@ -457,7 +475,9 @@
 				BE2228D517EA457400EFF703 /* unpack.c in Sources */,
 				BE2228D917EA457400EFF703 /* vrefbuffer.c in Sources */,
 				BE2228D717EA457400EFF703 /* version.c in Sources */,
+				BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */,
 				94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */,
+				BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */,
 				94550A0217EF997A0046B32D /* GeoHash.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
 				BD986E6717F4DAC100FBB026 /* MAUserToolbar.m in Sources */,
@@ -569,7 +589,7 @@
 				INFOPLIST_FILE = "Mapattack-iOS/Mapattack-iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "CAD24F27-BD86-4F2D-8D0F-E41572C5D053";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -588,7 +608,7 @@
 				INFOPLIST_FILE = "Mapattack-iOS/Mapattack-iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "CAD24F27-BD86-4F2D-8D0F-E41572C5D053";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -605,7 +625,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BDADFD9A17EA41C000CB11B8 /* Build configuration list for PBXNativeTarget "Mapattack-iOS" */ = {
+		BDADFD9A17EA41C000CB11B8 /* Build configuration list for PBXNativeTarget "MapAttack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BDADFD9B17EA41C000CB11B8 /* Debug */,

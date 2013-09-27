@@ -9,31 +9,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import "GeoHash.h"
 #import "MAGameManager.h"
-
-// http://stackoverflow.com/questions/8088473/url-encode-an-nsstring
-@implementation NSString (NSString_Extended)
-
-- (NSString *)urlencode {
-    NSMutableString *output = [NSMutableString string];
-    const unsigned char *source = (const unsigned char *)[self UTF8String];
-    int sourceLen = strlen((const char *)source);
-    for (int i = 0; i < sourceLen; ++i) {
-        const unsigned char thisChar = source[i];
-        if (thisChar == ' '){
-            [output appendString:@"+"];
-        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
-                   (thisChar >= 'a' && thisChar <= 'z') ||
-                   (thisChar >= 'A' && thisChar <= 'Z') ||
-                   (thisChar >= '0' && thisChar <= '9')) {
-            [output appendFormat:@"%c", thisChar];
-        } else {
-            [output appendFormat:@"%%%02X", thisChar];
-        }
-    }
-    return output;
-}
-
-@end
+#import "NSString+UrlEncoding.h"
+#import "NSData+Conversion.h"
 
 @interface MAGameManager()
 
@@ -49,6 +26,7 @@
 
 @implementation MAGameManager {
     NSString *_accessToken;
+    BOOL _pushTokenRegistered;
 }
 
 + (MAGameManager *)sharedManager {
@@ -68,6 +46,8 @@
     if (self == nil) {
         return nil;
     }
+    
+    _pushTokenRegistered = NO;
 
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
@@ -124,7 +104,7 @@
                          success:^(NSURLSessionDataTask *task, id responseObject) {
                              NSArray *boards = responseObject[@"boards"];
 
-                             DDLogVerbose(@"Found %d board%@ nearby", boards.count, boards.count == 1 ? @"" : @"s");
+                             DDLogVerbose(@"Found %lu board%@ nearby", (unsigned long)boards.count, boards.count == 1 ? @"" : @"s");
                              for (NSDictionary *game in boards) {
                                  DDLogVerbose(@"got game: %@", game);
                              }
@@ -179,6 +159,7 @@
 }
 
 - (void)joinGame:(NSDictionary *)game {
+    [self registerForPushToken];
     NSString *gameId = game[@"game_id"];
     DDLogVerbose(@"Joining game: %@", gameId);
     [self.tcpConnection POST:@"/game/join"
@@ -203,6 +184,7 @@
 }
 
 - (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error))completion {
+    [self registerForPushToken];
     NSString *boardId = board[@"board_id"];
     DDLogVerbose(@"Creating game for board: %@", boardId);
     [self.tcpConnection POST:@"game/create"
@@ -264,7 +246,7 @@
                          }
 
                          NSArray *players = responseObject[@"players"];
-                         DDLogVerbose(@"Received state sync for %d players", players.count);
+                         DDLogVerbose(@"Received state sync for %lu players", (unsigned long)players.count);
                          for (NSDictionary *player in players) {
                              DDLogVerbose(@"%@", player);
                              if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
@@ -286,7 +268,7 @@
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userName = [defaults stringForKey:kUserNameKey];
-    NSString *avatar = [[[defaults dataForKey:kAvatarKey] base64EncodedStringWithOptions:0] urlencode];
+    NSString *avatar = [[[defaults dataForKey:kAvatarKey] base64EncodedStringWithOptions:0] urlEncode];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
         @"name": userName,
         @"avatar": avatar
@@ -299,7 +281,7 @@
                          [defaults setValue:responseObject[@"device_id"] forKey:kDeviceIdKey];
                          [defaults setValue:responseObject[@"access_token"] forKey:kAccessTokenKey];
                          [defaults synchronize];
-
+                         
                          DDLogVerbose(@"Device (%@) registered with token: %@.", responseObject[@"device_id"], responseObject[@"access_token"]);
                          if (completion != nil) {
                              completion(nil);
@@ -311,6 +293,55 @@
                              completion(error);
                          }
                      }];
+}
+
+#pragma mark - T0t3s p0t3z
+
+- (void)registerForPushToken {
+    if (!_pushTokenRegistered) {
+        DDLogVerbose(@"registering for push token");
+        UIRemoteNotificationType poteType = (UIRemoteNotificationTypeBadge |
+                                             UIRemoteNotificationTypeSound |
+                                             UIRemoteNotificationTypeAlert);
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:poteType];
+    }
+}
+
+- (void)registerPushToken:(NSData *)pushToken {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setObject:pushToken forKey:kPushTokenKey];
+    [defs synchronize];
+    
+    if (self.accessToken) {
+       NSString *poteKey;
+        switch ((int)kPushTokenType) {
+        case MAPushTokenTypeSandbox:
+            poteKey = @"apns_sandbox_token";
+            break;
+        case MAPushTokenTypeProduction:
+            poteKey = @"apns_prod_token";
+            break;
+        }
+        if (pushToken) {
+            NSDictionary *params = @{
+                @"access_token": self.accessToken,
+                poteKey: [pushToken hexadecimalString]
+            };
+            [self.tcpConnection POST:@"/device/register_push"
+                          parameters:params
+                             success:^(NSURLSessionDataTask *task, id responseObject) {
+                                 _pushTokenRegistered = YES;
+                             }
+                             failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                 _pushTokenRegistered = NO;
+                             }];
+        
+        } else {
+            DDLogError(@"no push token data!");
+        }
+    } else {
+        DDLogError(@"no access_token, can't post push token to server");
+    }
 }
 
 @end
