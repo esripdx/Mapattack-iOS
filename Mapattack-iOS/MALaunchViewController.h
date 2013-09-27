@@ -15,6 +15,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *enterButton;
 @property (strong, nonatomic) IBOutlet UIButton *captureAvatarButton;
 @property (strong, nonatomic) IBOutlet UIButton *pickFromRollButton;
+@property (strong, nonatomic) IBOutlet UIButton *prevAvatarButton;
+@property (strong, nonatomic) IBOutlet UIButton *nextAvatarButton;
 @property (strong, nonatomic) IBOutlet UIImageView *capturedAvatarImage;
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (strong, nonatomic) AVCaptureSession *videoCaptureSession;

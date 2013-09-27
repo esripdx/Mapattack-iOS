@@ -17,6 +17,9 @@
     BOOL _isAvatarSet;
 }
 
+@property (strong, nonatomic) IBOutlet UIView *avatarContainer;
+@property (strong, nonatomic) IBOutlet UIView *avatarButtonsContainer;
+
 @end
 
 static float const kMAAvatarSize = 256.0f;
@@ -51,11 +54,38 @@ static float const kMAAvatarSize = 256.0f;
         _isAvatarSet = YES;
     }
     
-    self.capturedAvatarImage.layer.borderColor = MA_COLOR_RED.CGColor;
-    self.capturedAvatarImage.layer.borderWidth = 1.0f;
+    self.view.backgroundColor = MA_COLOR_CREAM;
+
+    self.avatarContainer.layer.borderColor = MA_COLOR_RED.CGColor;
+    self.avatarContainer.layer.borderWidth = 2.0f;
+    self.avatarContainer.backgroundColor = [UIColor clearColor];
+
+    self.avatarButtonsContainer.layer.borderColor = MA_COLOR_RED.CGColor;
+    self.avatarButtonsContainer.layer.borderWidth = 1.0f;
+    self.avatarButtonsContainer.backgroundColor = [UIColor clearColor];
+
+    UIFont *lovebit = [UIFont fontWithName:@"M41_LOVEBIT" size:26.0f];
+    self.prevAvatarButton.titleLabel.font = lovebit;
+    self.prevAvatarButton.contentEdgeInsets = UIEdgeInsetsMake(8.0, 3.0, 0, 0);
+    self.prevAvatarButton.layer.borderColor = MA_COLOR_RED.CGColor;
+    self.prevAvatarButton.layer.borderWidth = 2.0f;
+    self.prevAvatarButton.backgroundColor = [UIColor clearColor];
+
+    self.nextAvatarButton.titleLabel.font = lovebit;
+    self.nextAvatarButton.contentEdgeInsets = UIEdgeInsetsMake(8.0, 4.0, 0, 0);
+    self.nextAvatarButton.layer.borderColor = MA_COLOR_RED.CGColor;
+    self.nextAvatarButton.layer.borderWidth = 2.0f;
+    self.nextAvatarButton.backgroundColor = [UIColor clearColor];
+
+    self.captureAvatarButton.layer.borderColor = MA_COLOR_RED.CGColor;
+    self.captureAvatarButton.layer.borderWidth = 2.0f;
+
+    self.pickFromRollButton.layer.borderColor = MA_COLOR_RED.CGColor;
+    self.pickFromRollButton.layer.borderWidth = 2.0f;
 
     [self updateEnterButton];
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBarHidden = YES;

@@ -131,8 +131,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user-setup-logotype" translatesAutoresizingMaskIntoConstraints="NO" id="L3L-Ch-e3n" userLabel="Logo Image">
+                                <rect key="frame" x="44" y="35" width="184" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="X4M-r4-CjF"/>
+                                    <constraint firstAttribute="width" constant="184" id="cVj-2l-rO2"/>
+                                </constraints>
+                            </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="_ _ _" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0Al-bP-gv9">
-                                <rect key="frame" x="32" y="320" width="47" height="30"/>
+                                <rect key="frame" x="45" y="418" width="51" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -141,7 +149,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rae-6E-aCx">
-                                <rect key="frame" x="20" y="485" width="280" height="63"/>
+                                <rect key="frame" x="45" y="487" width="229" height="61"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="42"/>
                                 <state key="normal" title="Enter Lobby"/>
@@ -149,54 +157,127 @@
                                     <action selector="enterLobby" destination="XDp-c9-Qyj" eventType="touchUpInside" id="iVY-Fe-EXr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mg8-HR-f6c">
-                                <rect key="frame" x="20" y="440" width="132" height="30"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="56u-2v-fCg" userLabel="Avatar Buttons Container">
+                                <rect key="frame" x="44" y="315" width="230" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Capture Avatar">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="captureNow" destination="XDp-c9-Qyj" eventType="touchUpInside" id="ibN-m6-kcV"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITT-l0-F0x">
-                                <rect key="frame" x="168" y="440" width="132" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7K-E9-k6v" userLabel="Prev Default Avatar">
+                                        <rect key="frame" x="0.0" y="-1" width="48" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="HeB-v3-nMm"/>
+                                            <constraint firstAttribute="height" constant="50" id="cwJ-5B-3la"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                        <state key="normal" title="&lt;">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mg8-HR-f6c" userLabel="Capture Button">
+                                        <rect key="frame" x="46" y="-1" width="70" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="70" id="3aI-vg-KrR"/>
+                                        </constraints>
+                                        <state key="normal" image="tiny-camera">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="captureNow" destination="XDp-c9-Qyj" eventType="touchUpInside" id="ibN-m6-kcV"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="erL-28-xhQ" userLabel="Next Default Avatar">
+                                        <rect key="frame" x="182" y="-1" width="48" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="JOQ-ov-Cav"/>
+                                            <constraint firstAttribute="height" constant="50" id="NSS-lR-l9p"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                        <state key="normal" title=">">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tz2-Hl-Hfo" userLabel="Pick from Roll Button">
+                                        <rect key="frame" x="114" y="-1" width="70" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="70" id="lOp-4t-2Vt"/>
+                                        </constraints>
+                                        <state key="normal" image="tiny-camera">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="captureNow" destination="XDp-c9-Qyj" eventType="touchUpInside" id="myQ-XP-4ck"/>
+                                            <action selector="pickFromCameraRoll" destination="XDp-c9-Qyj" eventType="touchUpInside" id="fDM-0z-XSM"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="tz2-Hl-Hfo" secondAttribute="bottom" constant="-1" id="3P1-Rs-F5M"/>
+                                    <constraint firstAttribute="bottom" secondItem="mg8-HR-f6c" secondAttribute="bottom" constant="-1" id="7q2-dY-DmX"/>
+                                    <constraint firstItem="mg8-HR-f6c" firstAttribute="leading" secondItem="L7K-E9-k6v" secondAttribute="trailing" constant="-2" id="8Dr-hC-lJ9"/>
+                                    <constraint firstAttribute="trailing" secondItem="erL-28-xhQ" secondAttribute="trailing" id="GDa-mg-HGh"/>
+                                    <constraint firstItem="mg8-HR-f6c" firstAttribute="top" secondItem="56u-2v-fCg" secondAttribute="top" constant="-1" id="HbA-3C-tBu"/>
+                                    <constraint firstItem="tz2-Hl-Hfo" firstAttribute="leading" secondItem="mg8-HR-f6c" secondAttribute="trailing" constant="-2" id="UA0-54-9tQ"/>
+                                    <constraint firstItem="L7K-E9-k6v" firstAttribute="leading" secondItem="56u-2v-fCg" secondAttribute="leading" id="hI3-mh-S3J"/>
+                                    <constraint firstItem="L7K-E9-k6v" firstAttribute="top" secondItem="56u-2v-fCg" secondAttribute="top" constant="-1" id="qeg-Ku-b3l"/>
+                                    <constraint firstAttribute="height" constant="48" id="s6o-c3-nUf"/>
+                                    <constraint firstItem="tz2-Hl-Hfo" firstAttribute="top" secondItem="56u-2v-fCg" secondAttribute="top" constant="-1" id="v5C-kG-hbN"/>
+                                    <constraint firstItem="erL-28-xhQ" firstAttribute="top" secondItem="56u-2v-fCg" secondAttribute="top" constant="-1" id="ypV-Rl-ag3"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rV0-6Y-xHR" userLabel="Avatar Container">
+                                <rect key="frame" x="44" y="86" width="230" height="230"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Camera Roll">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="pickFromCameraRoll" destination="XDp-c9-Qyj" eventType="touchUpInside" id="TUD-JO-WtD"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="MAP ATTACK" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oPa-z7-28w">
-                                <rect key="frame" x="34" y="20" width="105" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q4I-NX-pAG">
-                                <rect key="frame" x="32" y="49" width="256" height="256"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4I-NX-pAG" userLabel="Avatar Image">
+                                        <rect key="frame" x="19" y="19" width="192" height="192"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Q4I-NX-pAG" firstAttribute="top" secondItem="rV0-6Y-xHR" secondAttribute="top" constant="19" id="82R-wY-gYF"/>
+                                    <constraint firstAttribute="width" constant="230" id="JV9-yO-oTb"/>
+                                    <constraint firstAttribute="trailing" secondItem="Q4I-NX-pAG" secondAttribute="trailing" constant="19" id="NEZ-UD-y42"/>
+                                    <constraint firstAttribute="bottom" secondItem="Q4I-NX-pAG" secondAttribute="bottom" constant="19" id="cQS-pz-V9Z"/>
+                                    <constraint firstAttribute="height" constant="230" id="lZq-3q-OAt"/>
+                                    <constraint firstItem="Q4I-NX-pAG" firstAttribute="leading" secondItem="rV0-6Y-xHR" secondAttribute="leading" constant="19" id="oHB-wx-kKr"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="0.98431372549019602" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="L3L-Ch-e3n" firstAttribute="top" secondItem="HEN-s2-GYh" secondAttribute="top" constant="35" id="83e-aP-1sY"/>
+                            <constraint firstItem="rV0-6Y-xHR" firstAttribute="centerX" secondItem="56u-2v-fCg" secondAttribute="centerX" id="F8p-IV-gfp"/>
+                            <constraint firstItem="rV0-6Y-xHR" firstAttribute="top" secondItem="L3L-Ch-e3n" secondAttribute="bottom" constant="20" id="GWt-AW-1YO"/>
+                            <constraint firstAttribute="trailing" secondItem="L3L-Ch-e3n" secondAttribute="trailing" constant="92" id="I3y-ZG-ZMo"/>
+                            <constraint firstItem="rV0-6Y-xHR" firstAttribute="width" secondItem="56u-2v-fCg" secondAttribute="width" id="VzZ-S0-P18"/>
+                            <constraint firstItem="L3L-Ch-e3n" firstAttribute="leading" secondItem="HEN-s2-GYh" secondAttribute="leading" constant="44" id="mF2-YZ-SMs"/>
+                            <constraint firstItem="56u-2v-fCg" firstAttribute="top" secondItem="rV0-6Y-xHR" secondAttribute="bottom" constant="-1" id="pkU-ak-j9c"/>
+                            <constraint firstItem="rV0-6Y-xHR" firstAttribute="leading" secondItem="HEN-s2-GYh" secondAttribute="leading" constant="44" id="yex-bj-WiW"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="Ie6-rr-egm"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="avatarButtonsContainer" destination="56u-2v-fCg" id="wiy-9G-NL5"/>
+                        <outlet property="avatarContainer" destination="rV0-6Y-xHR" id="Fq2-Pn-i7d"/>
                         <outlet property="captureAvatarButton" destination="mg8-HR-f6c" id="4Uv-zF-n3l"/>
                         <outlet property="capturedAvatarImage" destination="Q4I-NX-pAG" id="JaE-gW-40r"/>
                         <outlet property="enterButton" destination="rae-6E-aCx" id="W3C-bn-Lwu"/>
+                        <outlet property="nextAvatarButton" destination="erL-28-xhQ" id="KPy-Rn-lSL"/>
+                        <outlet property="pickFromRollButton" destination="tz2-Hl-Hfo" id="cMm-w5-enw"/>
+                        <outlet property="prevAvatarButton" destination="L7K-E9-k6v" id="Dfz-fv-vvi"/>
                         <outlet property="userNameField" destination="0Al-bP-gv9" id="m0N-XV-ZSm"/>
                         <segue destination="SEu-za-KrJ" kind="push" identifier="device-registered" id="qC0-y4-mZA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AuA-J7-fkT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="489" y="38"/>
+            <point key="canvasLocation" x="423" y="38"/>
         </scene>
         <!--Help View Controller - HelpController-->
         <scene sceneID="TIi-O1-lxo">
@@ -294,6 +375,9 @@
     <resources>
         <image name="blue" width="200" height="200"/>
         <image name="red" width="200" height="200"/>
+        <image name="tiny-camera" width="48" height="48"/>
+        <image name="tiny-camera" width="48" height="48"/>
+        <image name="user-setup-logotype" width="184" height="31"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
