@@ -7,6 +7,7 @@ static NSString * const kDeviceIdKey = @"com.esri.portland.mapattack.deviceId";
 static NSString * const kUserNameKey = @"com.esri.portland.mapattack.userName";
 static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
 static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessToken";
+static NSString * const kPushTokenKey = @"com.esri.portland.mapattack.pushToken";
 
 UIColor *_colorWithHexString(NSString *hex);
 
@@ -21,3 +22,10 @@ UIColor *_colorWithHexString(NSString *hex);
 #define MA_COLOR_BLUE _colorWithHexString(@"5498e8")
 #define MA_COLOR_DARKBLUE _colorWithHexString(@"1e6aca")
 #define MA_COLOR_BODYBLUE _colorWithHexString(@"3988e4")
+
+typedef enum {
+    MAPushTokenTypeSandbox,
+    MAPushTokenTypeProduction
+} MAPushTokenType;
+
+static MAPushTokenType *const kPushTokenType = MAPushTokenTypeSandbox;

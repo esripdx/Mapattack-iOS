@@ -33,6 +33,7 @@
 + (MAGameManager *)sharedManager;
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion;
+- (void)registerPushToken:(NSData *)pushToken;
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion;
 - (void)stopMonitoringNearbyGames;
 
