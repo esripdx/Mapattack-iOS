@@ -28,6 +28,7 @@
 @property (strong, nonatomic, readonly) AFHTTPSessionManager *tcpConnection;
 @property (strong, nonatomic, readonly) NSString *joinedGameId;
 @property (strong, nonatomic, readonly) NSString *joinedGameName;
+@property (strong, nonatomic, readonly) NSString *joinedTeamColor;
 @property (weak, nonatomic) id <MAGameManagerDelegate, NSObject> delegate;
 
 + (MAGameManager *)sharedManager;
@@ -37,8 +38,8 @@
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion;
 - (void)stopMonitoringNearbyGames;
 
-- (void)joinGame:(NSDictionary *)game;
-- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error))completion;
+- (void)joinGame:(NSDictionary *)game completion:(void (^)(NSError *error, NSDictionary *response))completion;
+- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
 - (void)startGame:(NSDictionary *)game;
 
 @end
