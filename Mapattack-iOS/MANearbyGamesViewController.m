@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
+#import <MBProgressHUD/MBProgressHUD.h>
 #import "MANearbyGamesViewController.h"
 #import "MAGameManager.h"
+#import "MAGameViewController.h"
 #import "MAGameListCell.h"
-#import <MBProgressHUD/MBProgressHUD.h>
 #import "MAUserToolbar.h"
 
 @interface MANearbyGamesViewController () {
@@ -71,22 +72,44 @@
 
 - (IBAction)joinGame:(id)sender {
     if (_selectedIndex >= 0 && _selectedIndex < self.nearbyBoards.count) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.dimBackground = YES;
+        hud.square = NO;
         NSDictionary *board = self.nearbyBoards[(NSUInteger)_selectedIndex];
         NSDictionary *game = board[@"game"];
         if (game != nil) {
             if (game[@"is_active"]) {
-                [[MAGameManager sharedManager] joinGame:game];
+                hud.labelText = @"Joining...";
+                [[MAGameManager sharedManager] joinGame:game completion:^(NSError *error, NSDictionary *response) {
+                    [hud hide:YES];
+                    if (!error) {
+                        [self showGameViewController:NO];
+                    }
+                }];
             } else {
                 // TODO: Not sure what happens here. Join the game and go to an intermediary screen with a start button?
             }
         } else {
-            [[MAGameManager sharedManager] createGameForBoard:board completion:nil];
+            hud.labelText = @"Creating...";
+            [[MAGameManager sharedManager] createGameForBoard:board completion:^(NSError *error, NSDictionary *response) {
+                [hud hide:YES];
+                if (!error) {
+                    [self showGameViewController:YES];
+                }
+            }];
             // TODO: completion block that does the things. I'm not exactly sure where the game is supposed to go from here,
             // to an intermediary screen with a start button?
         }
     } else {
         // TODO: I don't know how they'd get here but should probably do something about it? Maybe?
     }
+}
+
+- (void)showGameViewController:(BOOL)created {
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    MAGameViewController *gvc = (MAGameViewController *)[sb instantiateViewControllerWithIdentifier:@"gameViewController"];
+    gvc.createdGame = created;
+    [self.navigationController pushViewController:gvc animated:YES];
 }
 
 #pragma mark - UITableViewDelegate/Datasource

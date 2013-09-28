@@ -13,4 +13,6 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
+- (void)showGameViewController:(BOOL)created;
+
 @end

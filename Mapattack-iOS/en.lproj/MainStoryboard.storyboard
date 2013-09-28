@@ -30,8 +30,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="325"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="txe-F4-0CS">
-                                                    <rect key="frame" x="0.0" y="47" width="320" height="218"/>
+                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="txe-F4-0CS">
+                                                    <rect key="frame" x="0.0" y="46" width="320" height="218"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="320" id="3fj-RQ-d4r"/>
@@ -325,10 +325,10 @@
             </objects>
             <point key="canvasLocation" x="785" y="819"/>
         </scene>
-        <!--Game View Controller-->
+        <!--Game View Controller - gameViewController-->
         <scene sceneID="MQc-AA-iiX">
             <objects>
-                <viewController id="XWS-kU-rdB" customClass="MAGameViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="gameViewController" title="gameViewController" id="XWS-kU-rdB" customClass="MAGameViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5mX-LJ-CUp"/>
                         <viewControllerLayoutGuide type="bottom" id="m2c-Rq-ztF"/>
@@ -337,9 +337,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="cYp-SS-oeT">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cYp-SS-oeT">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="XWS-kU-rdB" id="vq1-yb-rH2"/>
+                                </connections>
                             </mapView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqM-Dy-WNo">
                                 <rect key="frame" x="20" y="527" width="79" height="21"/>
@@ -365,6 +368,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="le0-42-00V"/>
+                    <connections>
+                        <outlet property="mapView" destination="cYp-SS-oeT" id="Gbb-Ek-3ik"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="abY-yw-pwn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

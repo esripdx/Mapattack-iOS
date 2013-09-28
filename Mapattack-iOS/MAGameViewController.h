@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
-@interface MAGameViewController : UIViewController
+@interface MAGameViewController : UIViewController <MKMapViewDelegate>
+
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
+@property (nonatomic) BOOL createdGame;
 
 @end
