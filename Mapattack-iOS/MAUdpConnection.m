@@ -36,7 +36,7 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
 - (BOOL)connect {
     DDLogVerbose(@"connecting socket...");
     NSError *err = nil;
-    accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kAccessTokenKey];
+    accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsAccessTokenKey];
     if (!accessToken) {
         DDLogError(@"Tried to connect without an access token.");
         return NO;

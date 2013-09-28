@@ -71,7 +71,7 @@
 
 - (NSString *)accessToken {
     if (!_accessToken) {
-        _accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kAccessTokenKey];
+        _accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsAccessTokenKey];
     }
     return _accessToken;
 }
@@ -276,19 +276,19 @@
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [defaults stringForKey:kUserNameKey];
-    NSString *avatar = [[[defaults dataForKey:kAvatarKey] base64EncodedStringWithOptions:0] urlEncode];
+    NSString *userName = [defaults stringForKey:kMADefaultsUserNameKey];
+    NSString *avatar = [[[defaults dataForKey:kMADefaultsAvatarKey] base64EncodedStringWithOptions:0] urlEncode];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
         @"name": userName,
         @"avatar": avatar
     }];
-    [params setValue:self.accessToken forKey:kAccessTokenKey];
+    [params setValue:self.accessToken forKey:@"access_token"];
 
     [self.tcpConnection POST:@"/device/register"
                   parameters:params
                      success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
-                         [defaults setValue:responseObject[@"device_id"] forKey:kDeviceIdKey];
-                         [defaults setValue:responseObject[@"access_token"] forKey:kAccessTokenKey];
+                         [defaults setValue:responseObject[@"device_id"] forKey:kMADefaultsDeviceIdKey];
+                         [defaults setValue:responseObject[@"access_token"] forKey:kMADefaultsAccessTokenKey];
                          [defaults synchronize];
                          
                          DDLogVerbose(@"Device (%@) registered with token: %@.", responseObject[@"device_id"], responseObject[@"access_token"]);
@@ -318,7 +318,7 @@
 
 - (void)registerPushToken:(NSData *)pushToken {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-    [defs setObject:pushToken forKey:kPushTokenKey];
+    [defs setObject:pushToken forKey:kMADefaultsPushTokenKey];
     [defs synchronize];
     
     if (self.accessToken) {

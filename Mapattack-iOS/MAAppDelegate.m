@@ -75,7 +75,7 @@ static const int MAFileLoggerMaxFiles = 7;
 }
 
 - (NSArray *)toolbarItems {
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kUserNameKey];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsUserNameKey];
     MAAppDelegate *appDelegate = (MAAppDelegate *)[[UIApplication sharedApplication] delegate];
     UINavigationController *nav = (UINavigationController *)appDelegate.window.rootViewController;
     UIFont *lovebit = [UIFont fontWithName:@"M41_LOVEBIT" size:18.0f];
