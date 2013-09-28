@@ -7,6 +7,7 @@
 //
 
 #import "MAGameViewController.h"
+#import "MAGameManager.h"
 
 @interface MAGameViewController ()
 
@@ -33,6 +34,23 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Custom Map Tiles
+
+- (void)setMapView:(MKMapView *)mapView {
+    NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", [MAGameManager sharedManager].joinedTeamColor];
+    MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
+    overlay.canReplaceMapContent = YES;
+    [mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
+    mapView.showsUserLocation = YES;
+    _mapView = mapView;
+}
+
+#pragma mark MKMapViewDelegate
+
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay {
+    return [[MKTileOverlayRenderer alloc] initWithTileOverlay:(MKTileOverlay *)overlay];
 }
 
 @end
