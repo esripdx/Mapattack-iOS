@@ -87,6 +87,7 @@ static const int MAFileLoggerMaxFiles = 7;
                                                                   target:nav
                                                                   action:@selector(popViewControllerAnimated:)];
 
+    // TODO: UITextAttributeFont is deprecated, but way easier to use =P We'll want to fix this later.
     NSDictionary *barButtonAppearanceDict = @{UITextAttributeFont: lovebit};
     [backButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
     backButton.tintColor = MA_COLOR_WHITE;
