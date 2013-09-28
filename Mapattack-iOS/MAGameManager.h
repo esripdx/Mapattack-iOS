@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <AFNetworking/AFNetworking.h>
+#import <MapKit/MapKit.h>
 #import "MAUdpConnection.h"
 
 @class MAUdpConnection;
 @class AFHTTPSessionManager;
+@class MAGameManager;
 
 @protocol MAGameManagerDelegate
 - (void)coin:(NSString *)identifier didChangeState:(BOOL)claimable;
@@ -29,6 +31,10 @@
 @property (strong, nonatomic, readonly) NSString *joinedGameId;
 @property (strong, nonatomic, readonly) NSString *joinedGameName;
 @property (strong, nonatomic, readonly) NSString *joinedTeamColor;
+@property (copy, nonatomic, readonly) NSDictionary *joinedGameBoard;
+@property (assign, nonatomic, readonly) NSInteger redScore;
+@property (assign, nonatomic, readonly) NSInteger blueScore;
+@property (assign, nonatomic, readonly) NSInteger playerScore;
 @property (weak, nonatomic) id <MAGameManagerDelegate, NSObject> delegate;
 
 + (MAGameManager *)sharedManager;
@@ -41,5 +47,7 @@
 - (void)joinGame:(NSDictionary *)game completion:(void (^)(NSError *error, NSDictionary *response))completion;
 - (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
 - (void)startGame:(NSDictionary *)game;
+
+- (MKCoordinateRegion)regionForBoard:(NSDictionary *)board;
 
 @end

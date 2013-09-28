@@ -7,6 +7,7 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 #import "GeoHash.h"
 #import "MAGameManager.h"
 #import "NSString+UrlEncoding.h"
@@ -22,6 +23,7 @@
 @property (strong, nonatomic) NSString *joinedGameId;
 @property (strong, nonatomic) NSString *joinedGameName;
 @property (strong, nonatomic) NSString *joinedTeamColor;
+@property (copy, nonatomic, readwrite) NSDictionary *joinedGameBoard;
 
 @end
 
@@ -159,6 +161,8 @@
     self.listGamesCompletionBlock = nil;
 }
 
+#pragma mark TCP methods
+
 - (void)joinGame:(NSDictionary *)game completion:(void (^)(NSError *error, NSDictionary *response))completion {
     [self registerForPushToken];
     NSString *gameId = game[@"game_id"];
@@ -196,6 +200,7 @@
 - (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion {
     [self registerForPushToken];
     NSString *boardId = board[@"board_id"];
+    NSString *boardName = board[@"name"];
     DDLogVerbose(@"Creating game for board: %@", boardId);
     [self.tcpConnection POST:@"game/create"
                   parameters:@{
@@ -212,6 +217,8 @@
                          DDLogVerbose(@"game/create response: %@", responseObject);
                          self.joinedGameId = responseObject[@"game_id"];
                          self.joinedTeamColor = responseObject[@"team"];
+                         self.joinedGameName = boardName;
+                         self.joinedGameBoard = board;
                          if (completion != nil) {
                              completion(error, responseObject);
                          }
@@ -320,7 +327,7 @@
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
     [defs setObject:pushToken forKey:kMADefaultsPushTokenKey];
     [defs synchronize];
-    
+
     if (self.accessToken) {
         NSString *poteKey;
         switch ((int)kPushTokenType) {
@@ -344,13 +351,36 @@
                              failure:^(NSURLSessionDataTask *task, NSError *error) {
                                  _pushTokenRegistered = NO;
                              }];
-            
+
         } else {
             DDLogError(@"no push token data!");
         }
     } else {
         DDLogError(@"no access_token, can't post push token to server");
     }
+}
+
+#pragma mark Helpers
+
+- (MKCoordinateRegion)regionForBoard:(NSDictionary *)board {
+    NSArray *bbox = board[@"bbox"];
+    double lng1 = [bbox[0] doubleValue];
+    double lat1 = [bbox[1] doubleValue];
+    double lng2 = [bbox[2] doubleValue];
+    double lat2 = [bbox[3] doubleValue];
+
+    MKCoordinateSpan span;
+    span.latitudeDelta = fabs(lat2 - lat1);
+    span.longitudeDelta = fabs(lng2 - lng1);
+
+    CLLocationCoordinate2D center;
+    center.latitude = fmax(lat1, lat2) - (span.latitudeDelta/2.0);
+    center.longitude = fmax(lng1, lng2) - (span.longitudeDelta/2.0);
+
+    MKCoordinateRegion region;
+    region.span = span;
+    region.center = center;
+    return region;
 }
 
 @end
