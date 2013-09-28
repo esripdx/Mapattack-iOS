@@ -7,6 +7,7 @@
 //
 
 #import "MAHelpViewController.h"
+#import "MAAppDelegate.h"
 
 @interface MAHelpViewController ()
 
@@ -27,6 +28,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
+    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
 }
 
 - (void)didReceiveMemoryWarning

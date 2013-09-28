@@ -11,7 +11,8 @@
 #import "MAGameManager.h"
 #import "MAGameViewController.h"
 #import "MAGameListCell.h"
-#import "MAUserToolbar.h"
+#import "MAAppDelegate.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @interface MANearbyGamesViewController () {
     NSInteger _selectedIndex;
@@ -29,12 +30,22 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    self.view.backgroundColor = MA_COLOR_CREAM;
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+
+    UIToolbar *toolbar = self.navigationController.toolbar;
+    toolbar.tintColor = MA_COLOR_WHITE;
+    toolbar.barStyle = UIBarStyleBlack;
+    toolbar.translucent = YES;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.navigationController.toolbarHidden = NO;
-    MAUserToolbar *toolbar = [[MAUserToolbar alloc] initWithTarget:self];
-    self.toolbarItems = toolbar.items;
+
     _selectedIndex = -1;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

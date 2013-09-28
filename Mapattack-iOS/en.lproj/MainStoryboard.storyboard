@@ -90,6 +90,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="PIv-3t-ZVz" secondAttribute="trailing" constant="20" id="uWl-lY-sHN"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="bluePlayersLabel" destination="DxA-Rt-2WZ" id="FXW-EC-oTl"/>
@@ -128,7 +129,7 @@
                         <viewControllerLayoutGuide type="bottom" id="RLk-Ep-cv2"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="HEN-s2-GYh" customClass="UIControl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user-setup-logotype" translatesAutoresizingMaskIntoConstraints="NO" id="L3L-Ch-e3n" userLabel="Logo Image">
@@ -153,7 +154,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rae-6E-aCx">
-                                <rect key="frame" x="44" y="481" width="230" height="46"/>
+                                <rect key="frame" x="44" y="437" width="230" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
@@ -379,15 +380,20 @@
         <!--Navigation Controller-->
         <scene sceneID="4tC-f4-1Ub">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sxd-kP-9fv" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="sxd-kP-9fv" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="pEV-Vw-URb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="eho-Ix-Tot">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="GPY-JC-gsu">
+                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="XDp-c9-Qyj" kind="relationship" relationship="rootViewController" id="43D-LU-9QC"/>
                     </connections>

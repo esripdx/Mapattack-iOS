@@ -33,7 +33,6 @@
 		BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */; };
 		BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */; };
 		BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */; };
-		BD986E6717F4DAC100FBB026 /* MAUserToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = BD986E6617F4DAC100FBB026 /* MAUserToolbar.m */; };
 		BDADFD6617EA41C000CB11B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6517EA41C000CB11B8 /* UIKit.framework */; };
 		BDADFD6817EA41C000CB11B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6717EA41C000CB11B8 /* Foundation.framework */; };
 		BDADFD6A17EA41C000CB11B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6917EA41C000CB11B8 /* CoreGraphics.framework */; };
@@ -101,8 +100,6 @@
 		BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAHelpViewController.m; sourceTree = "<group>"; };
 		BD69CBD317EA6B9C00E63C71 /* MAGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameViewController.h; sourceTree = "<group>"; };
 		BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameViewController.m; sourceTree = "<group>"; };
-		BD986E6517F4DAC100FBB026 /* MAUserToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAUserToolbar.h; sourceTree = "<group>"; };
-		BD986E6617F4DAC100FBB026 /* MAUserToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAUserToolbar.m; sourceTree = "<group>"; };
 		BDADFD6217EA41C000CB11B8 /* MapAttack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapAttack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDADFD6517EA41C000CB11B8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BDADFD6717EA41C000CB11B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -214,8 +211,6 @@
 				BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */,
 				BD69CBD317EA6B9C00E63C71 /* MAGameViewController.h */,
 				BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */,
-				BD986E6517F4DAC100FBB026 /* MAUserToolbar.h */,
-				BD986E6617F4DAC100FBB026 /* MAUserToolbar.m */,
 				94FDAF1E17F5660E00D284D4 /* MALovebitTextField.h */,
 				94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */,
 			);
@@ -505,7 +500,6 @@
 				BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */,
 				94550A0217EF997A0046B32D /* GeoHash.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
-				BD986E6717F4DAC100FBB026 /* MAUserToolbar.m in Sources */,
 				94FDAF2017F5660F00D284D4 /* MALovebitTextField.m in Sources */,
 				BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */,
 				BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */,

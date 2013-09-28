@@ -16,4 +16,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
++ (MAAppDelegate *)appDelegate;
+
+- (NSArray *)toolbarItems;
 @end

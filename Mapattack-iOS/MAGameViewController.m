@@ -8,6 +8,7 @@
 
 #import "MAGameViewController.h"
 #import "MAGameManager.h"
+#import "MAAppDelegate.h"
 
 @interface MAGameViewController ()
 
@@ -28,6 +29,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
 }
 
 - (void)didReceiveMemoryWarning
