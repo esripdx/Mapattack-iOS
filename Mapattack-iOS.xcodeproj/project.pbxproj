@@ -59,6 +59,7 @@
 		BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* MAUdpConnection.m */; };
 		BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39C17F600E00033EFDE /* NSData+Conversion.m */; };
 		BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */; };
+		FA0CF43017F685ED000A1CFE /* Portland.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA0CF42F17F685ED000A1CFE /* Portland.gpx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -158,6 +159,7 @@
 		BE33B39E17F602900033EFDE /* NSString+UrlEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+UrlEncoding.h"; path = "ext/NSString+UrlEncoding.h"; sourceTree = "<group>"; };
 		BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+UrlEncoding.m"; path = "ext/NSString+UrlEncoding.m"; sourceTree = "<group>"; };
 		D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		FA0CF42F17F685ED000A1CFE /* Portland.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Portland.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +299,7 @@
 				94FDAF0E17F4A60B00D284D4 /* fonts */,
 				BDADFD6D17EA41C000CB11B8 /* Mapattack-iOS-Info.plist */,
 				BDADFD6E17EA41C000CB11B8 /* InfoPlist.strings */,
+				FA0CF42F17F685ED000A1CFE /* Portland.gpx */,
 				BDADFD7117EA41C000CB11B8 /* main.m */,
 				BDADFD7317EA41C000CB11B8 /* Mapattack-iOS-Prefix.pch */,
 				BDADFD7717EA41C000CB11B8 /* Default.png */,
@@ -438,6 +441,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				94FDAF0817F220BC00D284D4 /* Images.xcassets in Resources */,
+				FA0CF43017F685ED000A1CFE /* Portland.gpx in Resources */,
 				94FDAF1417F4A60B00D284D4 /* mensch.ttf in Resources */,
 				94FDAF1317F4A60B00D284D4 /* lovebit.ttf in Resources */,
 				BDADFD7017EA41C000CB11B8 /* InfoPlist.strings in Resources */,
