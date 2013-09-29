@@ -51,6 +51,8 @@
 - (void)endGame;
 - (void)fetchBoardStateForBoard:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion;
 
+- (void)startPollingGameState;
+
 - (MKCoordinateRegion)regionForBoard:(NSDictionary *)board;
 
 @end

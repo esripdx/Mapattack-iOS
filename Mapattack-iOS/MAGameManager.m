@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSString *joinedTeamColor;
 @property (copy, nonatomic, readwrite) NSDictionary *joinedGameBoard;
 @property (copy, nonatomic, readwrite) NSDictionary *lastBoardStateDict;
+@property (strong, nonatomic) NSTimer *syncTimer;
 
 @end
 
@@ -189,9 +190,8 @@
 
                          if (game[@"active"]) {
                              [self.locationManager startUpdatingLocation];
-                         } else {
-                             // TODO: Start polling game state waiting for game to start.
                          }
+                         [self startPollingGameState];
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error joining game: %@", [error debugDescription]);
@@ -226,6 +226,7 @@
                          if (completion != nil) {
                              completion(error, responseObject);
                          }
+                         [self startPollingGameState];
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error creating game: %@", [error debugDescription]);
@@ -311,10 +312,17 @@
                      }];
 }
 
+- (void)startPollingGameState {
+    self.syncTimer = [NSTimer timerWithTimeInterval:15 target:self selector:@selector(syncGameState) userInfo:nil repeats:YES];
+    [self.syncTimer fire];
+}
 
 - (void)syncGameState {
     [self.tcpConnection POST:@"/game/state"
-                  parameters:@{}
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"game_id": self.joinedGameId
+                  }
                      success:^(NSURLSessionDataTask *task, id responseObject) {
                          NSDictionary *errorJson = responseObject[@"error"];
                          if (errorJson != nil) {
