@@ -64,6 +64,9 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [MAGameManager sharedManager].delegate = nil;
+
+    // TODO: This smells bad, should probably do something smarter here.
+    [[MAGameManager sharedManager].locationManager stopUpdatingLocation];
 }
 
 - (void)didReceiveMemoryWarning
