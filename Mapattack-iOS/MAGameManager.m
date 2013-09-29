@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSString *joinedGameName;
 @property (strong, nonatomic) NSString *joinedTeamColor;
 @property (copy, nonatomic, readwrite) NSDictionary *joinedGameBoard;
+@property (copy, nonatomic, readwrite) NSDictionary *lastBoardStateDict;
 
 @end
 
@@ -293,6 +294,8 @@
                          if (errorJson != nil) {
                              DDLogError(@"Error retrieving board state: %@", errorJson);
                              e = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
+                         } else {
+                             self.lastBoardStateDict = responseObject;
                          }
 
                          DDLogVerbose(@"board state response: %@", responseObject);

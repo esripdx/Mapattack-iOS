@@ -189,8 +189,7 @@
     if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
         MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
         MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
-        UIImage *coinImage = coinAnnotation.image;
-        pin.image = [UIImage imageWithCGImage:coinImage.CGImage scale:2.0f orientation:UIImageOrientationUp];
+        pin.image = coinAnnotation.image;
         return pin;
     }
     return nil;

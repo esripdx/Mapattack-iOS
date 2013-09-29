@@ -60,6 +60,11 @@
 
         [self.view addSubview:self.startStopButton];
     }
+
+    for (NSDictionary *coin in [MAGameManager sharedManager].lastBoardStateDict[@"coins"]) {
+        MACoinAnnotation *coinAnnotation = [[MACoinAnnotation alloc] initWithDictionary:coin];
+        [self.mapView addAnnotation:coinAnnotation];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

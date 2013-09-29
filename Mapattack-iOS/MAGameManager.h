@@ -32,6 +32,7 @@
 @property (strong, nonatomic, readonly) NSString *joinedGameName;
 @property (strong, nonatomic, readonly) NSString *joinedTeamColor;
 @property (copy, nonatomic, readonly) NSDictionary *joinedGameBoard;
+@property (copy, nonatomic, readonly) NSDictionary *lastBoardStateDict;
 @property (assign, nonatomic, readonly) NSInteger redScore;
 @property (assign, nonatomic, readonly) NSInteger blueScore;
 @property (assign, nonatomic, readonly) NSInteger playerScore;
