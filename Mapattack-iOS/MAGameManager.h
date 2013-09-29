@@ -46,7 +46,8 @@
 
 - (void)joinGameOnBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
 - (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
-- (void)startGame:(NSDictionary *)game;
+- (void)startGame;
+- (void)endGame;
 - (void)fetchBoardStateForBoard:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion;
 
 - (MKCoordinateRegion)regionForBoard:(NSDictionary *)board;

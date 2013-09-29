@@ -93,11 +93,12 @@
             [[MAGameManager sharedManager] joinGameOnBoard:board completion:^(NSError *error, NSDictionary *response) {
                 [hud hide:YES];
                 if (!error) {
-                    [self showGameViewController:NO];
+                    // show start button only if the game is inactive or there are no other players in the game.
+                    BOOL showStartButton = !([game[@"active"] boolValue] || [game[@"blue_team"] integerValue] > 0 || [game[@"red_team"] integerValue] > 0);
                     if ([response[@"team"] isEqualToString:@"blue"]) {
-                        self.view.window.tintColor = MA_COLOR_BLUE;
+                        [self showGameViewControllerWithStartButton:showStartButton color:MA_COLOR_BLUE];
                     } else {
-                        self.view.window.tintColor = MA_COLOR_RED;
+                        [self showGameViewControllerWithStartButton:showStartButton color:MA_COLOR_RED];
                     }
                 } else {
                     DDLogError(@"Error joining game: %@", [error debugDescription]);
@@ -110,21 +111,28 @@
             [[MAGameManager sharedManager] createGameForBoard:board completion:^(NSError *error, NSDictionary *response) {
                 [hud hide:YES];
                 if (!error) {
-                    [self showGameViewController:YES];
+                    if ([response[@"team"] isEqualToString:@"blue"]) {
+                        [self showGameViewControllerWithStartButton:YES color:MA_COLOR_BLUE];
+                    } else {
+                        [self showGameViewControllerWithStartButton:YES color:MA_COLOR_RED];
+                    }
+                } else {
+                    DDLogError(@"Error creating game: %@", [error debugDescription]);
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to create %@", board[@"name"]]
+                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                 }
             }];
-            // TODO: completion block that does the things. I'm not exactly sure where the game is supposed to go from here,
-            // to an intermediary screen with a start button?
         }
     } else {
         // TODO: I don't know how they'd get here but should probably do something about it? Maybe?
     }
 }
 
-- (void)showGameViewController:(BOOL)created {
+- (void)showGameViewControllerWithStartButton:(BOOL)created color:(UIColor *)color {
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     MAGameViewController *gvc = (MAGameViewController *)[sb instantiateViewControllerWithIdentifier:@"gameViewController"];
     gvc.createdGame = created;
+    gvc.view.tintColor = color;
     [self.navigationController pushViewController:gvc animated:YES];
 }
 

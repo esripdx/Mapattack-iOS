@@ -237,7 +237,7 @@
                      }];
 }
 
-- (void)startGame:(NSDictionary *)game {
+- (void)startGame {
     [self.tcpConnection POST:@"game/start"
                   parameters:@{
                           @"access_token": self.accessToken,
@@ -251,9 +251,35 @@
                          }
 
                          [self.locationManager startUpdatingLocation];
+                         if ([self.delegate respondsToSelector:@selector(gameDidStart)]) {
+                             [self.delegate gameDidStart];
+                         }
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error starting game: %@", [error debugDescription]);
+                     }];
+}
+
+- (void)endGame {
+    [self.tcpConnection POST:@"game/end"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"game_id": self.joinedGameId
+                  }
+                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         if (errorJson != nil) {
+                             DDLogError(@"Error ending game: %@", errorJson);
+                             return;
+                         }
+
+                         [self.locationManager stopUpdatingLocation];
+                         if ([self.delegate respondsToSelector:@selector(gameDidEnd)]) {
+                             [self.delegate gameDidEnd];
+                         }
+                     }
+                     failure:^(NSURLSessionTask *task, NSError *error) {
+                         DDLogError(@"Error ending game: %@", [error debugDescription]);
                      }];
 }
 

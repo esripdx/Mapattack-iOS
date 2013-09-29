@@ -9,8 +9,12 @@
 #import "MAGameManager.h"
 #import "MAGameViewController.h"
 #import "MAAppDelegate.h"
+#import "MACoinAnnotation.h"
+#import "MAPlayerAnnotation.h"
 
 @interface MAGameViewController ()
+
+@property (strong, nonatomic) UIButton *startStopButton;
 
 @end
 
@@ -43,7 +47,19 @@
 
     [MAGameManager sharedManager].delegate = self;
 
-    [self refreshScoreLabels];
+    [self setupScoreLabels];
+
+    if (self.createdGame) {
+        self.startStopButton = [[UIButton alloc] initWithFrame:CGRectMake(42, self.view.frame.size.height - self.navigationController.toolbar.frame.size.height - 84, self.view.frame.size.width * 0.75f, 66)];
+        [self.startStopButton setTitle:@"START" forState:UIControlStateNormal];
+        self.startStopButton.titleLabel.font = [UIFont fontWithName:@"M41_LOVEBIT" size:24];
+        self.startStopButton.titleLabel.textColor = MA_COLOR_WHITE;
+        self.startStopButton.layer.borderColor = MA_COLOR_WHITE.CGColor;
+        self.startStopButton.layer.borderWidth = 2;
+        [self.startStopButton addTarget:self action:@selector(startGame:) forControlEvents:UIControlEventTouchUpInside];
+
+        [self.view addSubview:self.startStopButton];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -60,8 +76,7 @@
     return UIStatusBarStyleLightContent;
 }
 
-#pragma mark Score Label Styling
-- (void)refreshScoreLabels {
+- (void)setupScoreLabels {
     MAGameManager *manager = [MAGameManager sharedManager];
     UIFont *mensch = [UIFont fontWithName:@"MenschRegular" size:24];
     UIFont *karla = [UIFont fontWithName:@"Karla" size:19];
@@ -91,9 +106,32 @@
     }
 }
 
+- (void)startGame:(id)sender {
+    [[MAGameManager sharedManager] startGame];
+}
+
+- (void)endGame:(id)sender {
+    [[MAGameManager sharedManager] endGame];
+}
+
 #pragma mark MKMapViewDelegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        return nil;
+    }
+    if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
+        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
+        MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
+        pin.image = coinAnnotation.image;
+        return pin;
+    }
+    if ([annotation isKindOfClass:[MAPlayerAnnotation class]]) {
+        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
+        MAPlayerAnnotation *playerAnnotation = (MAPlayerAnnotation *)annotation;
+        pin.image = playerAnnotation.image;
+        return pin;
+    }
     return nil;
 }
 
@@ -116,11 +154,15 @@
 }
 
 - (void)gameDidStart {
-
+    [self.startStopButton setTitle:@"END" forState:UIControlStateNormal];
+    [self.startStopButton removeTarget:self action:@selector(startGame:) forControlEvents:UIControlEventTouchUpInside];
+    [self.startStopButton addTarget:self action:@selector(endGame:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)gameDidEnd {
-
+    [self.startStopButton setTitle:@"START" forState:UIControlStateNormal];
+    [self.startStopButton removeTarget:self action:@selector(endGame:) forControlEvents:UIControlEventTouchUpInside];
+    [self.startStopButton addTarget:self action:@selector(startGame:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 @end
