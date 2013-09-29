@@ -9,11 +9,6 @@
 /* Begin PBXBuildFile section */
 		55C3C3CFC6C84F488572B570 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD71C79D415455F8DAB6718 /* libPods.a */; };
 		67EF2A40EC9114F899AB701D /* MAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF21A8CF822FA5157F20CB /* MAConstants.m */; };
-		94550A0117EF997A0046B32D /* cgeohash.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509F817EF997A0046B32D /* cgeohash.m */; };
-		94550A0217EF997A0046B32D /* GeoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509FA17EF997A0046B32D /* GeoHash.m */; };
-		94550A0317EF997A0046B32D /* GHArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509FC17EF997A0046B32D /* GHArea.m */; };
-		94550A0417EF997A0046B32D /* GHNeighbors.m in Sources */ = {isa = PBXBuildFile; fileRef = 945509FE17EF997A0046B32D /* GHNeighbors.m */; };
-		94550A0517EF997A0046B32D /* GHRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 94550A0017EF997A0046B32D /* GHRange.m */; };
 		94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameManager.m */; };
 		94C6D22617EBB0F900F30187 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22517EBB0F900F30187 /* CoreLocation.framework */; };
 		94C6D22817EC0D2F00F30187 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22717EC0D2F00F30187 /* AVFoundation.framework */; };
@@ -45,18 +40,6 @@
 		BDADFD7A17EA41C000CB11B8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7917EA41C000CB11B8 /* Default@2x.png */; };
 		BDADFD7C17EA41C000CB11B8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7B17EA41C000CB11B8 /* Default-568h@2x.png */; };
 		BDADFD7F17EA41C000CB11B8 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */; };
-		BE2228CD17EA457400EFF703 /* MessagePackPacker.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228AC17EA457400EFF703 /* MessagePackPacker.m */; };
-		BE2228CF17EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228AE17EA457400EFF703 /* MessagePackParser+Streaming.m */; };
-		BE2228D117EA457400EFF703 /* MessagePackParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228B017EA457400EFF703 /* MessagePackParser.m */; };
-		BE2228D317EA457400EFF703 /* objectc.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C117EA457400EFF703 /* objectc.c */; };
-		BE2228D517EA457400EFF703 /* unpack.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C217EA457400EFF703 /* unpack.c */; };
-		BE2228D717EA457400EFF703 /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C317EA457400EFF703 /* version.c */; };
-		BE2228D917EA457400EFF703 /* vrefbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C417EA457400EFF703 /* vrefbuffer.c */; };
-		BE2228DB17EA457400EFF703 /* zone.c in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C517EA457400EFF703 /* zone.c */; };
-		BE2228DD17EA457400EFF703 /* NSArray+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C717EA457400EFF703 /* NSArray+MessagePack.m */; };
-		BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228C917EA457400EFF703 /* NSData+MessagePack.m */; };
-		BE2228E117EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */; };
-		BE2228E317EA457400EFF703 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = BE2228CC17EA457400EFF703 /* readme.md */; };
 		BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* MAUdpConnection.m */; };
 		BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39C17F600E00033EFDE /* NSData+Conversion.m */; };
 		BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */; };
@@ -66,16 +49,6 @@
 		4FD71C79D415455F8DAB6718 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		67EF21A8CF822FA5157F20CB /* MAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAConstants.m; sourceTree = "<group>"; };
 		67EF22671CEFC3E013EFBD14 /* MAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAConstants.h; sourceTree = "<group>"; };
-		945509F717EF997A0046B32D /* cgeohash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cgeohash.h; sourceTree = "<group>"; };
-		945509F817EF997A0046B32D /* cgeohash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cgeohash.m; sourceTree = "<group>"; };
-		945509F917EF997A0046B32D /* GeoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoHash.h; sourceTree = "<group>"; };
-		945509FA17EF997A0046B32D /* GeoHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoHash.m; sourceTree = "<group>"; };
-		945509FB17EF997A0046B32D /* GHArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHArea.h; sourceTree = "<group>"; };
-		945509FC17EF997A0046B32D /* GHArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHArea.m; sourceTree = "<group>"; };
-		945509FD17EF997A0046B32D /* GHNeighbors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHNeighbors.h; sourceTree = "<group>"; };
-		945509FE17EF997A0046B32D /* GHNeighbors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHNeighbors.m; sourceTree = "<group>"; };
-		945509FF17EF997A0046B32D /* GHRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHRange.h; sourceTree = "<group>"; };
-		94550A0017EF997A0046B32D /* GHRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHRange.m; sourceTree = "<group>"; };
 		94A131CC17EB9CA500E1B15D /* MAGameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameManager.h; sourceTree = "<group>"; };
 		94A131CD17EB9CA500E1B15D /* MAGameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameManager.m; sourceTree = "<group>"; };
 		94C6D22517EBB0F900F30187 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -121,39 +94,6 @@
 		BDADFD7B17EA41C000CB11B8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		BDADFD7E17EA41C000CB11B8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		BDADFD8917EA41C000CB11B8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		BE2228AA17EA457400EFF703 /* MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePack.h; sourceTree = "<group>"; };
-		BE2228AB17EA457400EFF703 /* MessagePackPacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePackPacker.h; sourceTree = "<group>"; };
-		BE2228AC17EA457400EFF703 /* MessagePackPacker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePackPacker.m; sourceTree = "<group>"; };
-		BE2228AD17EA457400EFF703 /* MessagePackParser+Streaming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MessagePackParser+Streaming.h"; sourceTree = "<group>"; };
-		BE2228AE17EA457400EFF703 /* MessagePackParser+Streaming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MessagePackParser+Streaming.m"; sourceTree = "<group>"; };
-		BE2228AF17EA457400EFF703 /* MessagePackParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePackParser.h; sourceTree = "<group>"; };
-		BE2228B017EA457400EFF703 /* MessagePackParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePackParser.m; sourceTree = "<group>"; };
-		BE2228B317EA457400EFF703 /* object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = object.h; sourceTree = "<group>"; };
-		BE2228B417EA457400EFF703 /* pack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pack.h; sourceTree = "<group>"; };
-		BE2228B517EA457400EFF703 /* pack_define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pack_define.h; sourceTree = "<group>"; };
-		BE2228B617EA457400EFF703 /* pack_template.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pack_template.h; sourceTree = "<group>"; };
-		BE2228B717EA457400EFF703 /* sbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbuffer.h; sourceTree = "<group>"; };
-		BE2228B817EA457400EFF703 /* sysdep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sysdep.h; sourceTree = "<group>"; };
-		BE2228B917EA457400EFF703 /* unpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unpack.h; sourceTree = "<group>"; };
-		BE2228BA17EA457400EFF703 /* unpack_define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unpack_define.h; sourceTree = "<group>"; };
-		BE2228BB17EA457400EFF703 /* unpack_template.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unpack_template.h; sourceTree = "<group>"; };
-		BE2228BC17EA457400EFF703 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
-		BE2228BD17EA457400EFF703 /* vrefbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vrefbuffer.h; sourceTree = "<group>"; };
-		BE2228BE17EA457400EFF703 /* zbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zbuffer.h; sourceTree = "<group>"; };
-		BE2228BF17EA457400EFF703 /* zone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zone.h; sourceTree = "<group>"; };
-		BE2228C017EA457400EFF703 /* msgpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msgpack.h; sourceTree = "<group>"; };
-		BE2228C117EA457400EFF703 /* objectc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = objectc.c; sourceTree = "<group>"; };
-		BE2228C217EA457400EFF703 /* unpack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unpack.c; sourceTree = "<group>"; };
-		BE2228C317EA457400EFF703 /* version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version.c; sourceTree = "<group>"; };
-		BE2228C417EA457400EFF703 /* vrefbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vrefbuffer.c; sourceTree = "<group>"; };
-		BE2228C517EA457400EFF703 /* zone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zone.c; sourceTree = "<group>"; };
-		BE2228C617EA457400EFF703 /* NSArray+MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MessagePack.h"; sourceTree = "<group>"; };
-		BE2228C717EA457400EFF703 /* NSArray+MessagePack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+MessagePack.m"; sourceTree = "<group>"; };
-		BE2228C817EA457400EFF703 /* NSData+MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MessagePack.h"; sourceTree = "<group>"; };
-		BE2228C917EA457400EFF703 /* NSData+MessagePack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MessagePack.m"; sourceTree = "<group>"; };
-		BE2228CA17EA457400EFF703 /* NSDictionary+MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+MessagePack.h"; sourceTree = "<group>"; };
-		BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+MessagePack.m"; sourceTree = "<group>"; };
-		BE2228CC17EA457400EFF703 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.md; sourceTree = "<group>"; };
 		BE2228E517EA601500EFF703 /* MAUdpConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAUdpConnection.h; sourceTree = "<group>"; };
 		BE2228E617EA601500EFF703 /* MAUdpConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAUdpConnection.m; sourceTree = "<group>"; };
 		BE33B39B17F600E00033EFDE /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Conversion.h"; path = "ext/NSData+Conversion.h"; sourceTree = "<group>"; };
@@ -186,23 +126,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		945509F617EF997A0046B32D /* objc-geohash */ = {
-			isa = PBXGroup;
-			children = (
-				945509F717EF997A0046B32D /* cgeohash.h */,
-				945509F817EF997A0046B32D /* cgeohash.m */,
-				945509F917EF997A0046B32D /* GeoHash.h */,
-				945509FA17EF997A0046B32D /* GeoHash.m */,
-				945509FB17EF997A0046B32D /* GHArea.h */,
-				945509FC17EF997A0046B32D /* GHArea.m */,
-				945509FD17EF997A0046B32D /* GHNeighbors.h */,
-				945509FE17EF997A0046B32D /* GHNeighbors.m */,
-				945509FF17EF997A0046B32D /* GHRange.h */,
-				94550A0017EF997A0046B32D /* GHRange.m */,
-			);
-			path = "objc-geohash";
-			sourceTree = "<group>";
-		};
 		94A131CB17EB9B7B00E1B15D /* Interface */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,8 +210,6 @@
 			isa = PBXGroup;
 			children = (
 				BE33B39717F6006F0033EFDE /* ext */,
-				945509F617EF997A0046B32D /* objc-geohash */,
-				BE2228A917EA457400EFF703 /* msgpack-objectivec */,
 				BDADFD6C17EA41C000CB11B8 /* Supporting Files */,
 				94A131CB17EB9B7B00E1B15D /* Interface */,
 				BDADFD7417EA41C000CB11B8 /* MAAppDelegate.h */,
@@ -317,62 +238,6 @@
 				BDADFD7B17EA41C000CB11B8 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		BE2228A917EA457400EFF703 /* msgpack-objectivec */ = {
-			isa = PBXGroup;
-			children = (
-				BE2228AA17EA457400EFF703 /* MessagePack.h */,
-				BE2228AB17EA457400EFF703 /* MessagePackPacker.h */,
-				BE2228AC17EA457400EFF703 /* MessagePackPacker.m */,
-				BE2228AD17EA457400EFF703 /* MessagePackParser+Streaming.h */,
-				BE2228AE17EA457400EFF703 /* MessagePackParser+Streaming.m */,
-				BE2228AF17EA457400EFF703 /* MessagePackParser.h */,
-				BE2228B017EA457400EFF703 /* MessagePackParser.m */,
-				BE2228B117EA457400EFF703 /* msgpack_src */,
-				BE2228C617EA457400EFF703 /* NSArray+MessagePack.h */,
-				BE2228C717EA457400EFF703 /* NSArray+MessagePack.m */,
-				BE2228C817EA457400EFF703 /* NSData+MessagePack.h */,
-				BE2228C917EA457400EFF703 /* NSData+MessagePack.m */,
-				BE2228CA17EA457400EFF703 /* NSDictionary+MessagePack.h */,
-				BE2228CB17EA457400EFF703 /* NSDictionary+MessagePack.m */,
-				BE2228CC17EA457400EFF703 /* readme.md */,
-			);
-			path = "msgpack-objectivec";
-			sourceTree = "<group>";
-		};
-		BE2228B117EA457400EFF703 /* msgpack_src */ = {
-			isa = PBXGroup;
-			children = (
-				BE2228B217EA457400EFF703 /* msgpack */,
-				BE2228C017EA457400EFF703 /* msgpack.h */,
-				BE2228C117EA457400EFF703 /* objectc.c */,
-				BE2228C217EA457400EFF703 /* unpack.c */,
-				BE2228C317EA457400EFF703 /* version.c */,
-				BE2228C417EA457400EFF703 /* vrefbuffer.c */,
-				BE2228C517EA457400EFF703 /* zone.c */,
-			);
-			path = msgpack_src;
-			sourceTree = "<group>";
-		};
-		BE2228B217EA457400EFF703 /* msgpack */ = {
-			isa = PBXGroup;
-			children = (
-				BE2228B317EA457400EFF703 /* object.h */,
-				BE2228B417EA457400EFF703 /* pack.h */,
-				BE2228B517EA457400EFF703 /* pack_define.h */,
-				BE2228B617EA457400EFF703 /* pack_template.h */,
-				BE2228B717EA457400EFF703 /* sbuffer.h */,
-				BE2228B817EA457400EFF703 /* sysdep.h */,
-				BE2228B917EA457400EFF703 /* unpack.h */,
-				BE2228BA17EA457400EFF703 /* unpack_define.h */,
-				BE2228BB17EA457400EFF703 /* unpack_template.h */,
-				BE2228BC17EA457400EFF703 /* version.h */,
-				BE2228BD17EA457400EFF703 /* vrefbuffer.h */,
-				BE2228BE17EA457400EFF703 /* zbuffer.h */,
-				BE2228BF17EA457400EFF703 /* zone.h */,
-			);
-			path = msgpack;
 			sourceTree = "<group>";
 		};
 		BE33B39717F6006F0033EFDE /* ext */ = {
@@ -458,7 +323,6 @@
 				BDADFD7A17EA41C000CB11B8 /* Default@2x.png in Resources */,
 				BDADFD7C17EA41C000CB11B8 /* Default-568h@2x.png in Resources */,
 				94FDAF1217F4A60B00D284D4 /* karla.otf in Resources */,
-				BE2228E317EA457400EFF703 /* readme.md in Resources */,
 				BDADFD7F17EA41C000CB11B8 /* MainStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -503,35 +367,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE2228D317EA457400EFF703 /* objectc.c in Sources */,
 				94D4D65D17F78EAD008E0F7A /* MACoinAnnotation.m in Sources */,
-				BE2228CD17EA457400EFF703 /* MessagePackPacker.m in Sources */,
 				BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */,
 				BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */,
-				94550A0117EF997A0046B32D /* cgeohash.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
-				BE2228DD17EA457400EFF703 /* NSArray+MessagePack.m in Sources */,
-				BE2228D517EA457400EFF703 /* unpack.c in Sources */,
-				BE2228D917EA457400EFF703 /* vrefbuffer.c in Sources */,
-				BE2228D717EA457400EFF703 /* version.c in Sources */,
 				BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */,
 				94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */,
 				BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */,
-				94550A0217EF997A0046B32D /* GeoHash.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
 				94FDAF2017F5660F00D284D4 /* MALovebitTextField.m in Sources */,
-				BE2228DF17EA457400EFF703 /* NSData+MessagePack.m in Sources */,
 				BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */,
-				BE2228CF17EA457400EFF703 /* MessagePackParser+Streaming.m in Sources */,
-				94550A0417EF997A0046B32D /* GHNeighbors.m in Sources */,
-				BE2228D117EA457400EFF703 /* MessagePackParser.m in Sources */,
-				BE2228DB17EA457400EFF703 /* zone.c in Sources */,
 				94D4D66017F79860008E0F7A /* MAPlayerAnnotation.m in Sources */,
 				94FDAF0B17F2245C00D284D4 /* MAGameListCell.m in Sources */,
-				BE2228E117EA457400EFF703 /* NSDictionary+MessagePack.m in Sources */,
 				BDADFD7617EA41C000CB11B8 /* MAAppDelegate.m in Sources */,
-				94550A0517EF997A0046B32D /* GHRange.m in Sources */,
-				94550A0317EF997A0046B32D /* GHArea.m in Sources */,
 				BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */,
 				67EF2A40EC9114F899AB701D /* MAConstants.m in Sources */,
 			);

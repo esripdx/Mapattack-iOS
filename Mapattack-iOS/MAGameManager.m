@@ -8,7 +8,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import "GeoHash.h"
 #import "MAGameManager.h"
 #import "NSString+UrlEncoding.h"
 #import "NSData+Conversion.h"
@@ -126,11 +125,9 @@
     }
 
     [locations enumerateObjectsUsingBlock:^(CLLocation *location, NSUInteger idx, BOOL *stop) {
-        NSString *locationHash = [GeoHash hashForLatitude:location.coordinate.latitude
-                                                longitude:location.coordinate.longitude
-                                                   length:9];
         NSDictionary *update = @{
-                @"location": locationHash,
+                @"latitude": @(location.coordinate.latitude),
+                @"longitude": @(location.coordinate.longitude),
                 @"timestamp": @(location.timestamp.timeIntervalSince1970),
                 @"accuracy": @(location.horizontalAccuracy),
                 @"speed": @(location.speed),

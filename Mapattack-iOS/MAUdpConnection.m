@@ -7,7 +7,6 @@
 //
 
 #import "MAUdpConnection.h"
-#import "MessagePack.h"
 
 static const int MAMapAttackUdpSendDataTimeout = -1;
 
@@ -58,8 +57,11 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
     }
 
     queueCounter++;
-    NSData *packed = [dictionary messagePack];
-    [socket sendData:packed withTimeout:MAMapAttackUdpSendDataTimeout tag:queueCounter];
+    NSError *jsonParsingError;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&jsonParsingError];
+    if (!jsonParsingError) {
+        [socket sendData:jsonData withTimeout:MAMapAttackUdpSendDataTimeout tag:queueCounter];
+    }
 }
 
 - (void)setLastError:(NSError *)lastError {
@@ -102,18 +104,20 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
                                                fromAddress:(NSData *)address
                                          withFilterContext:(id)filterContext {
     DDLogVerbose(@"received data!");
-    id unpacked = [data messagePackParse];
+    NSError *jsonParsingError;
+    id unpacked = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
+    if (jsonParsingError) {
+        DDLogError(@"Error parsing json sent from server!");
+        return;
+    }
+
     DDLogVerbose(@"unpacked: %@", unpacked);
     
-    if ([unpacked isKindOfClass:[NSDictionary class]] &&
-        [self.delegate respondsToSelector:@selector(udpConnection:didReceiveDictionary:)]) {
-        
+    if ([unpacked isKindOfClass:[NSDictionary class]] && [self.delegate respondsToSelector:@selector(udpConnection:didReceiveDictionary:)]) {
         [self.delegate udpConnection:self didReceiveDictionary:(NSDictionary *)unpacked];
     }
     
-    if ([unpacked isKindOfClass:[NSArray class]] &&
-        [self.delegate respondsToSelector:@selector(udpConnection:didReceiveArray:)]) {
-       
+    if ([unpacked isKindOfClass:[NSArray class]] && [self.delegate respondsToSelector:@selector(udpConnection:didReceiveArray:)]) {
         [self.delegate udpConnection:self didReceiveArray:(NSArray *)unpacked];
     }
 }
