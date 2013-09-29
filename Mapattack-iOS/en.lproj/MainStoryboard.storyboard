@@ -394,7 +394,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="le0-42-00V"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="blueScoreContainer" destination="VDC-Z2-NAs" id="MuY-xX-JhK"/>
                         <outlet property="blueScoreLabel" destination="b6x-ND-VBi" id="i4p-bp-1Ri"/>

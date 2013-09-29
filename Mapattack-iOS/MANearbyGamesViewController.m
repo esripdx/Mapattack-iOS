@@ -12,7 +12,7 @@
 #import "MAGameViewController.h"
 #import "MAGameListCell.h"
 #import "MAAppDelegate.h"
-#import <MBProgressHUD/MBProgressHUD.h>
+#import "MACoinAnnotation.h"
 
 @interface MANearbyGamesViewController () {
     NSInteger _selectedIndex;
@@ -89,17 +89,22 @@
         NSDictionary *board = self.nearbyBoards[(NSUInteger)_selectedIndex];
         NSDictionary *game = board[@"game"];
         if (game != nil) {
-            if (game[@"is_active"]) {
-                hud.labelText = @"Joining...";
-                [[MAGameManager sharedManager] joinGame:game completion:^(NSError *error, NSDictionary *response) {
-                    [hud hide:YES];
-                    if (!error) {
-                        [self showGameViewController:NO];
+            hud.labelText = @"Joining...";
+            [[MAGameManager sharedManager] joinGameOnBoard:board completion:^(NSError *error, NSDictionary *response) {
+                [hud hide:YES];
+                if (!error) {
+                    [self showGameViewController:NO];
+                    if ([response[@"team"] isEqualToString:@"blue"]) {
+                        self.view.window.tintColor = MA_COLOR_BLUE;
+                    } else {
+                        self.view.window.tintColor = MA_COLOR_RED;
                     }
-                }];
-            } else {
-                // TODO: Not sure what happens here. Join the game and go to an intermediary screen with a start button?
-            }
+                } else {
+                    DDLogError(@"Error joining game: %@", [error debugDescription]);
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board[@"name"]]
+                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                }
+            }];
         } else {
             hud.labelText = @"Creating...";
             [[MAGameManager sharedManager] createGameForBoard:board completion:^(NSError *error, NSDictionary *response) {
@@ -171,6 +176,17 @@
 }
 
 #pragma mark MKMapViewDelegate
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
+        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
+        MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
+        UIImage *coinImage = coinAnnotation.image;
+        pin.image = [UIImage imageWithCGImage:coinImage.CGImage scale:2.0f orientation:UIImageOrientationUp];
+        return pin;
+    }
+    return nil;
+}
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay {
     return [[MKTileOverlayRenderer alloc] initWithTileOverlay:(MKTileOverlay *)overlay];

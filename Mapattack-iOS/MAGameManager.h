@@ -44,9 +44,10 @@
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion;
 - (void)stopMonitoringNearbyGames;
 
-- (void)joinGame:(NSDictionary *)game completion:(void (^)(NSError *error, NSDictionary *response))completion;
+- (void)joinGameOnBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
 - (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
 - (void)startGame:(NSDictionary *)game;
+- (void)fetchBoardStateForBoard:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion;
 
 - (MKCoordinateRegion)regionForBoard:(NSDictionary *)board;
 

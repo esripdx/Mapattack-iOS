@@ -163,8 +163,9 @@
 
 #pragma mark TCP methods
 
-- (void)joinGame:(NSDictionary *)game completion:(void (^)(NSError *error, NSDictionary *response))completion {
+- (void)joinGameOnBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion {
     [self registerForPushToken];
+    NSDictionary *game = board[@"game"];
     NSString *gameId = game[@"game_id"];
     DDLogVerbose(@"Joining game: %@", gameId);
     [self.tcpConnection POST:@"/game/join"
@@ -180,14 +181,19 @@
                              error = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
                          }
                          DDLogVerbose(@"game/join response: %@", responseObject);
+                         self.joinedGameBoard = board;
+                         self.joinedGameName = board[@"name"];
                          self.joinedGameId = gameId;
                          self.joinedTeamColor = responseObject[@"team"];
                          if (completion != nil) {
                              completion(error, responseObject);
                          }
 
-                         // TODO: Figure out what exactly should happen here? Check if game is active, start location updates if so, what do if not?
-                         // [self.locationManager startUpdatingLocation];
+                         if (game[@"active"]) {
+                             [self.locationManager startUpdatingLocation];
+                         } else {
+                             // TODO: Start polling game state waiting for game to start.
+                         }
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error joining game: %@", [error debugDescription]);
@@ -250,6 +256,35 @@
                          DDLogError(@"Error starting game: %@", [error debugDescription]);
                      }];
 }
+
+- (void)fetchBoardStateForBoard:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion {
+    DDLogVerbose(@"fetching board state for board: %@", boardId);
+    [self.tcpConnection POST:@"/board/state"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"board_id": boardId
+                  }
+                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         NSError *e;
+                         if (errorJson != nil) {
+                             DDLogError(@"Error retrieving board state: %@", errorJson);
+                             e = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
+                         }
+
+                         DDLogVerbose(@"board state response: %@", responseObject);
+                         if (completion != nil) {
+                             completion(responseObject[@"board"], responseObject[@"coins"], e);
+                         }
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *e) {
+                         DDLogError(@"Error retrieving board state: %@", [e debugDescription]);
+                         if (completion != nil) {
+                             completion(nil, nil, e);
+                         }
+                     }];
+}
+
 
 - (void)syncGameState {
     [self.tcpConnection POST:@"/game/state"
