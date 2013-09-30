@@ -87,7 +87,6 @@
 
 - (void)udpConnection:(MAUdpConnection *)udpConnection didReceiveDictionary:(NSDictionary *)dictionary {
     DDLogVerbose(@"Received udp dictionary: %@", dictionary);
-    
     NSArray *keys = [dictionary allKeys];
     if ([keys containsObject:@"coin_id"]) {
         NSString *teamColor = dictionary[@"team"];
@@ -98,13 +97,25 @@
             [self.delegate coin:coinId wasClaimedByTeam:teamColor];
         }
         if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
-            [self.delegate team:@"red" didReceivePoints:[redScore integerValue]];
-            [self.delegate team:@"blue" didReceivePoints:[blueScore integerValue]];
+            [self.delegate team:@"red" setScore:[redScore integerValue]];
+            [self.delegate team:@"blue" setScore:[blueScore integerValue]];
         }
     } else if ([keys containsObject:@"device_id"]) {
-        
+        NSString *playerId = dictionary[@"device_id"];
+        NSNumber *latitude = dictionary[@"latitude"];
+        NSNumber *longitude = dictionary[@"longitude"];
+        CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
+                                                                longitude:[longitude doubleValue]];
+        if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
+            [self.delegate player:playerId didMoveToLocation:playerLocation];
+        }
     } else if ([keys containsObject:@"board_id"]) {
-        
+        NSNumber *redScore = dictionary[@"red_score"];
+        NSNumber *blueScore = dictionary[@"blue_score"];
+        if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
+            [self.delegate team:@"red" setScore:[redScore integerValue]];
+            [self.delegate team:@"blue" setScore:[blueScore integerValue]];
+        }
     }
 }
 
@@ -402,8 +413,8 @@ static NSString *const kMAGameStateResponseGameKey = @"game";
                     NSString *teamColor = player[@"team"];
                     NSString *playerId = player[@"device_id"];
                     NSNumber *score = player[@"score"];
-                    NSNumber *longitude = player[@"longitude"];
                     NSNumber *latitude = player[@"latitude"];
+                    NSNumber *longitude = player[@"longitude"];
                     CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
                                                                             longitude:[longitude doubleValue]];
                     [self.delegate team:teamColor addPlayerWithIdentifier:playerId
