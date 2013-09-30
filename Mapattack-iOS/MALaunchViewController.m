@@ -219,28 +219,37 @@ static float const kMAAvatarSize = 256.0f;
         }
         if (videoConnection) {break;}
     }
-
+    
+    void (^captureStillCompletionHandler)(CMSampleBufferRef, NSError *) = ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
+        /*
+        CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+        
+        if (exifAttachments) {
+            // Do something with the attachments.
+        }
+        else {
+        }
+        */
+        
+        CGRect captureRect = CGRectMake((352.0 - kMAAvatarSize)/2,
+                                        (288.0 - kMAAvatarSize)/2,
+                                        self.capturedAvatarImage.frame.size.width,
+                                        self.capturedAvatarImage.frame.size.height);
+        UIImage *image = [[UIImage alloc] initWithData:[AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer]];
+        image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage], captureRect)
+                                    scale:0.0
+                              orientation:image.imageOrientation];
+        self.capturedAvatarImage.image = image;
+        [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
+                                                  forKey:kMADefaultsAvatarKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        _isAvatarSet = YES;
+        
+        [self endCapture];
+    };
+    
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection
-                                                       completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
-                                                           CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-                                                           if (exifAttachments) {
-                                                               // Do something with the attachments.
-                                                           }
-                                                           else {
-                                                           }
-                                                           
-                                                           UIImage *image = [[UIImage alloc] initWithData:[AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer]];
-                                                           image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage], CGRectMake((352.0 - kMAAvatarSize)/2, (288.0 - kMAAvatarSize)/2, self.capturedAvatarImage.frame.size.width, self.capturedAvatarImage.frame.size.height))
-                                                                                       scale:0.0
-                                                                                 orientation:image.imageOrientation];
-                                                           self.capturedAvatarImage.image = image;
-                                                           [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
-                                                                                                     forKey:kMADefaultsAvatarKey];
-                                                           [[NSUserDefaults standardUserDefaults] synchronize];
-                                                           _isAvatarSet = YES;
-
-                                                           [self endCapture];
-                                                       }];
+                                                       completionHandler:captureStillCompletionHandler];
 }
 
 - (IBAction)enterLobby {

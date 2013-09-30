@@ -17,21 +17,21 @@
 @class MAGameManager;
 
 @protocol MAGameManagerDelegate
-- (void)coin:(NSString *)identifier didChangeState:(BOOL)claimable;
+- (void)coin:(NSString *)identifier wasClaimedByTeam:(NSString *)color;
 - (void)player:(NSString *)identifier didMoveToLocation:(CLLocation *)location;
-- (void)team:(NSString *)color didReceivePoints:(int)points;
-- (void)team:(NSString *)color setScore:(int)score;
+- (void)team:(NSString *)color didReceivePoints:(NSInteger)points;
+- (void)team:(NSString *)color setScore:(NSInteger)score;
 
 - (void)team:(NSString *)color addPlayerWithIdentifier:(NSString *)identifier
         name:(NSString *)name
-       score:(int)score
+       score:(NSInteger)score
     location:(CLLocation *)location;
 
 // if `color` is `nil`, coin has not been claimed yet
 //
 - (void)team:(NSString *)color addCoinWithIdentifier:(NSString *)identifier
     location:(CLLocation *)location
-      points:(int)points;
+      points:(NSInteger)points;
 
 - (void)gameDidStart;
 - (void)gameDidEnd;

@@ -87,6 +87,25 @@
 
 - (void)udpConnection:(MAUdpConnection *)udpConnection didReceiveDictionary:(NSDictionary *)dictionary {
     DDLogVerbose(@"Received udp dictionary: %@", dictionary);
+    
+    NSArray *keys = [dictionary allKeys];
+    if ([keys containsObject:@"coin_id"]) {
+        NSString *teamColor = dictionary[@"team"];
+        NSString *coinId = dictionary[@"coin_id"];
+        NSNumber *redScore = dictionary[@"red_score"];
+        NSNumber *blueScore = dictionary[@"blue_score"];
+        if ([self.delegate respondsToSelector:@selector(coin:wasClaimedByTeam:)]) {
+            [self.delegate coin:coinId wasClaimedByTeam:teamColor];
+        }
+        if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
+            [self.delegate team:@"red" didReceivePoints:[redScore integerValue]];
+            [self.delegate team:@"blue" didReceivePoints:[blueScore integerValue]];
+        }
+    } else if ([keys containsObject:@"device_id"]) {
+        
+    } else if ([keys containsObject:@"board_id"]) {
+        
+    }
 }
 
 #pragma mark - CLLocationManagerDelegate methods
@@ -327,19 +346,8 @@
                          NSDictionary *errorJson = responseObject[@"error"];
                          if (errorJson != nil) {
                              DDLogError(@"Error syncing game state: %@", errorJson);
-                             return;
-                         }
-
-                         NSArray *players = responseObject[@"players"];
-                         DDLogVerbose(@"Received state sync for %lu players", (unsigned long)players.count);
-                         for (NSDictionary *player in players) {
-                             DDLogVerbose(@"%@", player);
-                             if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
-                                 // TODO: I'm guessing at what these keys are.
-                                 [self.delegate player:player[@"id"]
-                                     didMoveToLocation:[[CLLocation alloc] initWithLatitude:[player[@"latitude"] floatValue]
-                                                                                  longitude:[player[@"longitude"] floatValue]]];
-                             }
+                         } else {
+                             [self handleGameStateResponse:responseObject];
                          }
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -378,6 +386,52 @@
                              completion(error);
                          }
                      }];
+}
+
+#pragma mark -
+
+static NSString *const kMAGameStateResponsePlayersKey = @"players";
+static NSString *const kMAGameStateResponseCoinsKey = @"coins";
+static NSString *const kMAGameStateResponseGameKey = @"game";
+
+- (void)handleGameStateResponse:(NSDictionary *)response {
+    [response enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([key isEqualToString:kMAGameStateResponsePlayersKey]) {
+            if ([self.delegate respondsToSelector:@selector(team:addPlayerWithIdentifier:name:score:location:)]) {
+                for (NSDictionary *player in obj) {
+                    NSString *teamColor = player[@"team"];
+                    NSString *playerId = player[@"device_id"];
+                    NSNumber *score = player[@"score"];
+                    NSNumber *longitude = player[@"longitude"];
+                    NSNumber *latitude = player[@"latitude"];
+                    CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
+                                                                            longitude:[longitude doubleValue]];
+                    [self.delegate team:teamColor addPlayerWithIdentifier:playerId
+                                   name:player[@"name"]
+                                  score:[score integerValue]
+                               location:playerLocation];
+                }
+            }
+        } else if ([key isEqualToString:kMAGameStateResponseCoinsKey]) {
+            if ([self.delegate respondsToSelector:@selector(team:addCoinWithIdentifier:location:points:)]) {
+                for (NSDictionary *coin in obj) {
+                    NSString *teamColor = coin[@"team"];
+                    NSString *coinId = coin[@"coin_id"];
+                    NSNumber *points = coin[@"value"];
+                    NSNumber *latitude = coin[@"latitude"];
+                    NSNumber *longitude = coin[@"longitude"];
+                    CLLocation *coinLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
+                                                                          longitude:[longitude doubleValue]];
+                    [self.delegate team:teamColor addCoinWithIdentifier:coinId location:coinLocation points:[points integerValue]];
+                }
+            }
+        } else if ([key isEqualToString:kMAGameStateResponseGameKey]) {
+            if ([self.delegate respondsToSelector:@selector(team:setScore:)]){
+                [self.delegate team:@"red" setScore:[(NSNumber *)obj[@"teams"][@"red"][@"score"] integerValue]];
+                [self.delegate team:@"blue" setScore:[(NSNumber *)obj[@"teams"][@"blue"][@"score"] integerValue]];
+            }
+        }
+    }];
 }
 
 #pragma mark - T0t3s p0t3z
