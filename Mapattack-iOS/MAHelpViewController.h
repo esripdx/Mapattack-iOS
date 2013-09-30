@@ -10,4 +10,11 @@
 
 @interface MAHelpViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *creditsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *technologyLabel;
+@property (weak, nonatomic) IBOutlet UILabel *historyLabel;
+@property (weak, nonatomic) IBOutlet UITextView *creditsTextView;
+@property (weak, nonatomic) IBOutlet UITextView *technologyTextView;
+@property (weak, nonatomic) IBOutlet UITextView *historyTextView;
+
 @end

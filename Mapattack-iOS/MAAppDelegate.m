@@ -69,7 +69,7 @@ static const int MAFileLoggerMaxFiles = 7;
 - (IBAction)halp:(id)sender
 {
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    UIViewController *halpController = [sb instantiateViewControllerWithIdentifier:@"HalpController"];
+    UIViewController *halpController = [sb instantiateViewControllerWithIdentifier:@"Help"];
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     [navigationController pushViewController:halpController animated:YES];
 }
