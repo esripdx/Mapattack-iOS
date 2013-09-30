@@ -7,7 +7,7 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
-#import "GeoHash.h"
+#import <MapKit/MapKit.h>
 #import "MAGameManager.h"
 #import "NSString+UrlEncoding.h"
 #import "NSData+Conversion.h"
@@ -21,6 +21,10 @@
 @property (copy, nonatomic) void (^listGamesCompletionBlock)(NSArray *games, NSError *error);
 @property (strong, nonatomic) NSString *joinedGameId;
 @property (strong, nonatomic) NSString *joinedGameName;
+@property (strong, nonatomic) NSString *joinedTeamColor;
+@property (copy, nonatomic, readwrite) NSDictionary *joinedGameBoard;
+@property (copy, nonatomic, readwrite) NSDictionary *lastBoardStateDict;
+@property (strong, nonatomic) NSTimer *syncTimer;
 
 @end
 
@@ -70,7 +74,7 @@
 
 - (NSString *)accessToken {
     if (!_accessToken) {
-        _accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kAccessTokenKey];
+        _accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsAccessTokenKey];
     }
     return _accessToken;
 }
@@ -123,11 +127,9 @@
     }
 
     [locations enumerateObjectsUsingBlock:^(CLLocation *location, NSUInteger idx, BOOL *stop) {
-        NSString *locationHash = [GeoHash hashForLatitude:location.coordinate.latitude
-                                                longitude:location.coordinate.longitude
-                                                   length:9];
         NSDictionary *update = @{
-                @"location": locationHash,
+                @"latitude": @(location.coordinate.latitude),
+                @"longitude": @(location.coordinate.longitude),
                 @"timestamp": @(location.timestamp.timeIntervalSince1970),
                 @"accuracy": @(location.horizontalAccuracy),
                 @"speed": @(location.speed),
@@ -158,8 +160,11 @@
     self.listGamesCompletionBlock = nil;
 }
 
-- (void)joinGame:(NSDictionary *)game {
+#pragma mark TCP methods
+
+- (void)joinGameOnBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion {
     [self registerForPushToken];
+    NSDictionary *game = board[@"game"];
     NSString *gameId = game[@"game_id"];
     DDLogVerbose(@"Joining game: %@", gameId);
     [self.tcpConnection POST:@"/game/join"
@@ -169,23 +174,37 @@
                   }
                      success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
                          NSDictionary *errorJson = responseObject[@"error"];
+                         NSError *error = nil;
                          if (errorJson != nil) {
-                             DDLogError(@"Error joining game: %@", errorJson);
-                             return;
+                             DDLogError(@"Error creating game: %@", errorJson);
+                             error = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
+                         }
+                         DDLogVerbose(@"game/join response: %@", responseObject);
+                         self.joinedGameBoard = board;
+                         self.joinedGameName = board[@"name"];
+                         self.joinedGameId = gameId;
+                         self.joinedTeamColor = responseObject[@"team"];
+                         if (completion != nil) {
+                             completion(error, responseObject);
                          }
 
-                         self.joinedGameId = gameId;
-                         // TODO: Figure out what exactly should happen here? Check if game is active, start location updates if so, what do if not?
-                         // [self.locationManager startUpdatingLocation];
+                         if (game[@"active"]) {
+                             [self.locationManager startUpdatingLocation];
+                         }
+                         [self startPollingGameState];
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error joining game: %@", [error debugDescription]);
+                         if (completion != nil) {
+                             completion(error, nil);
+                         }
                      }];
 }
 
-- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error))completion {
+- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion {
     [self registerForPushToken];
     NSString *boardId = board[@"board_id"];
+    NSString *boardName = board[@"name"];
     DDLogVerbose(@"Creating game for board: %@", boardId);
     [self.tcpConnection POST:@"game/create"
                   parameters:@{
@@ -194,28 +213,30 @@
                   }
                      success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
                          NSDictionary *errorJson = responseObject[@"error"];
+                         NSError *error = nil;
                          if (errorJson != nil) {
                              DDLogError(@"Error creating game: %@", errorJson);
-                             if (completion != nil) {
-                                 completion([NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson]);
-                             }
-                             return;
+                             error = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
                          }
-
+                         DDLogVerbose(@"game/create response: %@", responseObject);
                          self.joinedGameId = responseObject[@"game_id"];
+                         self.joinedTeamColor = responseObject[@"team"];
+                         self.joinedGameName = boardName;
+                         self.joinedGameBoard = board;
                          if (completion != nil) {
-                             completion(nil);
+                             completion(error, responseObject);
                          }
+                         [self startPollingGameState];
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error creating game: %@", [error debugDescription]);
                          if (completion != nil) {
-                             completion(error);
+                             completion(error, nil);
                          }
                      }];
 }
 
-- (void)startGame:(NSDictionary *)game {
+- (void)startGame {
     [self.tcpConnection POST:@"game/start"
                   parameters:@{
                           @"access_token": self.accessToken,
@@ -229,15 +250,79 @@
                          }
 
                          [self.locationManager startUpdatingLocation];
+                         if ([self.delegate respondsToSelector:@selector(gameDidStart)]) {
+                             [self.delegate gameDidStart];
+                         }
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error starting game: %@", [error debugDescription]);
                      }];
 }
 
+- (void)endGame {
+    [self.tcpConnection POST:@"game/end"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"game_id": self.joinedGameId
+                  }
+                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         if (errorJson != nil) {
+                             DDLogError(@"Error ending game: %@", errorJson);
+                             return;
+                         }
+
+                         [self.locationManager stopUpdatingLocation];
+                         if ([self.delegate respondsToSelector:@selector(gameDidEnd)]) {
+                             [self.delegate gameDidEnd];
+                         }
+                     }
+                     failure:^(NSURLSessionTask *task, NSError *error) {
+                         DDLogError(@"Error ending game: %@", [error debugDescription]);
+                     }];
+}
+
+- (void)fetchBoardStateForBoard:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion {
+    DDLogVerbose(@"fetching board state for board: %@", boardId);
+    [self.tcpConnection POST:@"/board/state"
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"board_id": boardId
+                  }
+                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
+                         NSDictionary *errorJson = responseObject[@"error"];
+                         NSError *e;
+                         if (errorJson != nil) {
+                             DDLogError(@"Error retrieving board state: %@", errorJson);
+                             e = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
+                         } else {
+                             self.lastBoardStateDict = responseObject;
+                         }
+
+                         DDLogVerbose(@"board state response: %@", responseObject);
+                         if (completion != nil) {
+                             completion(responseObject[@"board"], responseObject[@"coins"], e);
+                         }
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *e) {
+                         DDLogError(@"Error retrieving board state: %@", [e debugDescription]);
+                         if (completion != nil) {
+                             completion(nil, nil, e);
+                         }
+                     }];
+}
+
+- (void)startPollingGameState {
+    self.syncTimer = [NSTimer timerWithTimeInterval:15 target:self selector:@selector(syncGameState) userInfo:nil repeats:YES];
+    [self.syncTimer fire];
+}
+
 - (void)syncGameState {
     [self.tcpConnection POST:@"/game/state"
-                  parameters:@{}
+                  parameters:@{
+                          @"access_token": self.accessToken,
+                          @"game_id": self.joinedGameId
+                  }
                      success:^(NSURLSessionDataTask *task, id responseObject) {
                          NSDictionary *errorJson = responseObject[@"error"];
                          if (errorJson != nil) {
@@ -267,19 +352,19 @@
 
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [defaults stringForKey:kUserNameKey];
-    NSString *avatar = [[[defaults dataForKey:kAvatarKey] base64EncodedStringWithOptions:0] urlEncode];
+    NSString *userName = [defaults stringForKey:kMADefaultsUserNameKey];
+    NSString *avatar = [[[defaults dataForKey:kMADefaultsAvatarKey] base64EncodedStringWithOptions:0] urlEncode];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
         @"name": userName,
         @"avatar": avatar
     }];
-    [params setValue:self.accessToken forKey:kAccessTokenKey];
+    [params setValue:self.accessToken forKey:@"access_token"];
 
     [self.tcpConnection POST:@"/device/register"
                   parameters:params
                      success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
-                         [defaults setValue:responseObject[@"device_id"] forKey:kDeviceIdKey];
-                         [defaults setValue:responseObject[@"access_token"] forKey:kAccessTokenKey];
+                         [defaults setValue:responseObject[@"device_id"] forKey:kMADefaultsDeviceIdKey];
+                         [defaults setValue:responseObject[@"access_token"] forKey:kMADefaultsAccessTokenKey];
                          [defaults synchronize];
                          
                          DDLogVerbose(@"Device (%@) registered with token: %@.", responseObject[@"device_id"], responseObject[@"access_token"]);
@@ -309,18 +394,18 @@
 
 - (void)registerPushToken:(NSData *)pushToken {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-    [defs setObject:pushToken forKey:kPushTokenKey];
+    [defs setObject:pushToken forKey:kMADefaultsPushTokenKey];
     [defs synchronize];
-    
+
     if (self.accessToken) {
-       NSString *poteKey;
+        NSString *poteKey;
         switch ((int)kPushTokenType) {
-        case MAPushTokenTypeSandbox:
-            poteKey = @"apns_sandbox_token";
-            break;
-        case MAPushTokenTypeProduction:
-            poteKey = @"apns_prod_token";
-            break;
+            case MAPushTokenTypeSandbox:
+                poteKey = @"apns_sandbox_token";
+                break;
+            case MAPushTokenTypeProduction:
+                poteKey = @"apns_prod_token";
+                break;
         }
         if (pushToken) {
             NSDictionary *params = @{
@@ -335,13 +420,36 @@
                              failure:^(NSURLSessionDataTask *task, NSError *error) {
                                  _pushTokenRegistered = NO;
                              }];
-        
+
         } else {
             DDLogError(@"no push token data!");
         }
     } else {
         DDLogError(@"no access_token, can't post push token to server");
     }
+}
+
+#pragma mark Helpers
+
+- (MKCoordinateRegion)regionForBoard:(NSDictionary *)board {
+    NSArray *bbox = board[@"bbox"];
+    double lng1 = [bbox[0] doubleValue];
+    double lat1 = [bbox[1] doubleValue];
+    double lng2 = [bbox[2] doubleValue];
+    double lat2 = [bbox[3] doubleValue];
+
+    MKCoordinateSpan span;
+    span.latitudeDelta = fabs(lat2 - lat1);
+    span.longitudeDelta = fabs(lng2 - lng1);
+
+    CLLocationCoordinate2D center;
+    center.latitude = fmax(lat1, lat2) - (span.latitudeDelta/2.0);
+    center.longitude = fmax(lng1, lng2) - (span.longitudeDelta/2.0);
+
+    MKCoordinateRegion region;
+    region.span = span;
+    region.center = center;
+    return region;
 }
 
 @end

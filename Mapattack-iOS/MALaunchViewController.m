@@ -7,7 +7,6 @@
 //
 
 #import <ImageIO/ImageIO.h>
-#import <AFNetworking/AFNetworking.h>
 #import "MALaunchViewController.h"
 #import "MAGameManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -43,13 +42,13 @@ static float const kMAAvatarSize = 256.0f;
     self.enterButton.titleLabel.minimumScaleFactor = 0.42;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *userName = [defaults objectForKey:kUserNameKey];
+    NSString *userName = [defaults objectForKey:kMADefaultsUserNameKey];
     if (userName) {
         self.userNameField.text = userName;
         _isUserNameSet = YES;
     }
 
-    NSData *avatarData = [defaults dataForKey:kAvatarKey];
+    NSData *avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
     if (avatarData) {
         [self.capturedAvatarImage setImage:[UIImage imageWithData:avatarData]];
         _isAvatarSet = YES;
@@ -193,7 +192,7 @@ static float const kMAAvatarSize = 256.0f;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [[NSUserDefaults standardUserDefaults] setObject:self.userNameField.text forKey:kUserNameKey];
+    [[NSUserDefaults standardUserDefaults] setObject:self.userNameField.text forKey:kMADefaultsUserNameKey];
     _isUserNameSet = ![self.userNameField.text isEqualToString:@""];
 
     [self updateEnterButton];
@@ -236,7 +235,7 @@ static float const kMAAvatarSize = 256.0f;
                                                                                  orientation:image.imageOrientation];
                                                            self.capturedAvatarImage.image = image;
                                                            [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
-                                                                                                     forKey:kAvatarKey];
+                                                                                                     forKey:kMADefaultsAvatarKey];
                                                            [[NSUserDefaults standardUserDefaults] synchronize];
                                                            _isAvatarSet = YES;
 
@@ -289,7 +288,7 @@ static float const kMAAvatarSize = 256.0f;
     
     DDLogVerbose(@"setting imageData in defaults...");
     NSData *imageData = UIImageJPEGRepresentation(resizedImage, 1.0f);
-    [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kAvatarKey];
+    [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kMADefaultsAvatarKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _isAvatarSet = YES;
     

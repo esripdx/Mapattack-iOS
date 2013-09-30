@@ -9,15 +9,30 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <AFNetworking/AFNetworking.h>
+#import <MapKit/MapKit.h>
 #import "MAUdpConnection.h"
 
 @class MAUdpConnection;
 @class AFHTTPSessionManager;
+@class MAGameManager;
 
 @protocol MAGameManagerDelegate
 - (void)coin:(NSString *)identifier didChangeState:(BOOL)claimable;
 - (void)player:(NSString *)identifier didMoveToLocation:(CLLocation *)location;
-- (void)team:(int)teamNumber didReceivePoints:(int)points;
+- (void)team:(NSString *)color didReceivePoints:(int)points;
+- (void)team:(NSString *)color setScore:(int)score;
+
+- (void)team:(NSString *)color addPlayerWithIdentifier:(NSString *)identifier
+        name:(NSString *)name
+       score:(int)score
+    location:(CLLocation *)location;
+
+// if `color` is `nil`, coin has not been claimed yet
+//
+- (void)team:(NSString *)color addCoinWithIdentifier:(NSString *)identifier
+    location:(CLLocation *)location
+      points:(int)points;
+
 - (void)gameDidStart;
 - (void)gameDidEnd;
 @end
@@ -28,6 +43,12 @@
 @property (strong, nonatomic, readonly) AFHTTPSessionManager *tcpConnection;
 @property (strong, nonatomic, readonly) NSString *joinedGameId;
 @property (strong, nonatomic, readonly) NSString *joinedGameName;
+@property (strong, nonatomic, readonly) NSString *joinedTeamColor;
+@property (copy, nonatomic, readonly) NSDictionary *joinedGameBoard;
+@property (copy, nonatomic, readonly) NSDictionary *lastBoardStateDict;
+@property (assign, nonatomic, readonly) NSInteger redScore;
+@property (assign, nonatomic, readonly) NSInteger blueScore;
+@property (assign, nonatomic, readonly) NSInteger playerScore;
 @property (weak, nonatomic) id <MAGameManagerDelegate, NSObject> delegate;
 
 + (MAGameManager *)sharedManager;
@@ -37,8 +58,14 @@
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion;
 - (void)stopMonitoringNearbyGames;
 
-- (void)joinGame:(NSDictionary *)game;
-- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error))completion;
-- (void)startGame:(NSDictionary *)game;
+- (void)joinGameOnBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
+- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
+- (void)startGame;
+- (void)endGame;
+- (void)fetchBoardStateForBoard:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion;
+
+- (void)startPollingGameState;
+
+- (MKCoordinateRegion)regionForBoard:(NSDictionary *)board;
 
 @end

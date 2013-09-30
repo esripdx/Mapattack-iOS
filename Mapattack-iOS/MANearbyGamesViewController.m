@@ -6,11 +6,13 @@
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
+#import <MBProgressHUD/MBProgressHUD.h>
 #import "MANearbyGamesViewController.h"
 #import "MAGameManager.h"
+#import "MAGameViewController.h"
 #import "MAGameListCell.h"
-#import <MBProgressHUD/MBProgressHUD.h>
-#import "MAUserToolbar.h"
+#import "MAAppDelegate.h"
+#import "MACoinAnnotation.h"
 
 @interface MANearbyGamesViewController () {
     NSInteger _selectedIndex;
@@ -28,12 +30,22 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    self.view.backgroundColor = MA_COLOR_CREAM;
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+
+    UIToolbar *toolbar = self.navigationController.toolbar;
+    toolbar.tintColor = MA_COLOR_WHITE;
+    toolbar.barStyle = UIBarStyleBlack;
+    toolbar.translucent = YES;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.navigationController.toolbarHidden = NO;
-    MAUserToolbar *toolbar = [[MAUserToolbar alloc] initWithTarget:self];
-    self.toolbarItems = toolbar.items;
+
     _selectedIndex = -1;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -71,22 +83,57 @@
 
 - (IBAction)joinGame:(id)sender {
     if (_selectedIndex >= 0 && _selectedIndex < self.nearbyBoards.count) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.dimBackground = YES;
+        hud.square = NO;
         NSDictionary *board = self.nearbyBoards[(NSUInteger)_selectedIndex];
         NSDictionary *game = board[@"game"];
         if (game != nil) {
-            if (game[@"is_active"]) {
-                [[MAGameManager sharedManager] joinGame:game];
-            } else {
-                // TODO: Not sure what happens here. Join the game and go to an intermediary screen with a start button?
-            }
+            hud.labelText = @"Joining...";
+            [[MAGameManager sharedManager] joinGameOnBoard:board completion:^(NSError *error, NSDictionary *response) {
+                [hud hide:YES];
+                if (!error) {
+                    // show start button only if the game is inactive or there are no other players in the game.
+                    BOOL showStartButton = !([game[@"active"] boolValue] || [game[@"blue_team"] integerValue] > 0 || [game[@"red_team"] integerValue] > 0);
+                    if ([response[@"team"] isEqualToString:@"blue"]) {
+                        [self showGameViewControllerWithStartButton:showStartButton color:MA_COLOR_BLUE];
+                    } else {
+                        [self showGameViewControllerWithStartButton:showStartButton color:MA_COLOR_RED];
+                    }
+                } else {
+                    DDLogError(@"Error joining game: %@", [error debugDescription]);
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board[@"name"]]
+                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                }
+            }];
         } else {
-            [[MAGameManager sharedManager] createGameForBoard:board completion:nil];
-            // TODO: completion block that does the things. I'm not exactly sure where the game is supposed to go from here,
-            // to an intermediary screen with a start button?
+            hud.labelText = @"Creating...";
+            [[MAGameManager sharedManager] createGameForBoard:board completion:^(NSError *error, NSDictionary *response) {
+                [hud hide:YES];
+                if (!error) {
+                    if ([response[@"team"] isEqualToString:@"blue"]) {
+                        [self showGameViewControllerWithStartButton:YES color:MA_COLOR_BLUE];
+                    } else {
+                        [self showGameViewControllerWithStartButton:YES color:MA_COLOR_RED];
+                    }
+                } else {
+                    DDLogError(@"Error creating game: %@", [error debugDescription]);
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to create %@", board[@"name"]]
+                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                }
+            }];
         }
     } else {
         // TODO: I don't know how they'd get here but should probably do something about it? Maybe?
     }
+}
+
+- (void)showGameViewControllerWithStartButton:(BOOL)created color:(UIColor *)color {
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    MAGameViewController *gvc = (MAGameViewController *)[sb instantiateViewControllerWithIdentifier:@"gameViewController"];
+    gvc.createdGame = created;
+    gvc.view.tintColor = color;
+    [self.navigationController pushViewController:gvc animated:YES];
 }
 
 #pragma mark - UITableViewDelegate/Datasource
@@ -137,6 +184,16 @@
 }
 
 #pragma mark MKMapViewDelegate
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
+        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
+        MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
+        pin.image = coinAnnotation.image;
+        return pin;
+    }
+    return nil;
+}
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay {
     return [[MKTileOverlayRenderer alloc] initWithTileOverlay:(MKTileOverlay *)overlay];

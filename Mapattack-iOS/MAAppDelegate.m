@@ -8,7 +8,6 @@
 
 #import "MAAppDelegate.h"
 #import "MAHelpViewController.h"
-#import "MAUserToolbar.h"
 #import "MAGameManager.h"
 
 static const int MAFileLoggerRollingFrequency = 60*60*24;
@@ -70,12 +69,45 @@ static const int MAFileLoggerMaxFiles = 7;
 - (IBAction)halp:(id)sender
 {
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    UIViewController *halpController = [sb instantiateViewControllerWithIdentifier:@"HalpController"];
-    MAUserToolbar *tb = [[MAUserToolbar alloc] initWithTarget:halpController];
-    halpController.toolbarItems = tb.items;
+    UIViewController *halpController = [sb instantiateViewControllerWithIdentifier:@"Help"];
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-
     [navigationController pushViewController:halpController animated:YES];
+}
+
+- (NSArray *)toolbarItems {
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsUserNameKey];
+    MAAppDelegate *appDelegate = (MAAppDelegate *)[[UIApplication sharedApplication] delegate];
+    UINavigationController *nav = (UINavigationController *)appDelegate.window.rootViewController;
+    UIFont *lovebit = [UIFont fontWithName:@"M41_LOVEBIT" size:18.0f];
+
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"<"
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:nav
+                                                                  action:@selector(popViewControllerAnimated:)];
+
+    // TODO: UITextAttributeFont is deprecated, but way easier to use =P We'll want to fix this later.
+    NSDictionary *barButtonAppearanceDict = @{UITextAttributeFont: lovebit};
+    [backButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
+    backButton.tintColor = MA_COLOR_WHITE;
+
+    UIBarButtonItem *usernameButton = [[UIBarButtonItem alloc] initWithTitle:username
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:nil action:nil];
+    [usernameButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
+    usernameButton.tintColor = MA_COLOR_WHITE;
+
+    UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithTitle:@"?"
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:appDelegate
+                                                                  action:@selector(halp:)];
+    [helpButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
+    helpButton.tintColor = MA_COLOR_WHITE;
+
+    NSArray *toolbarItems = @[backButton, space, usernameButton, space, helpButton];
+
+    return toolbarItems;
 }
 
 #pragma mark - Totes Potes

@@ -3,11 +3,11 @@ static int const kMapAttackUdpPort = 5309;
 static int const kMapAttackTcpPort = 8080;
 #define kMapAttackURL [NSString stringWithFormat:@"http://%@:%d", kMapAttackHostname, kMapAttackTcpPort]
 
-static NSString * const kDeviceIdKey = @"com.esri.portland.mapattack.deviceId";
-static NSString * const kUserNameKey = @"com.esri.portland.mapattack.userName";
-static NSString * const kAvatarKey = @"com.esri.portland.mapattack.avatar";
-static NSString * const kAccessTokenKey = @"com.esri.portland.mapattack.accessToken";
-static NSString * const kPushTokenKey = @"com.esri.portland.mapattack.pushToken";
+static NSString * const kMADefaultsDeviceIdKey = @"com.esri.portland.mapattack.deviceId";
+static NSString * const kMADefaultsUserNameKey = @"com.esri.portland.mapattack.userName";
+static NSString * const kMADefaultsAvatarKey = @"com.esri.portland.mapattack.avatar";
+static NSString * const kMADefaultsAccessTokenKey = @"com.esri.portland.mapattack.accessToken";
+static NSString * const kMADefaultsPushTokenKey = @"com.esri.portland.mapattack.pushToken";
 
 UIColor *_colorWithHexString(NSString *hex);
 
@@ -28,4 +28,4 @@ typedef enum {
     MAPushTokenTypeProduction
 } MAPushTokenType;
 
-static MAPushTokenType *const kPushTokenType = MAPushTokenTypeSandbox;
+static MAPushTokenType const kPushTokenType = MAPushTokenTypeSandbox;
