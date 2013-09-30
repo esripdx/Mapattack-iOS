@@ -15,6 +15,7 @@
 @interface MAGameViewController ()
 
 @property (strong, nonatomic) UIButton *startStopButton;
+@property (copy, nonatomic) NSMutableDictionary *avatars;
 
 @end
 
@@ -34,6 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+    self.avatars = [NSMutableDictionary dictionary];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -62,7 +64,11 @@
     }
 
     for (NSDictionary *coin in [MAGameManager sharedManager].lastBoardStateDict[@"coins"]) {
-        MACoinAnnotation *coinAnnotation = [[MACoinAnnotation alloc] initWithDictionary:coin];
+        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([coin[@"latitude"] doubleValue], [coin[@"longitude"] doubleValue]);
+        MACoinAnnotation *coinAnnotation = [[MACoinAnnotation alloc] initWithIdentifier:coin[@"coin_id"]
+                                                                             coordinate:coord
+                                                                             pointValue:[coin[@"value"] integerValue]
+                                                                                   team:coin[@"team"]];
         [self.mapView addAnnotation:coinAnnotation];
     }
 }
@@ -72,6 +78,7 @@
 
     // TODO: This smells bad, should probably do something smarter here.
     [[MAGameManager sharedManager].locationManager stopUpdatingLocation];
+    [[MAGameManager sharedManager].udpConnection disconnect];
 }
 
 - (void)didReceiveMemoryWarning
@@ -135,9 +142,19 @@
         return pin;
     }
     if ([annotation isKindOfClass:[MAPlayerAnnotation class]]) {
-        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
+        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"playerAnnotation"];
         MAPlayerAnnotation *playerAnnotation = (MAPlayerAnnotation *)annotation;
-        pin.image = playerAnnotation.image;
+        UIImage *avatarImage = self.avatars[playerAnnotation.identifier];
+        if (avatarImage == nil) {
+            avatarImage = [UIImage imageNamed:@"CatIconA"];
+            [[MAGameManager sharedManager].tcpConnection GET:[NSString stringWithFormat:@"/user/%@.jpg", playerAnnotation.identifier]
+                                                  parameters:nil
+                                                     success:^(NSURLSessionDataTask *task, id responseObject) {
+                                                         NSLog(responseObject);
+                                                     }
+                                                     failure:nil];
+        }
+        pin.image = avatarImage;
         return pin;
     }
     return nil;
@@ -149,16 +166,77 @@
 
 #pragma mark Game Manager Delegate
 
-- (void)coin:(NSString *)identifier didChangeState:(BOOL)claimable {
-
-}
-
 - (void)player:(NSString *)identifier didMoveToLocation:(CLLocation *)location {
 
 }
 
-- (void)team:(int)teamNumber didReceivePoints:(int)points {
+- (void)team:(NSString *)color didReceivePoints:(int)points {
+    UILabel *scoreLabel;
+    if ([color isEqualToString:@"red"]) {
+        scoreLabel = self.redScoreLabel;
+    } else {
+        scoreLabel = self.blueScoreLabel;
+    }
 
+    int currentScore = [scoreLabel.text integerValue];
+    scoreLabel.text = [NSString stringWithFormat:@"%d", currentScore+points];
+}
+
+- (void)team:(NSString *)color setScore:(int)score {
+    NSString *scoreText = [NSString stringWithFormat:@"%d", score];
+    if ([color isEqualToString:@"red"]) {
+        self.redScoreLabel.text = scoreText;
+    } else {
+        self.blueScoreLabel.text = scoreText;
+    }
+}
+
+- (void)coin:(NSString *)identifier wasClaimedByTeam:(NSString *)color {
+    for (id <MKAnnotation> annotation in self.mapView.annotations) {
+        if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
+            MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
+            if ([coinAnnotation.identifier isEqualToString:identifier]) {
+                [self.mapView removeAnnotation:annotation];
+            }
+            coinAnnotation.team = color;
+            [self.mapView addAnnotation:coinAnnotation];
+        }
+    }
+}
+
+- (void)team:(NSString *)color addPlayerWithIdentifier:(NSString *)identifier name:(NSString *)name score:(int)score location:(CLLocation *)location {
+    for (id <MKAnnotation> annotation in self.mapView.annotations) {
+        if ([annotation isKindOfClass:[MAPlayerAnnotation class]]) {
+            MAPlayerAnnotation *playerAnnotation = (MAPlayerAnnotation *)annotation;
+            if ([playerAnnotation.identifier isEqualToString:identifier]) {
+                [self.mapView removeAnnotation:annotation];
+            }
+        }
+    }
+
+    MAPlayerAnnotation *annotation = [[MAPlayerAnnotation alloc] initWithIdentifier:identifier
+                                                                               name:name
+                                                                              score:score
+                                                                           location:location
+                                                                               team:color];
+    [self.mapView addAnnotation:annotation];
+}
+
+- (void)team:(NSString *)color addCoinWithIdentifier:(NSString *)identifier location:(CLLocation *)location points:(NSInteger)points {
+    for (id <MKAnnotation> annotation in self.mapView.annotations) {
+        if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
+            MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
+            if ([coinAnnotation.identifier isEqualToString:identifier]) {
+                //[self.mapView removeAnnotation:annotation];
+            }
+        }
+    }
+
+    MACoinAnnotation *annotation = [[MACoinAnnotation alloc] initWithIdentifier:identifier
+                                                                     coordinate:location.coordinate
+                                                                     pointValue:points
+                                                                           team:color];
+    [self.mapView addAnnotation:annotation];
 }
 
 - (void)gameDidStart {

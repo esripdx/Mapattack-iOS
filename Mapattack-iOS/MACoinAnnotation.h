@@ -10,8 +10,9 @@
 
 @interface MACoinAnnotation : MKPointAnnotation
 
-- (id)initWithDictionary:(NSDictionary *)dict;
+- (id)initWithIdentifier:(NSString *)identifier coordinate:(CLLocationCoordinate2D)coordinate pointValue:(NSInteger)points team:(NSString *)team;
 
+@property (strong, nonatomic, readonly) NSString *identifier;
 @property (strong, nonatomic, readonly) UIImage *image;
 @property (assign, nonatomic, readwrite) NSInteger pointValue;
 @property (strong, nonatomic, readwrite) NSString *team;

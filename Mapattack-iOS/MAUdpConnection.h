@@ -36,6 +36,9 @@
 - (id)initWithDelegate:(id <MAUdpConnectionDelegate>)delegate;
 
 - (BOOL)connect;
+
+- (void)disconnect;
+
 - (void)sendDictionary:(NSDictionary *)dictionary;
 - (void)beginReceiving;
 

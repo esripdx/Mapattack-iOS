@@ -8,13 +8,30 @@
 
 #import "MAPlayerAnnotation.h"
 
+@interface MAPlayerAnnotation ()
+
+@property (strong, nonatomic, readwrite) NSString *team;
+@property (strong, nonatomic, readwrite) NSString *playerName;
+@property (strong, nonatomic, readwrite) NSString *identifier;
+@property (assign, nonatomic, readwrite) NSInteger score;
+@property (strong, nonatomic, readwrite) CLLocation *location;
+
+@end
+
 @implementation MAPlayerAnnotation
 
-- (UIImage *)image {
-    NSData *avatarData = [[NSUserDefaults standardUserDefaults] dataForKey:kMADefaultsAvatarKey];
-    UIImage *avatarImage = [UIImage imageWithData:avatarData];
-    UIImage *markerImage = [UIImage imageNamed:@"player-red"];
-    return markerImage;
+- (id)initWithIdentifier:(NSString *)identifier name:(NSString *)name score:(NSInteger)score location:(CLLocation *)location team:(NSString *)color {
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+
+    self.identifier = identifier;
+    self.playerName = name;
+    self.score = score;
+    self.location = location;
+    self.team = color;
+    return self;
 }
 
 @end

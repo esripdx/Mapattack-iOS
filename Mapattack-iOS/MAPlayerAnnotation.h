@@ -10,8 +10,16 @@
 
 @interface MAPlayerAnnotation : MKPointAnnotation
 
-@property (strong, nonatomic, readonly) UIImage *image;
-@property (strong, nonatomic, readwrite) NSString *team;
-@property (strong, nonatomic, readwrite) NSString *playerName;
+- (id)initWithIdentifier:(NSString *)identifier
+                    name:(NSString *)name
+                   score:(NSInteger)score
+                location:(CLLocation *)location
+                    team:(NSString *)color;
+
+@property (strong, nonatomic, readonly) NSString *team;
+@property (strong, nonatomic, readonly) NSString *playerName;
+@property (strong, nonatomic, readonly) NSString *identifier;
+@property (assign, nonatomic, readonly) NSInteger score;
+@property (strong, nonatomic, readonly) CLLocation *location;
 
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Esri. All rights reserved.
 //
 
+#import <sys/socket.h>
 #import "MAUdpConnection.h"
 
 static const int MAMapAttackUdpSendDataTimeout = -1;
@@ -47,6 +48,11 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
     DDLogVerbose(@"connected");
     [self beginReceiving];
     return YES;
+}
+
+- (void)disconnect {
+    DDLogVerbose(@"Disconnecting socket...");
+    [socket close];
 }
 
 - (void)sendDictionary:(NSDictionary *)dictionary {

@@ -8,18 +8,25 @@
 
 #import "MACoinAnnotation.h"
 
+@interface MACoinAnnotation ()
+
+@property (strong, nonatomic, readwrite) NSString *identifier;
+
+@end
+
 @implementation MACoinAnnotation
 
-- (id)initWithDictionary:(NSDictionary *)dict {
+- (id)initWithIdentifier:(NSString *)identifier coordinate:(CLLocationCoordinate2D)coordinate pointValue:(NSInteger)points team:(NSString *)team {
 
     self = [super init];
     if (self == nil) {
         return nil;
     }
 
-    self.coordinate = CLLocationCoordinate2DMake([dict[@"latitude"] doubleValue], [dict[@"longitude"] doubleValue]);
-    self.pointValue = [dict[@"value"] integerValue];
-    self.team = dict[@"team"];
+    self.identifier = identifier;
+    self.coordinate = coordinate;
+    self.pointValue = points;
+    self.team = team;
 
     return self;
 }

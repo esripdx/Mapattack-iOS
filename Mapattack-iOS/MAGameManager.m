@@ -86,7 +86,8 @@
 }
 
 - (void)udpConnection:(MAUdpConnection *)udpConnection didReceiveDictionary:(NSDictionary *)dictionary {
-    DDLogVerbose(@"Received udp dictionary: %@", dictionary);
+    //DDLogVerbose(@"Received udp dictionary: %@", dictionary);
+
     NSArray *keys = [dictionary allKeys];
     if ([keys containsObject:@"coin_id"]) {
         NSString *teamColor = dictionary[@"team"];
