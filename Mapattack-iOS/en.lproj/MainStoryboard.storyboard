@@ -384,7 +384,9 @@ MapAttack Tile Server: Court Fowler, Josh Yaganeh</string>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <attributedString key="attributedText">
                                             <fragment>
-                                                <string key="content">MapAttack is a homage to the 2004 location-based mapping game PacManhattan, and is a remake of the original MapAttack 2011  built on Geoloqi software. http://www.pacmanhattan.com/https://geoloqi.com/blog/2011/04/geoloqi-launches-mapattack-a-real-time-location-based-mobile-gaming-platform-of-awesomeness/</string>
+                                                <string key="content">MapAttack is a homage to the 2004 location-based mapping game PacManhattan, and is a remake of the original MapAttack 2011  built on Geoloqi software. 
+
+http://www.pacmanhattan.com/</string>
                                                 <attributes>
                                                     <font key="NSFont" size="14" name="HelveticaNeue"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
