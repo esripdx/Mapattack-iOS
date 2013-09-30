@@ -334,18 +334,27 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ja2-E4-LWT">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ja2-E4-LWT">
                                         <rect key="frame" x="20" y="49" width="280" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <mutableString key="text">MapAttack was built for iPhone and Android in little over a week by the team at Esri R&amp;D Center in Portland, OR. 
+                                        <attributedString key="attributedText">
+                                            <fragment>
+                                                <string key="content">MapAttack was built for iPhone and Android in little over a week by the team at Esri R&amp;D Center in Portland, OR. 
 
-Concept and UX: Amber Case @caseorganic, Aaron Parecki @aaronpk
-Android App: Josh Yaganeh @hsoj, Court Fowler @FowlerCourt
-iPhone: Ryan Arana @thatryana, Jen Oslislo @poeks, Kenichi Nakamura @kenichi_pdx
-Geotrigger Server and back end development: Aaron Parecki @aaronpk, Kenichi Nakamura @kenichi_pdx, Nate Goldman @n8ji, Jen Oslislo @poeks, Davy Stevenson @ davystevenson
-Design for Mobile and Web: Paul Pederson @paulcpederson, Nik Wise @NikolasWise</mutableString>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+Concept and UX: Amber Case, Aaron Parecki
+Android App: Josh Yaganeh, Court Fowler
+iOS App: Ryan Arana, Jen Oslislo, Kenichi Nakamura
+Design for Mobile and Web: Nik Wise, Paul Pederson
+MapAttack Website: Nate Goldman, Paul Pederson, Nik Wise
+MapAttack Game Server: Aaron Parecki, Davy Stevenson
+MapAttack Tile Server: Court Fowler, Josh Yaganeh</string>
+                                                <attributes>
+                                                    <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Technology" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuR-vk-s2h">
@@ -369,12 +378,19 @@ Design for Mobile and Web: Paul Pederson @paulcpederson, Nik Wise @NikolasWise</
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vG-t1-BJS">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1vG-t1-BJS">
                                         <rect key="frame" x="25" y="330" width="275" height="68"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <string key="text">MapAttack is a homage to the 2004 location-based mapping game PacManhattan http://www.pacmanhattan.com/, and is a remake of the original MapAttack 2011 https://geoloqi.com/blog/2011/04/geoloqi-launches-mapattack-a-real-time-location-based-mobile-gaming-platform-of-awesomeness/ built on Geoloqi software. </string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <attributedString key="attributedText">
+                                            <fragment>
+                                                <string key="content">MapAttack is a homage to the 2004 location-based mapping game PacManhattan, and is a remake of the original MapAttack 2011  built on Geoloqi software. http://www.pacmanhattan.com/https://geoloqi.com/blog/2011/04/geoloqi-launches-mapattack-a-real-time-location-based-mobile-gaming-platform-of-awesomeness/</string>
+                                                <attributes>
+                                                    <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                     </textView>
