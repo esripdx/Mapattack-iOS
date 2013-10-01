@@ -9,10 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
-@interface MANearbyGamesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate>
+@interface MANearbyGamesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-
-- (void)showGameViewController:(BOOL)created;
 
 @end
