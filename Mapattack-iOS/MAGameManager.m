@@ -11,6 +11,7 @@
 #import "MAGameManager.h"
 #import "NSString+UrlEncoding.h"
 #import "NSData+Conversion.h"
+#import "MAApiConnection.h"
 
 @interface MAGameManager()
 
@@ -18,7 +19,6 @@
 @property (strong, nonatomic) CLLocationManager *gameListLocationManager;
 @property (strong, nonatomic) MAUdpConnection *udpConnection;
 @property (strong, nonatomic) AFHTTPSessionManager *tcpConnection;
-@property (copy, nonatomic) void (^listGamesCompletionBlock)(NSArray *games, NSError *error);
 @property (strong, nonatomic) NSString *joinedGameId;
 @property (strong, nonatomic) NSString *joinedGameName;
 @property (strong, nonatomic) NSString *joinedTeamColor;
@@ -31,6 +31,7 @@
 @implementation MAGameManager {
     NSString *_accessToken;
     BOOL _pushTokenRegistered;
+    MAApiConnection *_api;
 }
 
 + (MAGameManager *)sharedManager {
@@ -64,6 +65,8 @@
     self.gameListLocationManager.distanceFilter = 50;
 
     self.udpConnection = [[MAUdpConnection alloc] initWithDelegate:self];
+    
+    _api = [MAApiConnection new];
 
     self.tcpConnection = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:kMapAttackURL]];
     self.tcpConnection.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -85,42 +88,48 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userName = [defaults stringForKey:kMADefaultsUserNameKey];
     NSString *avatar = [[[defaults dataForKey:kMADefaultsAvatarKey] base64EncodedStringWithOptions:0] urlEncode];
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
-        @"name": userName,
-        @"avatar": avatar
-    }];
-    [params setValue:self.accessToken forKey:@"access_token"];
-
-    [self.tcpConnection POST:@"/device/register"
-                  parameters:params
-                     success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
-                         [defaults setValue:responseObject[@"device_id"] forKey:kMADefaultsDeviceIdKey];
-                         [defaults setValue:responseObject[@"access_token"] forKey:kMADefaultsAccessTokenKey];
-                         [defaults synchronize];
-                         
-                         DDLogVerbose(@"Device (%@) registered with token: %@.", responseObject[@"device_id"], responseObject[@"access_token"]);
-                         if (completion != nil) {
-                             completion(nil);
-                         }
-                     }
-                     failure:^(NSURLSessionDataTask *task, NSError *error) {
-                         DDLogError(@"Error registering device: %@", [error debugDescription]);
-                         if (completion != nil) {
-                             completion(error);
-                         }
-                     }];
+    MAApiSuccessHandler deviceRegisterSuccess = ^(NSDictionary *response) {
+        NSString *dk = response[kMAApiDeviceIdKey];
+        NSString *at = response[kMAApiAccessTokenKey];
+        DDLogVerbose(@"Device (%@) registered with token: %@.", dk, at);
+        [defaults setValue:dk forKey:kMADefaultsDeviceIdKey];
+        [defaults setValue:at forKey:kMADefaultsAccessTokenKey];
+        [defaults synchronize];
+        if (completion != nil) {
+            completion(nil);
+        }
+    };
+    [_api postToPath:kMAApiDeviceRegisterPath
+              params:@{ kMAApiNameKey: userName, kMAApiAvatarKey: avatar }
+             success:deviceRegisterSuccess
+             failure:^(NSError *error) {
+                 if (completion != nil) {
+                     completion(error);
+                 }
+             }];
 }
 
 #pragma mark - Board monitoring
 
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion {
-    if (!self.accessToken) {
-        DDLogError(@"Tried to get nearby games without an access token!");
-        // TODO: Send user back to launch view with an alert telling them to try logging in again.
-        return;
-    }
-
-    self.listGamesCompletionBlock = completion;
+    MAApiSuccessHandler boardListSuccess = ^(NSDictionary *response) {
+        NSArray *boards = response[@"boards"];
+        DDLogVerbose(@"Found %lu board%@ nearby", (unsigned long)boards.count, boards.count == 1 ? @"" : @"s");
+        for (NSDictionary *game in boards) {
+            DDLogVerbose(@"got game: %@", game);
+        }
+        if (completion != nil) {
+            completion(boards, nil);
+        }
+    };
+    MAApiFailureHandler boardListFailure = ^(NSError *error) {
+        DDLogError(@"Error joining game: %@", [error debugDescription]);
+        if (completion != nil) {
+            completion(nil, error);
+        }
+    };
+    [_api registerSuccessHandler:boardListSuccess forPath:kMAApiBoardListPath];
+    [_api registerFailureHandler:boardListFailure forPath:kMAApiBoardListPath];
     DDLogVerbose(@"Getting user's location for game list...");
     [self.gameListLocationManager startUpdatingLocation];
 }
@@ -128,41 +137,13 @@
 - (void)stopMonitoringNearbyGames {
     DDLogVerbose(@"Stopping game list location updates.");
     [self.gameListLocationManager stopUpdatingLocation];
-    self.listGamesCompletionBlock = nil;
 }
 
-- (void)gameListLocationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    DDLogVerbose(@"Fetching nearby games: %@", manager.location);
-    if (!self.accessToken) {
-        DDLogError(@"Tried to update location for nearby games without an access token!");
-        return;
-    }
-    
-    NSDictionary *params = @{
-        @"access_token": self.accessToken,
-        @"latitude": @(manager.location.coordinate.latitude),
-        @"longitude": @(manager.location.coordinate.longitude)
-    };
-    
-    [self.tcpConnection POST:@"/board/list"
-                  parameters:params
-                     success:^(NSURLSessionDataTask *task, id responseObject) {
-                         NSArray *boards = responseObject[@"boards"];
-                         DDLogVerbose(@"Found %lu board%@ nearby", (unsigned long)boards.count, boards.count == 1 ? @"" : @"s");
-                         for (NSDictionary *game in boards) {
-                             DDLogVerbose(@"got game: %@", game);
-                         }
-                         
-                         if (self.listGamesCompletionBlock != nil) {
-                             self.listGamesCompletionBlock(boards, nil);
-                         }
-                     }
-                     failure:^(NSURLSessionDataTask *task, NSError *error) {
-                         DDLogError(@"Failed to retrieve nearby games: %@", [error debugDescription]);
-                         if (self.listGamesCompletionBlock != nil) {
-                             self.listGamesCompletionBlock(nil, error);
-                         }
-                     }];
+- (void)postLocationBoardList {
+    DDLogVerbose(@"Fetching nearby games: %@", self.gameListLocationManager.location);
+    [_api postToPath:kMAApiBoardListPath
+              params:@{ @"latitude": @(self.gameListLocationManager.location.coordinate.latitude),
+                        @"longitude": @(self.gameListLocationManager.location.coordinate.longitude) }];
 }
 
 #pragma mark - Game creating/joining
@@ -172,30 +153,33 @@
     NSDictionary *game = board[@"game"];
     NSString *gameId = game[@"game_id"];
     DDLogVerbose(@"Joining game: %@", gameId);
+    MAApiSuccessHandler gameJoinSuccess = ^(NSDictionary *response) {
+        NSDictionary *errorJson = response[@"error"];
+        NSError *error = nil;
+        if (errorJson != nil) {
+            DDLogError(@"Error creating game: %@", errorJson);
+            error = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
+        }
+        DDLogVerbose(@"game/join response: %@", response);
+        self.joinedGameBoard = board;
+        self.joinedGameName = board[@"name"];
+        self.joinedGameId = gameId;
+        self.joinedTeamColor = response[@"team"];
+        if (completion != nil) {
+            completion(error, response);
+        }
+        if (game[@"active"]) {
+            [self.locationManager startUpdatingLocation];
+        }
+        [self startPollingGameState];
+        
+    };
     [self.tcpConnection POST:@"/game/join"
                   parameters:@{
                           @"access_token": self.accessToken,
                           @"game_id": gameId
                   }
                      success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
-                         NSDictionary *errorJson = responseObject[@"error"];
-                         NSError *error = nil;
-                         if (errorJson != nil) {
-                             DDLogError(@"Error creating game: %@", errorJson);
-                             error = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
-                         }
-                         DDLogVerbose(@"game/join response: %@", responseObject);
-                         self.joinedGameBoard = board;
-                         self.joinedGameName = board[@"name"];
-                         self.joinedGameId = gameId;
-                         self.joinedTeamColor = responseObject[@"team"];
-                         if (completion != nil) {
-                             completion(error, responseObject);
-                         }
-                         if (game[@"active"]) {
-                             [self.locationManager startUpdatingLocation];
-                         }
-                         [self startPollingGameState];
                      }
                      failure:^(NSURLSessionDataTask *task, NSError *error) {
                          DDLogError(@"Error joining game: %@", [error debugDescription]);
@@ -553,7 +537,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (manager == self.gameListLocationManager) {
-        [self gameListLocationManager:manager didUpdateLocations:locations];
+        [self postLocationBoardList];
     } else if (manager == self.locationManager) {
         [self sendLocationsViaUdp:locations];
     }
