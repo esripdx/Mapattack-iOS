@@ -63,6 +63,7 @@
         [self.view addSubview:self.startStopButton];
     }
 
+    /*
     for (NSDictionary *coin in [MAGameManager sharedManager].lastBoardStateDict[@"coins"]) {
         CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([coin[@"latitude"] doubleValue], [coin[@"longitude"] doubleValue]);
         MACoinAnnotation *coinAnnotation = [[MACoinAnnotation alloc] initWithIdentifier:coin[@"coin_id"]
@@ -71,6 +72,7 @@
                                                                                    team:coin[@"team"]];
         [self.mapView addAnnotation:coinAnnotation];
     }
+    */
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -150,7 +152,6 @@
             [[MAGameManager sharedManager].tcpConnection GET:[NSString stringWithFormat:@"/user/%@.jpg", playerAnnotation.identifier]
                                                   parameters:nil
                                                      success:^(NSURLSessionDataTask *task, id responseObject) {
-                                                         NSLog(responseObject);
                                                      }
                                                      failure:nil];
         }
@@ -164,7 +165,7 @@
     return [[MKTileOverlayRenderer alloc] initWithTileOverlay:(MKTileOverlay *)overlay];
 }
 
-#pragma mark Game Manager Delegate
+#pragma mark - MAGameManagerDelegate
 
 - (void)player:(NSString *)identifier didMoveToLocation:(CLLocation *)location {
 
@@ -227,7 +228,7 @@
         if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
             MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
             if ([coinAnnotation.identifier isEqualToString:identifier]) {
-                //[self.mapView removeAnnotation:annotation];
+                [self.mapView removeAnnotation:annotation];
             }
         }
     }

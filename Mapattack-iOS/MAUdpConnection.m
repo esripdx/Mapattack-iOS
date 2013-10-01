@@ -109,7 +109,7 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data
                                                fromAddress:(NSData *)address
                                          withFilterContext:(id)filterContext {
-    DDLogVerbose(@"received data!");
+//    DDLogVerbose(@"received data!");
     NSError *jsonParsingError;
     id unpacked = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
     if (jsonParsingError) {
@@ -117,7 +117,7 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
         return;
     }
 
-    DDLogVerbose(@"unpacked: %@", unpacked);
+//    DDLogVerbose(@"unpacked: %@", unpacked);
     
     if ([unpacked isKindOfClass:[NSDictionary class]] && [self.delegate respondsToSelector:@selector(udpConnection:didReceiveDictionary:)]) {
         [self.delegate udpConnection:self didReceiveDictionary:(NSDictionary *)unpacked];

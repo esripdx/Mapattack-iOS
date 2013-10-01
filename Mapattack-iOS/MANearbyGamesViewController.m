@@ -47,12 +47,15 @@
     self.navigationController.toolbarHidden = NO;
 
     _selectedIndex = -1;
+    [self beginMonitoringNearbyBoards];
+}
 
+- (void)beginMonitoringNearbyBoards {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Searching...";
-
+    
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
             self.nearbyBoards = boards;
@@ -68,7 +71,7 @@
                                        delegate:nil
                               cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             // TODO: Should probably set ourselves as the delegate for the alert view and give a retry button.
-
+            
             self.nearbyBoards = [NSArray array];
         }
         [self.tableView reloadData];
@@ -83,6 +86,7 @@
 
 - (IBAction)joinGame:(id)sender {
     if (_selectedIndex >= 0 && _selectedIndex < self.nearbyBoards.count) {
+        [[MAGameManager sharedManager] stopMonitoringNearbyGames];
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.square = NO;
@@ -103,7 +107,7 @@
                 } else {
                     DDLogError(@"Error joining game: %@", [error debugDescription]);
                     [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board[@"name"]]
-                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                                               delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                 }
             }];
         } else {
@@ -119,7 +123,7 @@
                 } else {
                     DDLogError(@"Error creating game: %@", [error debugDescription]);
                     [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to create %@", board[@"name"]]
-                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                                               delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                 }
             }];
         }
@@ -197,6 +201,12 @@
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay {
     return [[MKTileOverlayRenderer alloc] initWithTileOverlay:(MKTileOverlay *)overlay];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    [self beginMonitoringNearbyBoards];
 }
 
 @end
