@@ -19,9 +19,6 @@
 @property (strong, nonatomic) CLLocationManager *gameListLocationManager;
 @property (strong, nonatomic) MAUdpConnection *udpConnection;
 @property (strong, nonatomic) AFHTTPSessionManager *tcpConnection;
-@property (strong, nonatomic) NSString *joinedGameId;
-@property (strong, nonatomic) NSString *joinedGameName;
-@property (strong, nonatomic) NSString *joinedTeamColor;
 @property (copy, nonatomic, readwrite) NSDictionary *joinedGameBoard;
 @property (copy, nonatomic, readwrite) NSDictionary *lastBoardStateDict;
 @property (strong, nonatomic) NSTimer *syncTimer;
@@ -67,19 +64,9 @@
     self.udpConnection = [[MAUdpConnection alloc] initWithDelegate:self];
     
     _api = [MAApiConnection new];
-
-    self.tcpConnection = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:kMapAttackURL]];
-    self.tcpConnection.requestSerializer = [AFHTTPRequestSerializer serializer];
-    self.tcpConnection.responseSerializer = [AFJSONResponseSerializer serializer];
+    [self registerGameStartAndEndHandlers];
 
     return self;
-}
-
-- (NSString *)accessToken {
-    if (!_accessToken) {
-        _accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsAccessTokenKey];
-    }
-    return _accessToken;
 }
 
 #pragma mark - Device registration
@@ -102,11 +89,11 @@
     [_api postToPath:kMAApiDeviceRegisterPath
               params:@{ kMAApiNameKey: userName, kMAApiAvatarKey: avatar }
              success:deviceRegisterSuccess
-             failure:^(NSError *error) {
-                 if (completion != nil) {
-                     completion(error);
-                 }
-             }];
+               error:^(NSError *error) {
+                   if (completion != nil) {
+                       completion(error);
+                   }
+               }];
 }
 
 #pragma mark - Board monitoring
@@ -122,14 +109,14 @@
             completion(boards, nil);
         }
     };
-    MAApiFailureHandler boardListFailure = ^(NSError *error) {
+    MAApiErrorHandler boardListError = ^(NSError *error) {
         DDLogError(@"Error joining game: %@", [error debugDescription]);
         if (completion != nil) {
             completion(nil, error);
         }
     };
     [_api registerSuccessHandler:boardListSuccess forPath:kMAApiBoardListPath];
-    [_api registerFailureHandler:boardListFailure forPath:kMAApiBoardListPath];
+    [_api registerErrorHandler:boardListError forPath:kMAApiBoardListPath];
     DDLogVerbose(@"Getting user's location for game list...");
     [self.gameListLocationManager startUpdatingLocation];
 }
@@ -148,199 +135,144 @@
 
 #pragma mark - Game creating/joining
 
+- (NSString *)joinedGameId {
+    return (NSString *)_joinedGameBoard[kMAApiGameKey][kMAApiGameIdKey];
+}
+
+- (NSString *)joinedGameName {
+    return (NSString *)_joinedGameBoard[kMAApiNameKey];
+}
+
+- (NSString *)joinedTeamColor {
+    return (NSString *)_joinedGameBoard[kMAApiGameKey][kMAApiTeamKey];
+}
+
 - (void)joinGameOnBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion {
     [self registerForPushToken];
-    NSDictionary *game = board[@"game"];
-    NSString *gameId = game[@"game_id"];
-    DDLogVerbose(@"Joining game: %@", gameId);
+    
+    DDLogVerbose(@"Joining game: %@", board[kMAApiGameKey][kMAApiGameIdKey]);
+    
     MAApiSuccessHandler gameJoinSuccess = ^(NSDictionary *response) {
-        NSDictionary *errorJson = response[@"error"];
-        NSError *error = nil;
-        if (errorJson != nil) {
-            DDLogError(@"Error creating game: %@", errorJson);
-            error = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
-        }
         DDLogVerbose(@"game/join response: %@", response);
         self.joinedGameBoard = board;
-        self.joinedGameName = board[@"name"];
-        self.joinedGameId = gameId;
-        self.joinedTeamColor = response[@"team"];
         if (completion != nil) {
-            completion(error, response);
+            completion(nil, response);
         }
-        if (game[@"active"]) {
+        if (board[kMAApiGameKey][kMAApiActiveKey]) {
             [self.locationManager startUpdatingLocation];
         }
         [self startPollingGameState];
         
     };
-    [self.tcpConnection POST:@"/game/join"
-                  parameters:@{
-                          @"access_token": self.accessToken,
-                          @"game_id": gameId
-                  }
-                     success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
-                     }
-                     failure:^(NSURLSessionDataTask *task, NSError *error) {
-                         DDLogError(@"Error joining game: %@", [error debugDescription]);
-                         if (completion != nil) {
-                             completion(error, nil);
-                         }
-                     }];
+    MAApiErrorHandler gameJoinError = ^(NSError *error) {
+        DDLogError(@"Error joining game: %@", [error debugDescription]);
+        if (completion != nil) {
+            completion(error, nil);
+        }
+    };
+    [_api postToPath:kMAApiGameJoinPath
+              params:@{ kMAApiGameIdKey: board[kMAApiGameKey][kMAApiGameIdKey]}
+             success:gameJoinSuccess
+               error:gameJoinError];
 }
 
 - (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion {
     [self registerForPushToken];
-    NSString *boardId = board[@"board_id"];
-    NSString *boardName = board[@"name"];
-    DDLogVerbose(@"Creating game for board: %@", boardId);
-    [self.tcpConnection POST:@"game/create"
-                  parameters:@{
-                          @"access_token": self.accessToken,
-                          @"board_id": boardId
-                  }
-                     success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
-                         NSDictionary *errorJson = responseObject[@"error"];
-                         NSError *error = nil;
-                         if (errorJson != nil) {
-                             DDLogError(@"Error creating game: %@", errorJson);
-                             error = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
-                         }
-                         DDLogVerbose(@"game/create response: %@", responseObject);
-                         self.joinedGameId = responseObject[@"game_id"];
-                         self.joinedTeamColor = responseObject[@"team"];
-                         self.joinedGameName = boardName;
-                         self.joinedGameBoard = board;
-                         if (completion != nil) {
-                             completion(error, responseObject);
-                         }
-                         
-                         // shouldn't this happen after game is started? -kn
-                         // [self startPollingGameState];
-                     }
-                     failure:^(NSURLSessionDataTask *task, NSError *error) {
-                         DDLogError(@"Error creating game: %@", [error debugDescription]);
-                         if (completion != nil) {
-                             completion(error, nil);
-                         }
-                     }];
+    
+    DDLogVerbose(@"Creating game for board: %@", board[kMAApiBoardIdKey]);
+    
+    MAApiSuccessHandler gameCreateSuccess = ^(NSDictionary *response) {
+        DDLogVerbose(@"game/create response: %@", response);
+        self.joinedGameBoard = board;
+        if (completion != nil) {
+            completion(nil, response);
+        }
+    };
+    MAApiErrorHandler gameCreateError = ^(NSError *error) {
+        DDLogError(@"Error creating game: %@", [error debugDescription]);
+        if (completion != nil) {
+            completion(error, nil);
+        }
+    };
+    
+    [_api postToPath:kMAApiGameCreatePath
+              params:@{ kMAApiBoardIdKey: board[kMAApiBoardIdKey] }
+             success:gameCreateSuccess
+               error:gameCreateError];
 }
 
 #pragma mark - Game state/controls
 
-- (void)startGame {
-    [self.tcpConnection POST:@"game/start"
-                  parameters:@{
-                          @"access_token": self.accessToken,
-                          @"game_id": self.joinedGameId
-                  }
-                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
-                         NSDictionary *errorJson = responseObject[@"error"];
-                         if (errorJson != nil) {
-                             DDLogError(@"Error starting game: %@", errorJson);
-                             return;
-                         }
+- (void)registerGameStartAndEndHandlers {
+    
+    [_api registerSuccessHandler:^(NSDictionary *response) {
+        [self.locationManager startUpdatingLocation];
+        [self startPollingGameState];
+        if ([self.delegate respondsToSelector:@selector(gameDidStart)]) {
+            [self.delegate gameDidStart];
+        }
+    } forPath:kMAApiGameStartPath];
+    
+    [_api registerSuccessHandler:^(NSDictionary *response) {
+        [self.locationManager stopUpdatingLocation];
+        [self stopPollingGameState];
+        if ([self.delegate respondsToSelector:@selector(gameDidEnd)]) {
+            [self.delegate gameDidEnd];
+        }
+    } forPath:kMAApiGameEndPath];
+    
+}
 
-                         [self.locationManager startUpdatingLocation];
-                         [self startPollingGameState];
-                         if ([self.delegate respondsToSelector:@selector(gameDidStart)]) {
-                             [self.delegate gameDidStart];
-                         }
-                     }
-                     failure:^(NSURLSessionDataTask *task, NSError *error) {
-                         DDLogError(@"Error starting game: %@", [error debugDescription]);
-                     }];
+- (void)startGame {
+    [_api postToPath:kMAApiGameStartPath params:@{ kMAApiGameIdKey: self.joinedGameId }];
 }
 
 - (void)endGame {
-    [self.tcpConnection POST:@"game/end"
-                  parameters:@{
-                          @"access_token": self.accessToken,
-                          @"game_id": self.joinedGameId
-                  }
-                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
-                         NSDictionary *errorJson = responseObject[@"error"];
-                         if (errorJson != nil) {
-                             DDLogError(@"Error ending game: %@", errorJson);
-                             return;
-                         }
-
-                         [self.locationManager stopUpdatingLocation];
-                         [self stopPollingGameState];
-                         if ([self.delegate respondsToSelector:@selector(gameDidEnd)]) {
-                             [self.delegate gameDidEnd];
-                         }
-                     }
-                     failure:^(NSURLSessionTask *task, NSError *error) {
-                         DDLogError(@"Error ending game: %@", [error debugDescription]);
-                     }];
+    [_api postToPath:kMAApiGameEndPath params:@{ kMAApiGameIdKey: self.joinedGameId }];
 }
 
-- (void)fetchBoardStateForBoard:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion {
+- (void)fetchBoardStateForBoardId:(NSString *)boardId
+                       completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion {
+    
     DDLogVerbose(@"fetching board state for board: %@", boardId);
-    [self.tcpConnection POST:@"/board/state"
-                  parameters:@{
-                          @"access_token": self.accessToken,
-                          @"board_id": boardId
-                  }
-                     success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
-                         NSDictionary *errorJson = responseObject[@"error"];
-                         NSError *e;
-                         if (errorJson != nil) {
-                             DDLogError(@"Error retrieving board state: %@", errorJson);
-                             e = [NSError errorWithDomain:@"com.esri.portland.mapattack" code:400 userInfo:errorJson];
-                         } else {
-                             self.lastBoardStateDict = responseObject;
-                         }
-
-                         DDLogVerbose(@"board state response: %@", responseObject);
-                         if (completion != nil) {
-                             completion(responseObject[@"board"], responseObject[@"coins"], e);
-                         }
-                     }
-                     failure:^(NSURLSessionDataTask *task, NSError *e) {
-                         DDLogError(@"Error retrieving board state: %@", [e debugDescription]);
-                         if (completion != nil) {
-                             completion(nil, nil, e);
-                         }
-                     }];
+    
+    MAApiSuccessHandler boardStateSuccess = ^(NSDictionary *response) {
+        self.lastBoardStateDict = response;
+        DDLogVerbose(@"board state response: %@", response);
+        if (completion != nil) {
+            completion(response[@"board"], response[@"coins"], nil);
+        }
+    };
+    
+    [_api postToPath:kMAApiBoardStatePath
+              params:@{ kMAApiBoardIdKey: boardId }
+             success:boardStateSuccess];
 }
 
 - (void)startPollingGameState {
-    DDLogVerbose(@"starting polling game state");
-    self.syncTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(syncGameState) userInfo:nil repeats:YES];
+    [self registerGameStateSuccessHandler];
+    [self syncGameState];
+    DDLogVerbose(@"starting game state polling timer every %d seconds", kMAGameStatePollingInterval);
+    self.syncTimer = [NSTimer scheduledTimerWithTimeInterval:kMAGameStatePollingInterval
+                                                      target:self
+                                                    selector:@selector(syncGameState)
+                                                    userInfo:nil
+                                                     repeats:YES];
 }
 
 - (void)stopPollingGameState {
+    DDLogVerbose(@"invalidating game state polling timer");
     [self.syncTimer invalidate];
 }
 
 - (void)syncGameState {
     DDLogVerbose(@"syncing game state");
-    [self.tcpConnection POST:@"/game/state"
-                  parameters:@{
-                          @"access_token": self.accessToken,
-                          @"game_id": self.joinedGameId
-                  }
-                     success:^(NSURLSessionDataTask *task, id responseObject) {
-//                         DDLogVerbose(@"received game/state response... %@", responseObject);
-                         NSDictionary *errorJson = responseObject[@"error"];
-                         if (errorJson != nil) {
-                             DDLogError(@"Error syncing game state: %@", errorJson);
-                         } else {
-                             [self handleGameStateResponse:responseObject];
-                         }
-                     }
-                     failure:^(NSURLSessionDataTask *task, NSError *error) {
-                         DDLogError(@"Error syncing game state: %@", [error debugDescription]);
-
-                         // TODO: Tell the user about this in some way? Maybe just keep track how many times we fail a sync
-                         // and notify the user after missing so many.
-                     }];
+    [_api postToPath:kMAApiGameStatePath params:@{ kMAApiGameIdKey: self.joinedGameId }];
+    // TODO: if it errors, tell the user about it in some way? Maybe just keep track how many times we fail a sync
 }
 
 - (void)sendLocationsViaUdp:(NSArray *)locations {
-    if (!self.accessToken) {
+    if (!_api.accessToken) {
         DDLogError(@"Tried to send locations via UDP without an access token!");
         return;
     }
@@ -352,7 +284,7 @@
             @"accuracy": @(location.horizontalAccuracy),
             @"speed": @(location.speed),
             @"bearing": @(location.course),
-            @"access_token": self.accessToken
+            @"access_token": _api.accessToken
         };
         [self.udpConnection sendDictionary:update];
     }];
@@ -360,52 +292,55 @@
 
 #pragma mark - State handlers
 
-- (void)handleGameStateResponse:(NSDictionary *)response {
-    [response enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if ([key isEqualToString:@"players"]) {
-            DDLogVerbose(@"about to iterate players...");
-            if ([self.delegate respondsToSelector:@selector(team:addPlayerWithIdentifier:name:score:location:)]) {
-                DDLogVerbose(@"iterating players...");
-                for (NSDictionary *player in obj) {
-                    NSString *teamColor = player[@"team"];
-                    NSString *playerId = player[@"device_id"];
-                    NSNumber *score = player[@"score"];
-                    NSNumber *latitude = player[@"latitude"];
-                    NSNumber *longitude = player[@"longitude"];
-                    CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
-                                                                            longitude:[longitude doubleValue]];
-                    DDLogVerbose(@"adding player %@ - %@ (%@) at %@,%@", playerId, player[@"name"], score, latitude, longitude);
-                    [self.delegate team:teamColor addPlayerWithIdentifier:playerId
-                                   name:player[@"name"]
-                                  score:[score integerValue]
-                               location:playerLocation];
+- (void)registerGameStateSuccessHandler {
+    MAApiSuccessHandler gameStateSuccess = ^(NSDictionary *response) {
+        [response enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([key isEqualToString:@"players"]) {
+                DDLogVerbose(@"about to iterate players...");
+                if ([self.delegate respondsToSelector:@selector(team:addPlayerWithIdentifier:name:score:location:)]) {
+                    DDLogVerbose(@"iterating players...");
+                    for (NSDictionary *player in obj) {
+                        NSString *teamColor = player[@"team"];
+                        NSString *playerId = player[@"device_id"];
+                        NSNumber *score = player[@"score"];
+                        NSNumber *latitude = player[@"latitude"];
+                        NSNumber *longitude = player[@"longitude"];
+                        CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
+                                                                                longitude:[longitude doubleValue]];
+                        DDLogVerbose(@"adding player %@ - %@ (%@) at %@,%@", playerId, player[@"name"], score, latitude, longitude);
+                        [self.delegate team:teamColor addPlayerWithIdentifier:playerId
+                                       name:player[@"name"]
+                                      score:[score integerValue]
+                                   location:playerLocation];
+                    }
+                }
+            } else if ([key isEqualToString:@"coins"]) {
+                DDLogVerbose(@"about to iterate coins...");
+                if ([self.delegate respondsToSelector:@selector(team:addCoinWithIdentifier:location:points:)]) {
+                    DDLogVerbose(@"iterating coins...");
+                    for (NSDictionary *coin in obj) {
+                        NSString *teamColor = coin[@"team"];
+                        NSString *coinId = coin[@"coin_id"];
+                        NSNumber *points = coin[@"value"];
+                        NSNumber *latitude = coin[@"latitude"];
+                        NSNumber *longitude = coin[@"longitude"];
+                        CLLocation *coinLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
+                                                                              longitude:[longitude doubleValue]];
+                        DDLogVerbose(@"adding coin %@ (%@) at %@,%@", coinId, points, latitude, longitude);
+                        [self.delegate team:teamColor addCoinWithIdentifier:coinId location:coinLocation points:[points integerValue]];
+                    }
+                }
+            } else if ([key isEqualToString:@"game"]) {
+                DDLogVerbose(@"about to set scores...");
+                if ([self.delegate respondsToSelector:@selector(team:setScore:)]){
+                    DDLogVerbose(@"setting scores...");
+                    [self.delegate team:@"red" setScore:[(NSNumber *)obj[@"teams"][@"red"][@"score"] integerValue]];
+                    [self.delegate team:@"blue" setScore:[(NSNumber *)obj[@"teams"][@"blue"][@"score"] integerValue]];
                 }
             }
-        } else if ([key isEqualToString:@"coins"]) {
-            DDLogVerbose(@"about to iterate coins...");
-            if ([self.delegate respondsToSelector:@selector(team:addCoinWithIdentifier:location:points:)]) {
-                DDLogVerbose(@"iterating coins...");
-                for (NSDictionary *coin in obj) {
-                    NSString *teamColor = coin[@"team"];
-                    NSString *coinId = coin[@"coin_id"];
-                    NSNumber *points = coin[@"value"];
-                    NSNumber *latitude = coin[@"latitude"];
-                    NSNumber *longitude = coin[@"longitude"];
-                    CLLocation *coinLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
-                                                                          longitude:[longitude doubleValue]];
-                    DDLogVerbose(@"adding coin %@ (%@) at %@,%@", coinId, points, latitude, longitude);
-                    [self.delegate team:teamColor addCoinWithIdentifier:coinId location:coinLocation points:[points integerValue]];
-                }
-            }
-        } else if ([key isEqualToString:@"game"]) {
-            DDLogVerbose(@"about to set scores...");
-            if ([self.delegate respondsToSelector:@selector(team:setScore:)]){
-                DDLogVerbose(@"setting scores...");
-                [self.delegate team:@"red" setScore:[(NSNumber *)obj[@"teams"][@"red"][@"score"] integerValue]];
-                [self.delegate team:@"blue" setScore:[(NSNumber *)obj[@"teams"][@"blue"][@"score"] integerValue]];
-            }
-        }
-    }];
+        }];
+    };
+    [_api registerSuccessHandler:gameStateSuccess forPath:kMAApiGameStatePath];
 }
 
 - (void)handleUdpDictionary:(NSDictionary *)dictionary {
@@ -427,14 +362,14 @@
             [self.delegate team:@"blue" setScore:[blueScore integerValue]];
         }
     } else if ([keys containsObject:@"device_id"]) {
-//        DDLogVerbose(@"got device update");
+        DDLogVerbose(@"got device update");
         NSString *playerId = dictionary[@"device_id"];
         NSNumber *latitude = dictionary[@"latitude"];
         NSNumber *longitude = dictionary[@"longitude"];
         CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
                                                                 longitude:[longitude doubleValue]];
         if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
-//            DDLogVerbose(@"setting playerId %@ to location %@", playerId, playerLocation);
+            DDLogVerbose(@"setting playerId %@ to location %@", playerId, playerLocation);
             [self.delegate player:playerId didMoveToLocation:playerLocation];
         }
     } else if ([keys containsObject:@"board_id"]) {
@@ -467,39 +402,29 @@
     [defs setObject:pushToken forKey:kMADefaultsPushTokenKey];
     [defs synchronize];
 
-    if (self.accessToken) {
-        NSString *poteKey;
-        switch ((int)kPushTokenType) {
-            case MAPushTokenTypeSandbox:
-                poteKey = @"apns_sandbox_token";
-                break;
-            case MAPushTokenTypeProduction:
-                poteKey = @"apns_prod_token";
-                break;
-        }
-        if (pushToken) {
-            NSDictionary *params = @{
-                @"access_token": self.accessToken,
-                poteKey: [pushToken hexadecimalString]
-            };
-            [self.tcpConnection POST:@"/device/register_push"
-                          parameters:params
-                             success:^(NSURLSessionDataTask *task, id responseObject) {
-                                 _pushTokenRegistered = YES;
-                             }
-                             failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                 _pushTokenRegistered = NO;
-                             }];
-
-        } else {
-            DDLogError(@"no push token data!");
-        }
+    NSString *poteKey;
+    switch ((int)kPushTokenType) {
+        case MAPushTokenTypeSandbox:
+            poteKey = @"apns_sandbox_token";
+            break;
+        case MAPushTokenTypeProduction:
+            poteKey = @"apns_prod_token";
+            break;
+    }
+    if (pushToken) {
+        [_api postToPath:kMAApiDeviceRegisterPushPath
+                  params:@{ poteKey: [pushToken hexadecimalString] }
+                 success:^(NSDictionary *response) { _pushTokenRegistered = YES; }];
     } else {
-        DDLogError(@"no access_token, can't post push token to server");
+        DDLogError(@"no push token data!");
     }
 }
 
 #pragma mark - Helpers
+
+- (MKCoordinateRegion)regionForJoinedBoard {
+    return [self regionForBoard:self.joinedGameBoard];
+}
 
 - (MKCoordinateRegion)regionForBoard:(NSDictionary *)board {
     NSArray *bbox = board[@"bbox"];

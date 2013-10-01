@@ -63,6 +63,7 @@
         [self.view addSubview:self.startStopButton];
     }
 
+    // commented so that the game state delegates fill the board
     /*
     for (NSDictionary *coin in [MAGameManager sharedManager].lastBoardStateDict[@"coins"]) {
         CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([coin[@"latitude"] doubleValue], [coin[@"longitude"] doubleValue]);

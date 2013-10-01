@@ -9,28 +9,18 @@
 #import "MAApiConnection.h"
 #import <AFNetworking/AFNetworking.h>
 
-@interface MAApiRequest : NSObject
-@property (weak, atomic) NSString *path;
-@property (weak, atomic) NSDictionary *params;
-@property (copy, nonatomic) MAApiSuccessHandler success;
-@property (copy, nonatomic) MAApiFailureHandler failure;
-@end
-
-@implementation MAApiRequest
-@end
-
 @implementation MAApiConnection {
     AFHTTPSessionManager *_tcpConnection;
     NSMutableDictionary *_successHandlers;
-    NSMutableDictionary *_failureHandlers;
+    NSMutableDictionary *_errorHandlers;
 }
 
 - (MAApiConnection *)init {
     self = [super init];
     if (self) {
         _successHandlers = [NSMutableDictionary new];
-        _failureHandlers = [NSMutableDictionary new];
-        _tcpConnection = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:kMapAttackURL]];
+        _errorHandlers = [NSMutableDictionary new];
+        _tcpConnection = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:MAPATTACK_URL]];
         _tcpConnection.requestSerializer = [AFHTTPRequestSerializer serializer];
         _tcpConnection.responseSerializer = [AFJSONResponseSerializer serializer];
     }
@@ -49,10 +39,10 @@
 - (void)postToPath:(NSString *)path
             params:(NSDictionary *)params {
     
-    MAApiSuccessHandler success = _successHandlers[path];
-    if (success) {
+    MAApiSuccessHandler successHandler = _successHandlers[path];
+    if (successHandler) {
         
-        MAApiFailureHandler failure = _failureHandlers[path];
+        MAApiErrorHandler errorHandler = _errorHandlers[path];
         
         NSMutableDictionary *paramsWithToken = [NSMutableDictionary dictionaryWithDictionary:params];
         [paramsWithToken setValue:self.accessToken forKey:kMAApiAccessTokenKey];
@@ -60,20 +50,23 @@
         [_tcpConnection POST:path
                   parameters:paramsWithToken
                      success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
-                         NSDictionary *error = responseObject[kMAApiErrorKey];
-                         if (error && failure) {
-                             failure([NSError errorWithDomain:kMADefaultsDomain
-                                                         code:(int)error[kMAApiErrorCodeKey]
-                                                     userInfo:error]);
+                         NSDictionary *errorResponse = responseObject[kMAApiErrorKey];
+                         if (errorResponse) {
+                             if (errorHandler) {
+                                 errorHandler([NSError errorWithDomain:kMADefaultsDomain
+                                                                  code:(int)errorResponse[kMAApiErrorCodeKey]
+                                                              userInfo:errorResponse]);
+                             } else {
+                                 DDLogError(@"api error for path '%@': %@", path, errorResponse);
+                                 DDLogError(@"--- params: %@", paramsWithToken);
+                             }
                          } else {
-                             success(responseObject);
+                             successHandler(responseObject);
                          }
                      }
                      failure:^(NSURLSessionTask *task, NSError *error) {
                          DDLogError(@"api request failure for path '%@': %@", path, error);
-                         if (failure) {
-                             failure(error);
-                         }
+                         DDLogError(@"--- params: %@", paramsWithToken);
                      }];
         
     } else {
@@ -92,9 +85,9 @@
 - (void)postToPath:(NSString *)path
             params:(NSDictionary *)params
            success:(MAApiSuccessHandler)success
-           failure:(MAApiFailureHandler)failure {
+           error:(MAApiErrorHandler)error {
     [self registerSuccessHandler:success forPath:path];
-    [self registerFailureHandler:failure forPath:path];
+    [self registerErrorHandler:error forPath:path];
     [self postToPath:path params:params];
 }
 
@@ -105,9 +98,9 @@
     [_successHandlers setValue:handler forKey:path];
 }
 
-- (void)registerFailureHandler:(MAApiFailureHandler)handler
+- (void)registerErrorHandler:(MAApiErrorHandler)handler
                        forPath:(NSString *)path {
-    [_failureHandlers setValue:handler forKey:path];
+    [_errorHandlers setValue:handler forKey:path];
 }
 
 @end

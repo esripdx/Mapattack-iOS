@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef void (^MAApiSuccessHandler)(NSDictionary *response);
-typedef void (^MAApiFailureHandler)(NSError *error);
+typedef void (^MAApiErrorHandler)(NSError *error);
 
 @interface MAApiConnection : NSObject
 
@@ -31,7 +31,7 @@ typedef void (^MAApiFailureHandler)(NSError *error);
 - (void)postToPath:(NSString *)path
             params:(NSDictionary *)params
            success:(MAApiSuccessHandler)success
-           failure:(MAApiFailureHandler)failure;
+           error:(MAApiErrorHandler)failure;
 
 /* registers the success handler for the path
  */
@@ -40,7 +40,7 @@ typedef void (^MAApiFailureHandler)(NSError *error);
 
 /* registers the failure handler for the path
  */
-- (void)registerFailureHandler:(MAApiFailureHandler)handler
-                       forPath:(NSString *)path;
+- (void)registerErrorHandler:(MAApiErrorHandler)handler
+                     forPath:(NSString *)path;
 
 @end
