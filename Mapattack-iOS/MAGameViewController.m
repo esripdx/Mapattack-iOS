@@ -40,6 +40,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", [MAGameManager sharedManager].joinedTeamColor];
+    DDLogVerbose(@"using template: %@", template);
     MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
     overlay.canReplaceMapContent = YES;
     [self.mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
