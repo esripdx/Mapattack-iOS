@@ -26,7 +26,6 @@
 @end
 
 @implementation MAGameManager {
-    NSString *_accessToken;
     BOOL _pushTokenRegistered;
     MAApiConnection *_api;
 }
