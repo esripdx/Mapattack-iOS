@@ -43,6 +43,7 @@
 		BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* MAUdpConnection.m */; };
 		BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39C17F600E00033EFDE /* NSData+Conversion.m */; };
 		BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */; };
+		BEC25CA817FA5F3E00735CFC /* MAApiConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC25CA717FA5F3E00735CFC /* MAApiConnection.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +101,8 @@
 		BE33B39C17F600E00033EFDE /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Conversion.m"; path = "ext/NSData+Conversion.m"; sourceTree = "<group>"; };
 		BE33B39E17F602900033EFDE /* NSString+UrlEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+UrlEncoding.h"; path = "ext/NSString+UrlEncoding.h"; sourceTree = "<group>"; };
 		BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+UrlEncoding.m"; path = "ext/NSString+UrlEncoding.m"; sourceTree = "<group>"; };
+		BEC25CA617FA5F3E00735CFC /* MAApiConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAApiConnection.h; sourceTree = "<group>"; };
+		BEC25CA717FA5F3E00735CFC /* MAApiConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAApiConnection.m; sourceTree = "<group>"; };
 		D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FA0CF42F17F685ED000A1CFE /* Portland.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Portland.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -222,6 +225,8 @@
 				67EF22671CEFC3E013EFBD14 /* MAConstants.h */,
 				67EF21A8CF822FA5157F20CB /* MAConstants.m */,
 				94D4D66117F79A6B008E0F7A /* Images.xcassets */,
+				BEC25CA617FA5F3E00735CFC /* MAApiConnection.h */,
+				BEC25CA717FA5F3E00735CFC /* MAApiConnection.m */,
 			);
 			path = "Mapattack-iOS";
 			sourceTree = "<group>";
@@ -373,6 +378,7 @@
 				BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */,
 				BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
+				BEC25CA817FA5F3E00735CFC /* MAApiConnection.m in Sources */,
 				BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */,
 				94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */,
 				BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */,
@@ -482,7 +488,7 @@
 				INFOPLIST_FILE = "Mapattack-iOS/Mapattack-iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5E501C3C-0776-4E72-82F0-D34F9FC11FA5";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -501,7 +507,7 @@
 				INFOPLIST_FILE = "Mapattack-iOS/Mapattack-iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5E501C3C-0776-4E72-82F0-D34F9FC11FA5";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

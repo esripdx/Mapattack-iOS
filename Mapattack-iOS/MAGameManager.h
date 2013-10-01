@@ -62,10 +62,11 @@
 - (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
 - (void)startGame;
 - (void)endGame;
-- (void)fetchBoardStateForBoard:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion;
+- (void)fetchBoardStateForBoardId:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion;
 
 - (void)startPollingGameState;
 
+- (MKCoordinateRegion)regionForJoinedBoard;
 - (MKCoordinateRegion)regionForBoard:(NSDictionary *)board;
 
 @end

@@ -37,19 +37,19 @@
 
     // Configure the view for the selected state
     if (selected) {
-        [[MAGameManager sharedManager] fetchBoardStateForBoard:self.board[@"board_id"]
-                                                    completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
-                                                        if (error == nil) {
-                                                            for (NSDictionary *coin in coins) {
-                                                                CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([coin[@"latitude"] doubleValue], [coin[@"longitude"] doubleValue]);
-                                                                MACoinAnnotation *annotation = [[MACoinAnnotation alloc] initWithIdentifier:coin[@"coin_id"]
-                                                                                                                                 coordinate:coord
-                                                                                                                                 pointValue:[coin[@"value"] integerValue]
-                                                                                                                                       team:coin[@"team"]];
-                                                                [self.mapView addAnnotation:annotation];
-                                                            }
-                                                        }
-                                                    }];
+        [[MAGameManager sharedManager] fetchBoardStateForBoardId:self.board[@"board_id"]
+                                                      completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
+                                                          if (error == nil) {
+                                                              for (NSDictionary *coin in coins) {
+                                                                  CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([coin[@"latitude"] doubleValue], [coin[@"longitude"] doubleValue]);
+                                                                  MACoinAnnotation *annotation = [[MACoinAnnotation alloc] initWithIdentifier:coin[@"coin_id"]
+                                                                                                                                   coordinate:coord
+                                                                                                                                   pointValue:[coin[@"value"] integerValue]
+                                                                                                                                         team:coin[@"team"]];
+                                                                  [self.mapView addAnnotation:annotation];
+                                                              }
+                                                          }
+                                                      }];
         MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:self.board];
         [self.mapView setRegion:region animated:NO];
     }
