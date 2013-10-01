@@ -128,8 +128,8 @@
 - (void)postLocationBoardList {
     DDLogVerbose(@"Fetching nearby games: %@", self.gameListLocationManager.location);
     [_api postToPath:kMAApiBoardListPath
-              params:@{ @"latitude": @(self.gameListLocationManager.location.coordinate.latitude),
-                        @"longitude": @(self.gameListLocationManager.location.coordinate.longitude) }];
+              params:@{ kMAApiLatitudeKey: @(self.gameListLocationManager.location.coordinate.latitude),
+                        kMAApiLongitudeKey: @(self.gameListLocationManager.location.coordinate.longitude) }];
 }
 
 #pragma mark - Game creating/joining
@@ -239,7 +239,7 @@
         self.lastBoardStateDict = response;
         DDLogVerbose(@"board state response: %@", response);
         if (completion != nil) {
-            completion(response[@"board"], response[@"coins"], nil);
+            completion(response[kMAApiBoardKey], response[kMAApiCoinsKey], nil);
         }
     };
     
@@ -277,13 +277,13 @@
     }
     [locations enumerateObjectsUsingBlock:^(CLLocation *location, NSUInteger idx, BOOL *stop) {
         NSDictionary *update = @{
-            @"latitude": @(location.coordinate.latitude),
-            @"longitude": @(location.coordinate.longitude),
-            @"timestamp": @(location.timestamp.timeIntervalSince1970),
-            @"accuracy": @(location.horizontalAccuracy),
-            @"speed": @(location.speed),
-            @"bearing": @(location.course),
-            @"access_token": _api.accessToken
+            kMAApiLatitudeKey: @(location.coordinate.latitude),
+            kMAApiLongitudeKey: @(location.coordinate.longitude),
+            kMAApiTimestampKey: @(location.timestamp.timeIntervalSince1970),
+            kMAApiAccuracyKey: @(location.horizontalAccuracy),
+            kMAApiSpeedKey: @(location.speed),
+            kMAApiBearingKey: @(location.course),
+            kMAApiAccessTokenKey: _api.accessToken
         };
         [self.udpConnection sendDictionary:update];
     }];
@@ -294,47 +294,51 @@
 - (void)registerGameStateSuccessHandler {
     MAApiSuccessHandler gameStateSuccess = ^(NSDictionary *response) {
         [response enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if ([key isEqualToString:@"players"]) {
+            if ([key isEqualToString:kMAApiPlayersKey]) {
                 DDLogVerbose(@"about to iterate players...");
                 if ([self.delegate respondsToSelector:@selector(team:addPlayerWithIdentifier:name:score:location:)]) {
                     DDLogVerbose(@"iterating players...");
                     for (NSDictionary *player in obj) {
-                        NSString *teamColor = player[@"team"];
-                        NSString *playerId = player[@"device_id"];
-                        NSNumber *score = player[@"score"];
-                        NSNumber *latitude = player[@"latitude"];
-                        NSNumber *longitude = player[@"longitude"];
+                        NSString *teamColor = player[kMAApiTeamKey];
+                        NSString *playerId = player[kMAApiDeviceIdKey];
+                        NSNumber *score = player[kMAApiScoreKey];
+                        NSNumber *latitude = player[kMAApiLatitudeKey];
+                        NSNumber *longitude = player[kMAApiLongitudeKey];
                         CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
                                                                                 longitude:[longitude doubleValue]];
-                        DDLogVerbose(@"adding player %@ - %@ (%@) at %@,%@", playerId, player[@"name"], score, latitude, longitude);
+                        DDLogVerbose(@"adding player %@ - %@ (%@) at %@,%@", playerId, player[kMAApiNameKey], score, latitude, longitude);
                         [self.delegate team:teamColor addPlayerWithIdentifier:playerId
-                                       name:player[@"name"]
+                                       name:player[kMAApiNameKey]
                                       score:[score integerValue]
                                    location:playerLocation];
                     }
                 }
-            } else if ([key isEqualToString:@"coins"]) {
+            } else if ([key isEqualToString:kMAApiCoinsKey]) {
                 DDLogVerbose(@"about to iterate coins...");
                 if ([self.delegate respondsToSelector:@selector(team:addCoinWithIdentifier:location:points:)]) {
                     DDLogVerbose(@"iterating coins...");
                     for (NSDictionary *coin in obj) {
-                        NSString *teamColor = coin[@"team"];
-                        NSString *coinId = coin[@"coin_id"];
-                        NSNumber *points = coin[@"value"];
-                        NSNumber *latitude = coin[@"latitude"];
-                        NSNumber *longitude = coin[@"longitude"];
+                        NSString *teamColor = coin[kMAApiTeamKey];
+                        NSString *coinId = coin[kMAApiCoinIdKey];
+                        NSNumber *points = coin[kMAApiPointsKey];
+                        NSNumber *latitude = coin[kMAApiLatitudeKey];
+                        NSNumber *longitude = coin[kMAApiLongitudeKey];
                         CLLocation *coinLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
                                                                               longitude:[longitude doubleValue]];
                         DDLogVerbose(@"adding coin %@ (%@) at %@,%@", coinId, points, latitude, longitude);
-                        [self.delegate team:teamColor addCoinWithIdentifier:coinId location:coinLocation points:[points integerValue]];
+                        [self.delegate team:teamColor addCoinWithIdentifier:coinId
+                                   location:coinLocation
+                                     points:[points integerValue]];
                     }
                 }
-            } else if ([key isEqualToString:@"game"]) {
+            } else if ([key isEqualToString:kMAApiGameKey]) {
                 DDLogVerbose(@"about to set scores...");
                 if ([self.delegate respondsToSelector:@selector(team:setScore:)]){
                     DDLogVerbose(@"setting scores...");
-                    [self.delegate team:@"red" setScore:[(NSNumber *)obj[@"teams"][@"red"][@"score"] integerValue]];
-                    [self.delegate team:@"blue" setScore:[(NSNumber *)obj[@"teams"][@"blue"][@"score"] integerValue]];
+                    [self.delegate team:kMAApiRedKey
+                               setScore:[(NSNumber *)obj[kMAApiTeamsKey][kMAApiRedKey][kMAApiScoreKey] integerValue]];
+                    [self.delegate team:kMAApiBlueKey
+                               setScore:[(NSNumber *)obj[kMAApiTeamsKey][kMAApiBlueKey][kMAApiScoreKey] integerValue]];
                 }
             }
         }];
@@ -344,42 +348,42 @@
 
 - (void)handleUdpDictionary:(NSDictionary *)dictionary {
     NSArray *keys = [dictionary allKeys];
-    if ([keys containsObject:@"coin_id"]) {
+    if ([keys containsObject:kMAApiCoinIdKey]) {
         DDLogVerbose(@"got coin update");
-        NSString *teamColor = dictionary[@"team"];
-        NSString *coinId = dictionary[@"coin_id"];
-        NSNumber *redScore = dictionary[@"red_score"];
-        NSNumber *blueScore = dictionary[@"blue_score"];
+        NSString *teamColor = dictionary[kMAApiTeamKey];
+        NSString *coinId = dictionary[kMAApiCoinIdKey];
+        NSNumber *redScore = dictionary[kMAApiRedScoreKey];
+        NSNumber *blueScore = dictionary[kMAApiBlueScoreKey];
         if ([self.delegate respondsToSelector:@selector(coin:wasClaimedByTeam:)]) {
             DDLogVerbose(@"setting coinId %@ claimed by %@", coinId, teamColor);
             [self.delegate coin:coinId wasClaimedByTeam:teamColor];
         }
         if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
             DDLogVerbose(@"setting team red score to %@", redScore);
-            [self.delegate team:@"red" setScore:[redScore integerValue]];
+            [self.delegate team:kMAApiRedKey setScore:[redScore integerValue]];
             DDLogVerbose(@"setting team blue score to %@", blueScore);
-            [self.delegate team:@"blue" setScore:[blueScore integerValue]];
+            [self.delegate team:kMAApiBlueKey setScore:[blueScore integerValue]];
         }
-    } else if ([keys containsObject:@"device_id"]) {
+    } else if ([keys containsObject:kMAApiDeviceIdKey]) {
         DDLogVerbose(@"got device update");
-        NSString *playerId = dictionary[@"device_id"];
-        NSNumber *latitude = dictionary[@"latitude"];
-        NSNumber *longitude = dictionary[@"longitude"];
+        NSString *playerId = dictionary[kMAApiDeviceIdKey];
+        NSNumber *latitude = dictionary[kMAApiLatitudeKey];
+        NSNumber *longitude = dictionary[kMAApiLongitudeKey];
         CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
                                                                 longitude:[longitude doubleValue]];
         if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
             DDLogVerbose(@"setting playerId %@ to location %@", playerId, playerLocation);
             [self.delegate player:playerId didMoveToLocation:playerLocation];
         }
-    } else if ([keys containsObject:@"board_id"]) {
+    } else if ([keys containsObject:kMAApiBoardIdKey]) {
         DDLogVerbose(@"got board update");
-        NSNumber *redScore = dictionary[@"red_score"];
-        NSNumber *blueScore = dictionary[@"blue_score"];
+        NSNumber *redScore = dictionary[kMAApiRedScoreKey];
+        NSNumber *blueScore = dictionary[kMAApiBlueScoreKey];
         if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
             DDLogVerbose(@"setting team red score to %@", redScore);
-            [self.delegate team:@"red" setScore:[redScore integerValue]];
+            [self.delegate team:kMAApiRedKey setScore:[redScore integerValue]];
             DDLogVerbose(@"setting team blue score to %@", blueScore);
-            [self.delegate team:@"blue" setScore:[blueScore integerValue]];
+            [self.delegate team:kMAApiBlueKey setScore:[blueScore integerValue]];
         }
     }
 }
@@ -404,10 +408,10 @@
     NSString *poteKey;
     switch ((int)kPushTokenType) {
         case MAPushTokenTypeSandbox:
-            poteKey = @"apns_sandbox_token";
+            poteKey = kMAApiApnsSandboxTokenKey;
             break;
         case MAPushTokenTypeProduction:
-            poteKey = @"apns_prod_token";
+            poteKey = kMAApiApnsProductionTokenKey;
             break;
     }
     if (pushToken) {
@@ -426,7 +430,7 @@
 }
 
 - (MKCoordinateRegion)regionForBoard:(NSDictionary *)board {
-    NSArray *bbox = board[@"bbox"];
+    NSArray *bbox = board[kMAApiBoundingBoxKey];
     double lng1 = [bbox[0] doubleValue];
     double lat1 = [bbox[1] doubleValue];
     double lng2 = [bbox[2] doubleValue];
