@@ -16,32 +16,49 @@ static NSString * const kMADefaultsPushTokenKey = @"com.esri.portland.mapattack.
 
 /* API paths
  */
-static NSString * const kMAApiDeviceRegisterPath = @"/device/register";
-static NSString * const kMAApiDeviceRegisterPushPath = @"/device/register_push";
-static NSString * const kMAApiBoardListPath = @"/board/list";
-static NSString * const kMAApiBoardStatePath = @"/board/state";
-static NSString * const kMAApiGameJoinPath = @"/game/join";
-static NSString * const kMAApiGameCreatePath = @"/game/create";
-static NSString * const kMAApiGameStartPath = @"/game/start";
-static NSString * const kMAApiGameEndPath = @"/game/end";
-static NSString * const kMAApiGameStatePath = @"/game/state";
+static NSString *const kMAApiDeviceRegisterPath = @"/device/register";
+static NSString *const kMAApiDeviceRegisterPushPath = @"/device/register_push";
+static NSString *const kMAApiBoardListPath = @"/board/list";
+static NSString *const kMAApiBoardStatePath = @"/board/state";
+static NSString *const kMAApiGameJoinPath = @"/game/join";
+static NSString *const kMAApiGameCreatePath = @"/game/create";
+static NSString *const kMAApiGameStartPath = @"/game/start";
+static NSString *const kMAApiGameEndPath = @"/game/end";
+static NSString *const kMAApiGameStatePath = @"/game/state";
 
 /* API keys
  */
-static NSString * const kMAApiAccessTokenKey = @"access_token";
-
-static NSString * const kMAApiAvatarKey = @"avatar";
-static NSString * const kMAApiDeviceIdKey = @"device_id";
-
-static NSString * const kMAApiNameKey = @"name";
-static NSString * const kMAApiBoardIdKey = @"board_id";
-static NSString * const kMAApiGameKey = @"game";
-    static NSString * const kMAApiGameIdKey = @"game_id";
-    static NSString * const kMAApiTeamKey = @"team";
-    static NSString * const kMAApiActiveKey = @"active";
-
-static NSString * const kMAApiErrorKey = @"error";
-    static NSString * const kMAApiErrorCodeKey = @"code";
+static NSString *const kMAApiAccessTokenKey = @"access_token";
+static NSString *const kMAApiAvatarKey = @"avatar";
+static NSString *const kMAApiDeviceIdKey = @"device_id";
+static NSString *const kMAApiNameKey = @"name";
+static NSString *const kMAApiBoardIdKey = @"board_id";
+static NSString *const kMAApiBoardKey = @"board";
+static NSString *const kMAApiCoinsKey = @"coins";
+static NSString *const kMAApiCoinIdKey = @"coin_id";
+static NSString *const kMAApiGameKey = @"game";
+static NSString *const kMAApiGameIdKey = @"game_id";
+static NSString *const kMAApiTeamKey = @"team";
+static NSString *const kMAApiTeamsKey = @"teams";
+static NSString *const kMAApiActiveKey = @"active";
+static NSString *const kMAApiErrorKey = @"error";
+static NSString *const kMAApiErrorCodeKey = @"code";
+static NSString *const kMAApiLatitudeKey = @"latitude";
+static NSString *const kMAApiLongitudeKey = @"longitude";
+static NSString *const kMAApiTimestampKey = @"timestamp";
+static NSString *const kMAApiAccuracyKey = @"accuracy";
+static NSString *const kMAApiSpeedKey = @"speed";
+static NSString *const kMAApiBearingKey = @"bearing";
+static NSString *const kMAApiPlayersKey = @"players";
+static NSString *const kMAApiScoreKey = @"score";
+static NSString *const kMAApiPointsKey = @"value";
+static NSString *const kMAApiRedKey = @"red";
+static NSString *const kMAApiBlueKey = @"blue";
+static NSString *const kMAApiRedScoreKey = @"red_score";
+static NSString *const kMAApiBlueScoreKey = @"blue_score";
+static NSString *const kMAApiBoundingBoxKey = @"bbox";
+static NSString *const kMAApiApnsSandboxTokenKey = @"apns_sandbox_token";
+static NSString *const kMAApiApnsProductionTokenKey = @"apns_prod_token";
 
 /* Color helpers
  */
