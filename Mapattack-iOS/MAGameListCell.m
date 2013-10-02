@@ -18,10 +18,49 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
     }
     return self;
 }
+
+- (UIFont *)fontType
+{
+    return [UIFont fontWithName:@"karla" size:12.0f];
+}
+
+- (void)setActiveBoard:(BOOL)isHeader
+{
+    if (isHeader) {
+        [self setActiveBoardHeader];
+    }
+    self.cellView.backgroundColor = MA_COLOR_BODYBLUE;
+    self.bluePlayersLabel.textColor = MA_COLOR_WHITE;
+    self.bluePlayersLabel.font = [self fontType];
+    self.gameNameLabel.textColor = MA_COLOR_WHITE;
+    self.gameNameLabel.font = [self fontType];
+}
+
+- (void)setActiveBoardHeader
+{
+    
+}
+
+- (void)setInactiveBoard:(BOOL)isHeader
+{
+    if (isHeader) {
+        [self setInactiveBoardHeader];
+    }
+    self.cellView.backgroundColor = MA_COLOR_CREAM;
+    self.bluePlayersLabel.textColor = MA_COLOR_RED;
+    self.bluePlayersLabel.font = [self fontType];
+    self.gameNameLabel.textColor = MA_COLOR_RED;
+    self.gameNameLabel.font = [self fontType];
+}
+
+- (void)setInactiveBoardHeader
+{
+    
+}
+
 
 - (void)setMapView:(MKMapView *)mapView {
     NSString *template = @"http://mapattack-tiles-0.pdx.esri.com/dark/{z}/{y}/{x}";

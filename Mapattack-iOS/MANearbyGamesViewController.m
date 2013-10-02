@@ -172,6 +172,12 @@
         cell.bluePlayersLabel.text = @"0";
     }
 
+    if (game[@"active"]) {
+        [cell setActiveBoard:NO];
+    } else {
+        [cell setInactiveBoard:NO];
+    }
+    
     return cell;
 }
 

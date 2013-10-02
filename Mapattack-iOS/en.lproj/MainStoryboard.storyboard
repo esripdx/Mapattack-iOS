@@ -41,15 +41,10 @@
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blue" translatesAutoresizingMaskIntoConstraints="NO" id="4jJ-0r-IaX">
-                                                            <rect key="frame" x="277" y="5" width="33" height="33"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        </imageView>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="99" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DxA-Rt-2WZ" userLabel="Blue Players">
-                                                            <rect key="frame" x="277" y="5" width="33" height="33"/>
+                                                            <rect key="frame" x="277" y="7" width="33" height="33"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -96,6 +91,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="bluePlayersLabel" destination="DxA-Rt-2WZ" id="FXW-EC-oTl"/>
+                                            <outlet property="cellView" destination="8wv-Kg-D2q" id="JmV-MC-bYY"/>
                                             <outlet property="gameNameLabel" destination="2ls-wy-idn" id="8nO-zN-SrQ"/>
                                             <outlet property="mapView" destination="txe-F4-0CS" id="Rcd-vE-diU"/>
                                         </connections>
@@ -512,7 +508,6 @@ http://www.pacmanhattan.com/</string>
         </scene>
     </scenes>
     <resources>
-        <image name="blue" width="200" height="200"/>
         <image name="camera-roll" width="96" height="96"/>
         <image name="tiny-camera" width="96" height="96"/>
         <image name="user-setup-logotype" width="184" height="31"/>

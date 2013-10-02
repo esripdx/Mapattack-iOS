@@ -15,7 +15,11 @@
 @property (strong, nonatomic) IBOutlet UILabel *redPlayersLabel;
 @property (strong, nonatomic) IBOutlet UILabel *gameNameLabel;
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIView *cellView;
 
 @property (copy, nonatomic) NSDictionary *board;
+
+- (void)setActiveBoard:(BOOL)isHeader;
+- (void)setInactiveBoard:(BOOL)isHeader;
 
 @end
