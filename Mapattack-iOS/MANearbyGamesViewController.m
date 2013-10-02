@@ -57,9 +57,11 @@
 
 - (BOOL)isFirstInactiveForIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row-1 < 0) {
+        return NO;
+    }
     BOOL lastIsActive = NO;
     if (self.nearbyBoards[indexPath.row-1][@"game"][@"active"]) {
-        NSLog(@"Last one was active!!!!!!!!!!!!!!!!!!!!!!!!!! %d", indexPath.row);
         lastIsActive = YES;
     }
     BOOL isHeader = (lastIsActive || indexPath.row == 0);
@@ -103,9 +105,39 @@
             
             self.nearbyBoards = [NSArray array];
         }
+        self.nearbyBoards = [self addHeadersToBoards];
+        
         [self.tableView reloadData];
         [hud hide:YES];
     }];
+}
+
+- (NSArray *)addHeadersToBoards
+{
+    NSMutableArray *tmpBoards = [self.nearbyBoards mutableCopy];
+    
+    NSDictionary *activeStuff = @{@"name": @"HEADER", @"game":@{@"active":@1}};
+    [tmpBoards insertObject:activeStuff atIndex:0];
+    
+    self.activeHeaderIndex = 1;
+    
+    BOOL foundFirst = NO;
+    for (int thisBoard = 0; thisBoard <= [self.nearbyBoards count]; thisBoard++) {
+        if (!foundFirst) {
+            NSDictionary *board = self.nearbyBoards[thisBoard];
+            if (!board[@"game"][@"active"]) {
+                foundFirst = YES;
+                self.inActiveHeaderIndex = thisBoard+1;
+            }
+        }
+    }
+    
+    if (self.inActiveHeaderIndex) {
+        NSDictionary *inActiveStuff = @{@"name": @"HEADER", @"game":@{}};
+        [tmpBoards insertObject:inActiveStuff atIndex:self.inActiveHeaderIndex];
+    }
+    
+    return tmpBoards;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -188,10 +220,11 @@
         cell.bluePlayersLabel.text = @"0";
     }
 
+    BOOL isHeader = [board[@"name"] isEqualToString:@"HEADER"];
     if (game[@"active"]) {
-        [cell setActiveBoard:[self isFirstActiveForIndexPath:indexPath]];
+        [cell setActiveBoard:isHeader];
     } else {
-        [cell setInactiveBoard:[self isFirstInactiveForIndexPath:indexPath]];
+        [cell setInactiveBoard:isHeader];
     }
     
     return cell;
@@ -217,11 +250,7 @@
     if (indexPath.row == _selectedIndex) {
         return 326;
     } else {
-        if (indexPath.row == 0) {
-            return 88;
-        } else {
-            return 44;
-        }
+        return 44;
     }
 }
 
