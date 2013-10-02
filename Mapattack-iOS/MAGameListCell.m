@@ -157,13 +157,31 @@
     [self setHeaderWithText:@"NEARBY BOARDS" andBackgroundColor:MA_COLOR_CREAM andTextColor:MA_COLOR_RED];
 }
 
-
+// FIXME don't know if cell is active or not yet!
 - (void)setMapView:(MKMapView *)mapView {
     NSString *template = @"http://mapattack-tiles-0.pdx.esri.com/dark/{z}/{y}/{x}";
     MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
     overlay.canReplaceMapContent = YES;
     [mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
     mapView.showsUserLocation = YES;
+    
+    // Join button
+    UIButton *joinButton = [[UIButton alloc] initWithFrame:CGRectMake(42, mapView.frame.size.height - 44, mapView.frame.size.width * 0.75f, 66)];
+    joinButton.titleLabel.font = [UIFont fontWithName:@"M41_LOVEBIT" size:24];
+    joinButton.titleLabel.textColor = MA_COLOR_RED;
+    joinButton.layer.borderColor = MA_COLOR_WHITE.CGColor;
+    joinButton.layer.borderWidth = 2;
+    
+    self.isActive = YES;
+    if (self.isActive) {
+        [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
+        [joinButton addTarget:self.parent action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [joinButton setTitle:@"START" forState:UIControlStateNormal];
+        [joinButton addTarget:self.parent action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    [mapView addSubview:joinButton];
     _mapView = mapView;
 }
 

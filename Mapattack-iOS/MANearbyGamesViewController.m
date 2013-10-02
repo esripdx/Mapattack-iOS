@@ -50,24 +50,6 @@
     [self beginMonitoringNearbyBoards];
 }
 
-- (BOOL)isFirstActiveForIndexPath:(NSIndexPath *)indexPath
-{
-    return (self.nearbyBoards[indexPath.row][@"game"][@"active"] && indexPath.row == 0);
-}
-
-- (BOOL)isFirstInactiveForIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row-1 < 0) {
-        return NO;
-    }
-    BOOL lastIsActive = NO;
-    if (self.nearbyBoards[indexPath.row-1][@"game"][@"active"]) {
-        lastIsActive = YES;
-    }
-    BOOL isHeader = (lastIsActive || indexPath.row == 0);
-    return isHeader;
-}
-
 - (NSArray *)sortByActiveBoards:(NSArray *)boards
 {
     NSArray *sortedArray;
@@ -210,6 +192,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
 
+    NSLog(@"Cell for row");
+    cell.parent = tableView;
     NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
     cell.gameNameLabel.text = board[@"name"];
     NSDictionary *game = board[@"game"];
@@ -222,8 +206,10 @@
 
     BOOL isHeader = [board[@"name"] isEqualToString:@"HEADER"];
     if (game[@"active"]) {
+        cell.isActive = YES;
         [cell setActiveBoard:isHeader];
     } else {
+        cell.isActive = NO;
         [cell setInactiveBoard:isHeader];
     }
     
