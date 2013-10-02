@@ -7,7 +7,7 @@
 //
 
 #import "MAApiConnection.h"
-#import <AFNetworking/AFNetworking.h>
+#import "AFHTTPSessionManager.h"
 
 @implementation MAApiConnection {
     AFHTTPSessionManager *_tcpConnection;

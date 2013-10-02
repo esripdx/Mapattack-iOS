@@ -50,6 +50,19 @@
     [self beginMonitoringNearbyBoards];
 }
 
+- (NSArray *)sortByActiveBoards:(NSArray *)boards
+{
+    NSArray *sortedArray;
+    sortedArray = [boards sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        
+        NSNumber *first = a[@"game"][@"active"] ? @1 : @0;
+        NSNumber *second = b[@"game"][@"active"] ? @1 : @0;
+        return [second compare:first];
+        
+    }];
+    return sortedArray;
+}
+
 - (void)beginMonitoringNearbyBoards {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
@@ -58,7 +71,7 @@
     
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
-            self.nearbyBoards = boards;
+            self.nearbyBoards = [self sortByActiveBoards:boards];
             if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
                                             message:@"No games were found near your current location."
@@ -152,12 +165,11 @@
     NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
     cell.gameNameLabel.text = board[@"name"];
     NSDictionary *game = board[@"game"];
+    int totalPlayers = [game[@"blue_team"] intValue] + [game[@"red_team"] intValue];
     if (game != nil) {
-        cell.bluePlayersLabel.text = [game[@"blue_team"] stringValue];
-        cell.redPlayersLabel.text = [game[@"red_team"] stringValue];
+        cell.bluePlayersLabel.text = [NSString stringWithFormat:@"%d", totalPlayers];
     } else {
         cell.bluePlayersLabel.text = @"0";
-        cell.redPlayersLabel.text = @"0";
     }
 
     return cell;

@@ -13,5 +13,12 @@
     #import <Foundation/Foundation.h>
     #import "MAConstants.h"
     #import "DDLog.h"
+    #import "MRCEnumerable.h"
+/*
+ NSArray * animalNames = @[ @"dog", @"cat", @"bird" ];
+ NSArray * labels = [animalNames collectWithIndex:^(NSString * animal, NSUInteger idx) {
+ return [NSString stringWithFormat:@"%lu: %@\n", (unsigned long)idx, animal];
+ }];
+ */
     static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #endif
