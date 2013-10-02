@@ -134,6 +134,69 @@ static float const kMAAvatarSize = 256.0f;
     }
 }
 
+- (IBAction)enterLobby {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.dimBackground = YES;
+    hud.square = NO;
+    hud.labelText = @"Registering...";
+
+    [[MAGameManager sharedManager] registerDeviceWithCompletionBlock:^(NSError *error) {
+        if (error != nil) {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error registering device with server" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        } else {
+            [self performSegueWithIdentifier:@"device-registered" sender:self];
+        }
+
+        [hud hide:YES];
+    }];
+}
+
+#pragma mark - UITextFieldDelegate methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField endEditing:NO];
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [[NSUserDefaults standardUserDefaults] setObject:self.userNameField.text forKey:kMADefaultsUserNameKey];
+    _isUserNameSet = ![self.userNameField.text isEqualToString:@""];
+
+    [self updateEnterButton];
+    [self.userNameField resignFirstResponder];
+}
+
+#pragma mark - Avatars
+
+- (IBAction)nextAvatar:(id)sender {
+    self.selectedAvatarIndex++;
+}
+
+- (IBAction)prevAvatar:(id)sender {
+    self.selectedAvatarIndex--;
+}
+
+- (void)setSelectedAvatarIndex:(NSInteger)selectedAvatarIndex {
+    if (selectedAvatarIndex == self.avatars.count) {
+        _selectedAvatarIndex = 0;
+    } else if (selectedAvatarIndex == -1) {
+        _selectedAvatarIndex = self.avatars.count - 1;
+    } else {
+        _selectedAvatarIndex = selectedAvatarIndex;
+    }
+    self.avatarImageView.image = self.avatars[(NSUInteger)_selectedAvatarIndex];
+}
+
+- (void)saveAvatar:(UIImage *)image {
+    [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
+                                              forKey:kMADefaultsAvatarKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    self.avatars = [self.avatars arrayByAddingObject:image];
+    self.selectedAvatarIndex = self.avatars.count - 1;
+}
+
+#pragma mark - Capture Avatar
+
 - (void)startCapture {
     [self updateEnterButton];
     self.videoCaptureSession = [AVCaptureSession new];
@@ -155,10 +218,10 @@ static float const kMAAvatarSize = 256.0f;
             if (!input) {
                 DDLogError(@"ERROR: trying to open camera: %@", error);
                 [[[UIAlertView alloc] initWithTitle:@"ERROR!"
-                                           message:[NSString stringWithFormat:@"Error openin camera: %@", [error localizedDescription]]
-                                          delegate:nil
-                                 cancelButtonTitle:@"OK"
-                                 otherButtonTitles:nil] show];
+                                            message:[NSString stringWithFormat:@"Error openin camera: %@", [error localizedDescription]]
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
                 break;
             }
 
@@ -184,23 +247,6 @@ static float const kMAAvatarSize = 256.0f;
         [self updateEnterButton];
     }
 }
-
-#pragma mark - UITextFieldDelegate methods
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField endEditing:NO];
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    [[NSUserDefaults standardUserDefaults] setObject:self.userNameField.text forKey:kMADefaultsUserNameKey];
-    _isUserNameSet = ![self.userNameField.text isEqualToString:@""];
-
-    [self updateEnterButton];
-    [self.userNameField resignFirstResponder];
-}
-
-#pragma mark - IBActions
 
 - (IBAction)captureNow {
     if (!self.videoCaptureSession) {
@@ -263,22 +309,7 @@ static float const kMAAvatarSize = 256.0f;
                                                        completionHandler:captureStillCompletionHandler];
 }
 
-- (IBAction)enterLobby {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.dimBackground = YES;
-    hud.square = NO;
-    hud.labelText = @"Registering...";
-
-    [[MAGameManager sharedManager] registerDeviceWithCompletionBlock:^(NSError *error) {
-        if (error != nil) {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error registering device with server" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-        } else {
-            [self performSegueWithIdentifier:@"device-registered" sender:self];
-        }
-
-        [hud hide:YES];
-    }];
-}
+#pragma mark - Pick Avatar / UIImagePickerControllerDelegate methods
 
 - (IBAction)pickFromCameraRoll {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
@@ -291,8 +322,6 @@ static float const kMAAvatarSize = 256.0f;
         [self presentViewController:picker animated:YES completion:nil];
     }
 }
-
-#pragma mark - UIImagePickerControllerDelegate methods
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     DDLogVerbose(@"didFinishPickingMediaWithInfo: %@", info);
@@ -315,35 +344,6 @@ static float const kMAAvatarSize = 256.0f;
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma default avatar stuff
-
-- (IBAction)nextAvatar:(id)sender {
-    self.selectedAvatarIndex++;
-}
-
-- (IBAction)prevAvatar:(id)sender {
-    self.selectedAvatarIndex--;
-}
-
-- (void)setSelectedAvatarIndex:(NSInteger)selectedAvatarIndex {
-    if (selectedAvatarIndex == self.avatars.count) {
-        _selectedAvatarIndex = 0;
-    } else if (selectedAvatarIndex == -1) {
-        _selectedAvatarIndex = self.avatars.count - 1;
-    } else {
-        _selectedAvatarIndex = selectedAvatarIndex;
-    }
-    self.avatarImageView.image = self.avatars[(NSUInteger)_selectedAvatarIndex];
-}
-
-- (void)saveAvatar:(UIImage *)image {
-    [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
-                                              forKey:kMADefaultsAvatarKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    self.avatars = [self.avatars arrayByAddingObject:image];
-    self.selectedAvatarIndex = self.avatars.count - 1;
 }
 
 #pragma mark - Keyboard methods
