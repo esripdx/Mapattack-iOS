@@ -1,5 +1,10 @@
 NSString *const kMapAttackHostname = @"api.mapattack.org";
 
+UIFont *_fontWithFaceAndSize(NSString *face, float size)
+{
+    return [UIFont fontWithName:face size:size];
+}
+
 UIColor *_colorWithHexString(NSString *hex) {
     NSString *cleanString = [hex stringByReplacingOccurrencesOfString:@"#" withString:@""];
     if ([cleanString length] == 3) {
