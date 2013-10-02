@@ -29,6 +29,7 @@
 @implementation MAGameManager {
     BOOL _pushTokenRegistered;
     MAApiConnection *_api;
+    AFHTTPSessionManager *_imageFetcher;
 }
 
 + (MAGameManager *)sharedManager {
@@ -54,12 +55,12 @@
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self.locationManager.distanceFilter = kCLDistanceFilterNone;
+    self.locationManager.distanceFilter = kMARealTimeDistanceFilter;
 
     self.gameListLocationManager = [[CLLocationManager alloc] init];
     self.gameListLocationManager.delegate = self;
     self.gameListLocationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    self.gameListLocationManager.distanceFilter = 50;
+    self.gameListLocationManager.distanceFilter = kMAGameListDistanceFilter;
 
     self.udpConnection = [[MAUdpConnection alloc] initWithDelegate:self];
     
@@ -478,6 +479,27 @@
     region.span = span;
     region.center = center;
     return region;
+}
+
+- (void)fetchIconForPlayerId:(NSString *)playerId {
+    
+    if (!_imageFetcher) {
+        _imageFetcher = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:MAPATTACK_URL]];
+        _imageFetcher.requestSerializer = [AFHTTPRequestSerializer serializer];
+        _imageFetcher.responseSerializer = [AFImageResponseSerializer serializer];
+    }
+    
+    [_imageFetcher GET:[NSString stringWithFormat:@"/user/%@.jpg", playerId] parameters:nil success:^(NSURLSessionDataTask *task, UIImage *avatar) {
+        DDLogVerbose(@"user/%@.jpg response: %@", playerId, avatar);
+        if ([self.delegate respondsToSelector:@selector(didFetchIcon:forPlayerId:)]) {
+            if (avatar && avatar.size.height > 0 && avatar.size.width > 0) {
+                [self.delegate didFetchIcon:avatar forPlayerId:playerId];
+            } else {
+                DDLogError(@"fetched avatar image is 0x0!");
+            }
+        }
+    } failure:nil];
+    
 }
 
 #pragma mark - MAUdpConnectionDelegate methods

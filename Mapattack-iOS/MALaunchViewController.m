@@ -21,9 +21,6 @@
 
 @end
 
-static NSUInteger const kMAMaxUsernameLength = 3;
-static float const kMAAvatarSize = 256.0f;
-
 @implementation MALaunchViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {

@@ -26,7 +26,7 @@
     self.identifier = identifier;
     self.coordinate = coordinate;
     self.pointValue = points;
-    self.team = team;
+    self.team = [team isEqual:[NSNull null]] ? @"" : team;
 
     return self;
 }
@@ -34,7 +34,6 @@
 
 - (UIImage *)image {
     NSString *imageName = [NSString stringWithFormat:@"coin%@%d", self.team, self.pointValue];
-    imageName = [imageName stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
     UIImage *image = [UIImage imageNamed:imageName];
     return [UIImage imageWithCGImage:image.CGImage scale:2.0f orientation:UIImageOrientationUp];
 }
