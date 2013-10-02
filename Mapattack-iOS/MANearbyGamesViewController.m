@@ -50,6 +50,22 @@
     [self beginMonitoringNearbyBoards];
 }
 
+- (BOOL)isFirstActiveForIndexPath:(NSIndexPath *)indexPath
+{
+    return (self.nearbyBoards[indexPath.row][@"game"][@"active"] && indexPath.row == 0);
+}
+
+- (BOOL)isFirstInactiveForIndexPath:(NSIndexPath *)indexPath
+{
+    BOOL lastIsActive = NO;
+    if (self.nearbyBoards[indexPath.row-1][@"game"][@"active"]) {
+        NSLog(@"Last one was active!!!!!!!!!!!!!!!!!!!!!!!!!! %d", indexPath.row);
+        lastIsActive = YES;
+    }
+    BOOL isHeader = (lastIsActive || indexPath.row == 0);
+    return isHeader;
+}
+
 - (NSArray *)sortByActiveBoards:(NSArray *)boards
 {
     NSArray *sortedArray;
@@ -173,9 +189,9 @@
     }
 
     if (game[@"active"]) {
-        [cell setActiveBoard:NO];
+        [cell setActiveBoard:[self isFirstActiveForIndexPath:indexPath]];
     } else {
-        [cell setInactiveBoard:NO];
+        [cell setInactiveBoard:[self isFirstInactiveForIndexPath:indexPath]];
     }
     
     return cell;
@@ -201,7 +217,11 @@
     if (indexPath.row == _selectedIndex) {
         return 326;
     } else {
-        return 44;
+        if (indexPath.row == 0) {
+            return 88;
+        } else {
+            return 44;
+        }
     }
 }
 

@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIView *cellView;
 
 @property (copy, nonatomic) NSDictionary *board;
+@property (nonatomic) BOOL isActiveHeader;
+@property (nonatomic) BOOL isInactiveHeader;
 
 - (void)setActiveBoard:(BOOL)isHeader;
 - (void)setInactiveBoard:(BOOL)isHeader;

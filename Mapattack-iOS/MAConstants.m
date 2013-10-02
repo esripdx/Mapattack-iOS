@@ -1,3 +1,4 @@
+//NSString *const kMapAttackHostname = @"0.0.0.0";
 NSString *const kMapAttackHostname = @"api.mapattack.org";
 
 UIFont *_fontWithFaceAndSize(NSString *face, float size)

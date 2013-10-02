@@ -104,9 +104,29 @@
 
 }
 
+- (void)setHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor
+{
+    int cellHeight = 44;
+    CGRect viewFrame = CGRectMake(self.cellView.frame.origin.x, self.cellView.frame.origin.y+cellHeight, self.cellView.frame.size.width, self.cellView.frame.size.height);
+    UIView *view = [[UIView alloc] initWithFrame:viewFrame];
+    view.backgroundColor = bgColor;
+    
+    CGRect labelFrame = CGRectMake(self.gameNameLabel.frame.origin.x, self.gameNameLabel.frame.origin.y-5, self.cellView.frame.size.width, self.cellView.frame.size.height);
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
+    label.font = MA_FONT_MENSCH_HEADER;
+    label.text = text;
+    label.textColor = textColor;
+    
+    [view addSubview:label];
+    [self addSubview:view];
+}
+
 - (void)setActiveBoardHeader
 {
-    
+    NSLog(@"Is active Board header!");
+    self.isActiveHeader = YES;
+    [self setHeaderWithText:@"CURRENT GAMES" andBackgroundColor:MA_COLOR_BODYBLUE andTextColor:MA_COLOR_WHITE];
 }
 
 - (void)setInactiveBoard:(BOOL)isHeader
@@ -126,7 +146,9 @@
 
 - (void)setInactiveBoardHeader
 {
-    
+    NSLog(@"Is INActive Board header!");
+    self.isInactiveHeader = YES;
+    [self setHeaderWithText:@"NEARBY BOARDS" andBackgroundColor:MA_COLOR_CREAM andTextColor:MA_COLOR_RED];
 }
 
 
