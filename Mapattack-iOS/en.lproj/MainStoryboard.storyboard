@@ -191,6 +191,9 @@
                                         <state key="normal" title="&lt;">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="prevAvatar:" destination="XDp-c9-Qyj" eventType="touchUpInside" id="UQu-QD-3hy"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mg8-HR-f6c" userLabel="Capture Button">
                                         <rect key="frame" x="46" y="-1" width="70" height="50"/>
@@ -217,6 +220,9 @@
                                         <state key="normal" title=">">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="nextAvatar:" destination="XDp-c9-Qyj" eventType="touchUpInside" id="zw6-ac-60u"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tz2-Hl-Hfo" userLabel="Pick from Roll Button">
                                         <rect key="frame" x="114" y="-1" width="70" height="50"/>
@@ -298,8 +304,8 @@
                     <connections>
                         <outlet property="avatarButtonsContainer" destination="56u-2v-fCg" id="wiy-9G-NL5"/>
                         <outlet property="avatarContainer" destination="rV0-6Y-xHR" id="Fq2-Pn-i7d"/>
+                        <outlet property="avatarImageView" destination="Q4I-NX-pAG" id="JaE-gW-40r"/>
                         <outlet property="captureAvatarButton" destination="mg8-HR-f6c" id="4Uv-zF-n3l"/>
-                        <outlet property="capturedAvatarImage" destination="Q4I-NX-pAG" id="JaE-gW-40r"/>
                         <outlet property="enterButton" destination="rae-6E-aCx" id="W3C-bn-Lwu"/>
                         <outlet property="nextAvatarButton" destination="erL-28-xhQ" id="KPy-Rn-lSL"/>
                         <outlet property="pickFromRollButton" destination="tz2-Hl-Hfo" id="cMm-w5-enw"/>

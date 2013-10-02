@@ -6,18 +6,18 @@
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
-#import <ImageIO/ImageIO.h>
 #import "MALaunchViewController.h"
 #import "MAGameManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @interface MALaunchViewController () {
     BOOL _isUserNameSet;
-    BOOL _isAvatarSet;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *avatarContainer;
 @property (strong, nonatomic) IBOutlet UIView *avatarButtonsContainer;
+@property (strong, nonatomic) NSArray *avatars;
+@property (nonatomic) NSInteger selectedAvatarIndex;
 
 @end
 
@@ -26,16 +26,14 @@ static float const kMAAvatarSize = 256.0f;
 
 @implementation MALaunchViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     self.enterButton.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -46,12 +44,6 @@ static float const kMAAvatarSize = 256.0f;
     if (userName) {
         self.userNameField.text = userName;
         _isUserNameSet = YES;
-    }
-
-    NSData *avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
-    if (avatarData) {
-        [self.capturedAvatarImage setImage:[UIImage imageWithData:avatarData]];
-        _isAvatarSet = YES;
     }
 
     self.view.backgroundColor = MA_COLOR_CREAM;
@@ -96,14 +88,23 @@ static float const kMAAvatarSize = 256.0f;
     self.enterButton.contentEdgeInsets = UIEdgeInsetsMake(8.0, 0, 0, 0);
 
     [self updateEnterButton];
+
+    self.avatars = @[
+            [UIImage imageNamed:@"256_cat_a.png"],
+            [UIImage imageNamed:@"256_cat_b.png"],
+            [UIImage imageNamed:@"256_cat_c.png"],
+            [UIImage imageNamed:@"256_cat_d.png"],
+            [UIImage imageNamed:@"256_cat_e.png"]
+    ];
+    self.selectedAvatarIndex = 0;
+    NSData *avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
+    if (avatarData) {
+        [self saveAvatar:[UIImage imageWithData:avatarData]];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBarHidden = YES;
-
-    if (!_isAvatarSet) {
-        [self startCapture];
-    }
 
     self.navigationController.toolbarHidden = YES;
 
@@ -123,7 +124,7 @@ static float const kMAAvatarSize = 256.0f;
 #pragma mark -
 
 - (void)updateEnterButton {
-    self.enterButton.enabled = (_isUserNameSet && _isAvatarSet);
+    self.enterButton.enabled = _isUserNameSet;
     if (self.enterButton.enabled) {
         self.enterButton.backgroundColor = MA_COLOR_BLUE;
         self.enterButton.tintColor = MA_COLOR_WHITE;
@@ -141,7 +142,7 @@ static float const kMAAvatarSize = 256.0f;
     self.videoLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.videoCaptureSession];
     self.videoLayer.frame = CGRectMake(0.0, 0.0, kMAAvatarSize, kMAAvatarSize);
     self.videoLayer.bounds = CGRectMake((352.0 - kMAAvatarSize)/2, (288.0 - kMAAvatarSize)/2, 288.0, 352.0);
-    [self.capturedAvatarImage.layer addSublayer:self.videoLayer];
+    [self.avatarImageView.layer addSublayer:self.videoLayer];
 
     self.stillImageOutput = [AVCaptureStillImageOutput new];
     [self.stillImageOutput setOutputSettings:@{AVVideoCodecKey: AVVideoCodecJPEG}];
@@ -203,7 +204,6 @@ static float const kMAAvatarSize = 256.0f;
 
 - (IBAction)captureNow {
     if (!self.videoCaptureSession) {
-        _isAvatarSet = NO;
         [self updateEnterButton];
         [self startCapture];
         return;
@@ -233,18 +233,29 @@ static float const kMAAvatarSize = 256.0f;
         
         CGRect captureRect = CGRectMake((352.0 - kMAAvatarSize)/2,
                                         (288.0 - kMAAvatarSize)/2,
-                                        self.capturedAvatarImage.frame.size.width,
-                                        self.capturedAvatarImage.frame.size.height);
+                                        self.avatarImageView.frame.size.width,
+                                        self.avatarImageView.frame.size.height);
         UIImage *image = [[UIImage alloc] initWithData:[AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer]];
-        image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage], captureRect)
-                                    scale:0.0
-                              orientation:image.imageOrientation];
-        self.capturedAvatarImage.image = image;
-        [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
-                                                  forKey:kMADefaultsAvatarKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        _isAvatarSet = YES;
-        
+
+        // crop image
+        image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage], captureRect)];
+
+        // rotate image
+        UIGraphicsBeginImageContext(captureRect.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        // move origin to center of captureRect
+        CGContextTranslateCTM(context, captureRect.size.width/2, captureRect.size.height/2);
+        // rotate 90 degrees
+        CGContextRotateCTM(context, 90*(CGFloat)M_PI/180);
+        // apply transform to image
+        CGContextDrawImage(context, CGRectMake(-image.size.width/2, -image.size.height/2, image.size.width, image.size.height), [image CGImage]);
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+        // use the fruits of our labor.
+        self.avatarImageView.image = image;
+        [self saveAvatar:image];
+
         [self endCapture];
     };
     
@@ -293,20 +304,46 @@ static float const kMAAvatarSize = 256.0f;
     UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    self.capturedAvatarImage.image = resizedImage;
-    
+    self.avatarImageView.image = resizedImage;
+
     DDLogVerbose(@"setting imageData in defaults...");
-    NSData *imageData = UIImageJPEGRepresentation(resizedImage, 1.0f);
-    [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kMADefaultsAvatarKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    _isAvatarSet = YES;
-    
+    [self saveAvatar:resizedImage];
+
     [self updateEnterButton];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma default avatar stuff
+
+- (IBAction)nextAvatar:(id)sender {
+    self.selectedAvatarIndex++;
+}
+
+- (IBAction)prevAvatar:(id)sender {
+    self.selectedAvatarIndex--;
+}
+
+- (void)setSelectedAvatarIndex:(NSInteger)selectedAvatarIndex {
+    if (selectedAvatarIndex == self.avatars.count) {
+        _selectedAvatarIndex = 0;
+    } else if (selectedAvatarIndex == -1) {
+        _selectedAvatarIndex = self.avatars.count - 1;
+    } else {
+        _selectedAvatarIndex = selectedAvatarIndex;
+    }
+    self.avatarImageView.image = self.avatars[(NSUInteger)_selectedAvatarIndex];
+}
+
+- (void)saveAvatar:(UIImage *)image {
+    [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
+                                              forKey:kMADefaultsAvatarKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    self.avatars = [self.avatars arrayByAddingObject:image];
+    self.selectedAvatarIndex = self.avatars.count - 1;
 }
 
 #pragma mark - Keyboard methods

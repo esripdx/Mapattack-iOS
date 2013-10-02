@@ -13,6 +13,8 @@ static NSString * const kMADefaultsUserNameKey = @"com.esri.portland.mapattack.u
 static NSString * const kMADefaultsAvatarKey = @"com.esri.portland.mapattack.avatar";
 static NSString * const kMADefaultsAccessTokenKey = @"com.esri.portland.mapattack.accessToken";
 static NSString * const kMADefaultsPushTokenKey = @"com.esri.portland.mapattack.pushToken";
+static NSString *const kMADefaultsAvatarIndexKey = @"com.esri.portland.mapattack.defaultAvatarIndex";
+static NSString *const kMADefaultsDefaultAvatarSelectedKey = @"com.esri.portland.mapattack.defaultAvatarSelected";
 
 /* API paths
  */
