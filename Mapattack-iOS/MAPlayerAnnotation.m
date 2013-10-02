@@ -13,8 +13,6 @@
 @property (strong, nonatomic, readwrite) NSString *team;
 @property (strong, nonatomic, readwrite) NSString *playerName;
 @property (strong, nonatomic, readwrite) NSString *identifier;
-@property (assign, nonatomic, readwrite) NSInteger score;
-@property (strong, nonatomic, readwrite) CLLocation *location;
 
 @end
 
@@ -32,6 +30,10 @@
     self.location = location;
     self.team = color;
     return self;
+}
+
+- (CLLocationCoordinate2D)coordinate {
+    return self.location.coordinate;
 }
 
 @end

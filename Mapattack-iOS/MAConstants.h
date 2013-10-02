@@ -4,6 +4,12 @@ static int const kMapAttackTcpPort = 8080;
 #define MAPATTACK_URL [NSString stringWithFormat:@"http://%@:%d", kMapAttackHostname, kMapAttackTcpPort]
 
 static int const kMAGameStatePollingInterval = 15;
+static double const kMARealTimeDistanceFilter = 1;
+static double const kMAGameListDistanceFilter = 50;
+
+static NSUInteger const kMAMaxUsernameLength = 3;
+static float const kMAAvatarSize = 256.0f;
+static float const kMAAvatarIconSize = 55.0f;
 
 /* UserDefaults keys
  */
