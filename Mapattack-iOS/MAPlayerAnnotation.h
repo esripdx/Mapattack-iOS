@@ -19,7 +19,7 @@
 @property (strong, nonatomic, readonly) NSString *team;
 @property (strong, nonatomic, readonly) NSString *playerName;
 @property (strong, nonatomic, readonly) NSString *identifier;
-@property (assign, nonatomic, readonly) NSInteger score;
-@property (strong, nonatomic, readonly) CLLocation *location;
+@property (assign, nonatomic) NSInteger score;
+@property (strong, nonatomic) CLLocation *location;
 
 @end

@@ -15,7 +15,7 @@
 @interface MAGameViewController ()
 
 @property (strong, nonatomic) UIButton *startStopButton;
-@property (copy, nonatomic) NSMutableDictionary *avatars;
+@property (strong, nonatomic) NSMutableDictionary *avatars;
 
 @end
 
@@ -35,7 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
-    self.avatars = [NSMutableDictionary dictionary];
+    self.avatars = [NSMutableDictionary new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -63,18 +63,6 @@
 
         [self.view addSubview:self.startStopButton];
     }
-
-    // commented so that the game state delegates fill the board
-    /*
-    for (NSDictionary *coin in [MAGameManager sharedManager].lastBoardStateDict[@"coins"]) {
-        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([coin[@"latitude"] doubleValue], [coin[@"longitude"] doubleValue]);
-        MACoinAnnotation *coinAnnotation = [[MACoinAnnotation alloc] initWithIdentifier:coin[@"coin_id"]
-                                                                             coordinate:coord
-                                                                             pointValue:[coin[@"value"] integerValue]
-                                                                                   team:coin[@"team"]];
-        [self.mapView addAnnotation:coinAnnotation];
-    }
-    */
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -150,16 +138,14 @@
         MAPlayerAnnotation *playerAnnotation = (MAPlayerAnnotation *)annotation;
         UIImage *avatarImage = self.avatars[playerAnnotation.identifier];
         if (avatarImage == nil) {
-            avatarImage = [UIImage imageNamed:@"CatIconA"];
-            [[MAGameManager sharedManager].tcpConnection GET:[NSString stringWithFormat:@"/user/%@.jpg", playerAnnotation.identifier]
-                                                  parameters:nil
-                                                     success:^(NSURLSessionDataTask *task, id responseObject) {
-                                                     }
-                                                     failure:nil];
+            avatarImage = [UIImage imageNamed:[NSString stringWithFormat:@"player_%@", playerAnnotation.team]];
+            [[MAGameManager sharedManager] fetchIconForPlayerId:playerAnnotation.identifier];
         }
         pin.image = avatarImage;
         return pin;
     }
+    
+    
     return nil;
 }
 
@@ -170,7 +156,12 @@
 #pragma mark - MAGameManagerDelegate
 
 - (void)player:(NSString *)identifier didMoveToLocation:(CLLocation *)location {
-
+    MAPlayerAnnotation *pa = [self playerAnnotationForIdentifier:identifier];
+    if (pa) {
+        [self.mapView removeAnnotation:pa];
+        pa.location = location;
+        [self.mapView addAnnotation:pa];
+    }
 }
 
 - (void)team:(NSString *)color didReceivePoints:(int)points {
@@ -208,20 +199,17 @@
 }
 
 - (void)team:(NSString *)color addPlayerWithIdentifier:(NSString *)identifier name:(NSString *)name score:(int)score location:(CLLocation *)location {
-    for (id <MKAnnotation> annotation in self.mapView.annotations) {
-        if ([annotation isKindOfClass:[MAPlayerAnnotation class]]) {
-            MAPlayerAnnotation *playerAnnotation = (MAPlayerAnnotation *)annotation;
-            if ([playerAnnotation.identifier isEqualToString:identifier]) {
-                [self.mapView removeAnnotation:annotation];
-            }
-        }
+    MAPlayerAnnotation *playerAnnoation = [self playerAnnotationForIdentifier:identifier];
+    if (playerAnnoation) {
+        [self.mapView removeAnnotation:playerAnnoation];
     }
-
+    
     MAPlayerAnnotation *annotation = [[MAPlayerAnnotation alloc] initWithIdentifier:identifier
                                                                                name:name
                                                                               score:score
                                                                            location:location
                                                                                team:color];
+
     [self.mapView addAnnotation:annotation];
 }
 
@@ -239,6 +227,7 @@
                                                                      coordinate:location.coordinate
                                                                      pointValue:points
                                                                            team:color];
+    
     [self.mapView addAnnotation:annotation];
 }
 
@@ -252,6 +241,37 @@
     [self.startStopButton setTitle:@"START" forState:UIControlStateNormal];
     [self.startStopButton removeTarget:self action:@selector(endGame:) forControlEvents:UIControlEventTouchUpInside];
     [self.startStopButton addTarget:self action:@selector(startGame:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)didFetchIcon:(UIImage *)icon forPlayerId:(NSString *)playerId {
+    DDLogVerbose(@"got avatar image sized %fx%f", icon.size.width, icon.size.height);
+    
+    UIGraphicsBeginImageContext(CGSizeMake(kMAAvatarIconSize, kMAAvatarIconSize));
+    [icon drawInRect:CGRectMake(0.0, 0.0, kMAAvatarIconSize, kMAAvatarIconSize)];
+    UIImage *resizedIcon = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    DDLogVerbose(@"setting avatar image sized %fx%f", resizedIcon.size.width, resizedIcon.size.height);
+    [self.avatars setObject:resizedIcon forKey:playerId];
+    MAPlayerAnnotation *pa = [self playerAnnotationForIdentifier:playerId];
+    if (pa) {
+        [self.mapView removeAnnotation:pa];
+        [self.mapView addAnnotation:pa];
+    }
+}
+
+- (MAPlayerAnnotation *)playerAnnotationForIdentifier:(NSString *)identifier {
+    MAPlayerAnnotation *pa;
+    for (id <MKAnnotation> annotation in self.mapView.annotations) {
+        if ([annotation isKindOfClass:[MAPlayerAnnotation class]]) {
+            MAPlayerAnnotation *playerAnnotation = (MAPlayerAnnotation *)annotation;
+            if ([playerAnnotation.identifier isEqualToString:identifier]) {
+                pa = playerAnnotation;
+                break;
+            }
+        }
+    }
+    return pa;
 }
 
 @end

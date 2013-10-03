@@ -35,12 +35,12 @@
 
 - (void)gameDidStart;
 - (void)gameDidEnd;
+- (void)didFetchIcon:(UIImage *)icon forPlayerId:(NSString *)playerId;
 @end
 
 @interface MAGameManager : NSObject <CLLocationManagerDelegate, MAUdpConnectionDelegate>
 @property (strong, nonatomic, readonly) CLLocationManager *locationManager;
 @property (strong, nonatomic, readonly) MAUdpConnection *udpConnection;
-@property (strong, nonatomic, readonly) AFHTTPSessionManager *tcpConnection;
 @property (strong, nonatomic, readonly) NSString *joinedGameId;
 @property (strong, nonatomic, readonly) NSString *joinedGameName;
 @property (strong, nonatomic, readonly) NSString *joinedTeamColor;
@@ -65,6 +65,7 @@
 - (void)fetchBoardStateForBoardId:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion;
 
 - (void)startPollingGameState;
+- (void)fetchIconForPlayerId:(NSString *)playerId;
 
 - (MKCoordinateRegion)regionForJoinedBoard;
 - (MKCoordinateRegion)regionForBoard:(NSDictionary *)board;
