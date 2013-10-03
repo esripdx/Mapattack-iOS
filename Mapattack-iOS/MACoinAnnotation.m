@@ -26,7 +26,11 @@
     self.identifier = identifier;
     self.coordinate = coordinate;
     self.pointValue = points;
-    self.team = [team isEqual:[NSNull null]] ? @"" : team;
+    if (team && ![team isEqual:[NSNull null]]) {
+        self.team = team;
+    } else {
+        self.team = @"";
+    }
 
     return self;
 }
