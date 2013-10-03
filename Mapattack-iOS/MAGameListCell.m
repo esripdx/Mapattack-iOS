@@ -202,8 +202,8 @@
     joinButton.layer.borderWidth = 2;
     
     // Fixme is join or create??
-    self.board.game.isActive = YES;
-    if (self.board.game.isActive) {
+    //if (self.board.game.isActive) {
+    if (YES) {
         [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
         [joinButton addTarget:self.parent action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     } else {

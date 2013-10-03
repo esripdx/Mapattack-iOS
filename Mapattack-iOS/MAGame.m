@@ -13,13 +13,13 @@
 - (id)initWithDictionary:(NSDictionary *)game
 {
     if (self) {
-        self.gameId = game[@"game_id"];
-        self.isActive = [game[@"active"] boolValue];
+        self.gameId = game[kMAApiGameIdKey];
+        self.isActive = [game[kMAApiActiveKey] boolValue];
         self.redTeamPlayers =  [game[@"red_team"] intValue];
         self.blueTeamPlayers =  [game[@"blue_team"] intValue];
         self.totalPlayers = self.redTeamPlayers + self.blueTeamPlayers;
-        self.redScore = [game[@"red_score"] intValue];
-        self.blueScore = [game[@"blue_score"] intValue];
+        self.redScore = [game[kMAApiRedScoreKey] intValue];
+        self.blueScore = [game[kMAApiBlueScoreKey] intValue];
     }
     
     return self;

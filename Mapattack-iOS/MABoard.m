@@ -13,11 +13,11 @@
 - (id)initWithDictionary:(NSDictionary *)board
 {
     if (self) {
-        self.boardId = board[@"board_id"];
-        self.name = board[@"name"];
+        self.boardId = board[kMAApiBoardIdKey];
+        self.name = board[kMAApiNameKey];
         self.meters = [board[@"meters"] intValue];
-        self.bbox = board[@"bbox"];
-        self.game = [[MAGame alloc] initWithDictionary:board[@"game"]];
+        self.bbox = board[kMAApiBoundingBoxKey];
+        self.game = [[MAGame alloc] initWithDictionary:board[kMAApiGameKey]];
     }
     
     return self;
@@ -26,11 +26,11 @@
 - (NSDictionary *)toDictionary
 {
     return @{
-             @"board_id":self.boardId,
-             @"name":self.name,
+             kMAApiBoardIdKey:self.boardId,
+             kMAApiNameKey:self.name,
              @"meters": [NSNumber numberWithInt:self.meters],
-             @"bbox":self.bbox,
-             @"game":[self.game toDictionary]
+             kMAApiBoundingBoxKey:self.bbox,
+             kMAApiGameKey:[self.game toDictionary]
              };
 }
 
