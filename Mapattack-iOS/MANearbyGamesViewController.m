@@ -54,7 +54,7 @@
 {
     NSArray *sortedArray;
     sortedArray = [boards sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-        
+
         NSNumber *first = a[@"game"][@"active"] ? @1 : @0;
         NSNumber *second = b[@"game"][@"active"] ? @1 : @0;
         return [second compare:first];
@@ -64,6 +64,7 @@
 }
 
 - (void)beginMonitoringNearbyBoards {
+    NSLog(@"begin monitoring !!!!!!!!");
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
@@ -87,39 +88,34 @@
             
             self.nearbyBoards = [NSArray array];
         }
-        self.nearbyBoards = [self addHeadersToBoards];
+        //self.nearbyBoards = [self addHeadersToBoards];
         
         [self.tableView reloadData];
         [hud hide:YES];
     }];
 }
 
-- (NSArray *)addHeadersToBoards
+- (int)firstInactiveBoardIndex
 {
-    NSMutableArray *tmpBoards = [self.nearbyBoards mutableCopy];
-    
-    NSDictionary *activeStuff = @{@"name": @"HEADER", @"game":@{@"active":@1}};
-    [tmpBoards insertObject:activeStuff atIndex:0];
-    
-    self.activeHeaderIndex = 1;
-    
-    BOOL foundFirst = NO;
-    for (int thisBoard = 0; thisBoard <= [self.nearbyBoards count]; thisBoard++) {
-        if (!foundFirst) {
+
+    int inActiveHeaderIndex;
+    BOOL foundFirstInactiveBoard = NO;
+    for (int thisBoard = 0; thisBoard < [self.nearbyBoards count]; thisBoard++) {
+        if (!foundFirstInactiveBoard) {
             NSDictionary *board = self.nearbyBoards[thisBoard];
-            if (!board[@"game"][@"active"]) {
-                foundFirst = YES;
-                self.inActiveHeaderIndex = thisBoard+1;
+            if (thisBoard > 0) {
+                NSDictionary *previousBoard = self.nearbyBoards[thisBoard-1];
+                if (!board[@"game"][@"active"] && previousBoard[@"game"][@"active"]) {
+                    foundFirstInactiveBoard = YES;
+                    inActiveHeaderIndex = thisBoard+1;
+                    self.inActiveHeaderIndex = inActiveHeaderIndex;
+                }
             }
         }
     }
+
+    return inActiveHeaderIndex;
     
-    if (self.inActiveHeaderIndex) {
-        NSDictionary *inActiveStuff = @{@"name": @"HEADER", @"game":@{}};
-        [tmpBoards insertObject:inActiveStuff atIndex:self.inActiveHeaderIndex];
-    }
-    
-    return tmpBoards;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -192,9 +188,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
 
-    NSLog(@"Cell for row");
     cell.parent = tableView;
     NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
+    cell.board = board;
+    cell.name = board[@"name"];
+    cell.boardId = [board[@"board_id"] intValue];
+    if (self.currentBoardIndex) {
+        cell.boardIndex = self.currentBoardIndex + 1;
+    } else {
+        cell.boardIndex = 0;
+    }
+
     cell.gameNameLabel.text = board[@"name"];
     NSDictionary *game = board[@"game"];
     int totalPlayers = [game[@"blue_team"] intValue] + [game[@"red_team"] intValue];
@@ -204,14 +208,28 @@
         cell.bluePlayersLabel.text = @"0";
     }
 
-    BOOL isHeader = [board[@"name"] isEqualToString:@"HEADER"];
     if (game[@"active"]) {
         cell.isActive = YES;
+        BOOL isHeader = NO;
+        if (cell.boardIndex == 0) {
+            isHeader = YES;
+        }
         [cell setActiveBoard:isHeader];
     } else {
+        if (!self.inActiveHeaderIndex) {
+            self.inActiveHeaderIndex = [self firstInactiveBoardIndex];
+        }
+
+        int isHeader = NO;
+        if (cell.boardIndex == self.inActiveHeaderIndex) {
+            isHeader = YES;
+        }
+
         cell.isActive = NO;
         [cell setInactiveBoard:isHeader];
     }
+
+    self.currentBoardIndex = self.currentBoardIndex + 1;
     
     return cell;
 }
@@ -222,6 +240,8 @@
         MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
         NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
         cell.board = board;
+    } else {
+        _selectedIndex = -1;
     }
     return indexPath;
 }

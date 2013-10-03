@@ -152,7 +152,6 @@
 
 - (void)setInactiveBoardHeader
 {
-    NSLog(@"Is INActive Board header!");
     self.isInactiveHeader = YES;
     [self setHeaderWithText:@"NEARBY BOARDS" andBackgroundColor:MA_COLOR_CREAM andTextColor:MA_COLOR_RED];
 }

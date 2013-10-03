@@ -23,6 +23,11 @@
 @property (nonatomic) BOOL isInactiveHeader;
 @property (nonatomic, retain) id parent;
 
+@property (nonatomic) int boardIndex;
+@property (nonatomic) int boardId;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic) int numberOfPlayers;
+
 - (void)setActiveBoard:(BOOL)isHeader;
 - (void)setInactiveBoard:(BOOL)isHeader;
 
