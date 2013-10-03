@@ -84,7 +84,18 @@ UIColor *_colorWithHexString(NSString *hex);
 #define MA_COLOR_DARKBLUE _colorWithHexString(@"1e6aca")
 #define MA_COLOR_BODYBLUE _colorWithHexString(@"3988e4")
 
-/* Push Notification toekn types
+/* Font helpers 
+ */
+UIFont *_fontWithFaceAndSize(NSString *face, float size);
+
+#define MA_FONT_MENSCH_HEADER _fontWithFaceAndSize(@"mensch", 32.0f)
+#define MA_FONT_MENSCH_REGULAR _fontWithFaceAndSize(@"mensch", 18.0f)
+#define MA_FONT_KARLA_HEADER _fontWithFaceAndSize(@"karla", 32.0f)
+#define MA_FONT_KARLA_REGULAR _fontWithFaceAndSize(@"karla", 18.0f)
+#define MA_FONT_LOVEBIT_HEADER _fontWithFaceAndSize(@"M41_LOVEBIT", 32.0f)
+#define MA_FONT_LOVEBIT_REGULAR _fontWithFaceAndSize(@"M41_LOVEBIT", 18.0f)
+
+/* Push Notification token types
  */
 typedef enum {
     MAPushTokenTypeSandbox,
