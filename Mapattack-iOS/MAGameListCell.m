@@ -14,6 +14,36 @@
 
 @implementation MAGameListCell
 
+- (void)populateBoardWithDictionary:(NSDictionary *)board andIndex:(int)boardIndex andInactiveHeaderIndex:(int)inActiveHeaderIndex andTableView:(UITableView *)tableView
+{
+
+    self.board = [[MABoard alloc] initWithDictionary:board];
+    self.parent = tableView;
+    
+    // First one...
+    if (!boardIndex) {
+        self.board.indexInBoardList = 0;
+    } else {
+        self.board.indexInBoardList = boardIndex;
+    }
+    
+    // Set labels
+    self.gameNameLabel.text = self.board.name;
+    if (self.board.game != nil) {
+        self.bluePlayersLabel.text = [NSString stringWithFormat:@"%d", self.board.game.totalPlayers];
+    } else {
+        self.bluePlayersLabel.text = @"0";
+    }
+    
+    // Style as active or inactive
+    if (self.board.game.isActive) {
+        [self setActiveBoard:(self.board.indexInBoardList == 0)];
+    } else {
+        [self setInactiveBoard:self.board.indexInBoardList == inActiveHeaderIndex];
+    }
+
+}
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -152,7 +182,6 @@
 
 - (void)setInactiveBoardHeader
 {
-    NSLog(@"Is INActive Board header!");
     self.isInactiveHeader = YES;
     [self setHeaderWithText:@"NEARBY BOARDS" andBackgroundColor:MA_COLOR_CREAM andTextColor:MA_COLOR_RED];
 }
@@ -172,12 +201,13 @@
     joinButton.layer.borderColor = MA_COLOR_WHITE.CGColor;
     joinButton.layer.borderWidth = 2;
     
-    self.isActive = YES;
-    if (self.isActive) {
+    // Fixme is join or create??
+    //if (self.board.game.isActive) {
+    if (YES) {
         [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
         [joinButton addTarget:self.parent action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     } else {
-        [joinButton setTitle:@"START" forState:UIControlStateNormal];
+        [joinButton setTitle:@"CREATE" forState:UIControlStateNormal];
         [joinButton addTarget:self.parent action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -190,7 +220,7 @@
 
     // Configure the view for the selected state
     if (selected) {
-        [[MAGameManager sharedManager] fetchBoardStateForBoardId:self.board[@"board_id"]
+        [[MAGameManager sharedManager] fetchBoardStateForBoardId:self.board.boardId
                                                       completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
                                                           if (error == nil) {
                                                               for (NSDictionary *coin in coins) {
@@ -203,7 +233,7 @@
                                                               }
                                                           }
                                                       }];
-        MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:self.board];
+        MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:[self.board toDictionary]];
         [self.mapView setRegion:region animated:NO];
     }
 }

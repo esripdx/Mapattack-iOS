@@ -46,6 +46,8 @@
 		BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */; };
 		BEC25CA817FA5F3E00735CFC /* MAApiConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC25CA717FA5F3E00735CFC /* MAApiConnection.m */; };
 		FA00E8A717FC746C00181205 /* Esri.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA00E8A617FC746C00181205 /* Esri.gpx */; };
+		FA79D5CB17FE0C0A00E7DD20 /* MABoard.m in Sources */ = {isa = PBXBuildFile; fileRef = FA79D5CA17FE0C0A00E7DD20 /* MABoard.m */; };
+		FA79D5CE17FE0C6600E7DD20 /* MAGame.m in Sources */ = {isa = PBXBuildFile; fileRef = FA79D5CD17FE0C6600E7DD20 /* MAGame.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +111,10 @@
 		D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FA00E8A617FC746C00181205 /* Esri.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Esri.gpx; sourceTree = "<group>"; };
 		FA0CF42F17F685ED000A1CFE /* Portland.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Portland.gpx; sourceTree = "<group>"; };
+		FA79D5C917FE0C0A00E7DD20 /* MABoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MABoard.h; sourceTree = "<group>"; };
+		FA79D5CA17FE0C0A00E7DD20 /* MABoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MABoard.m; sourceTree = "<group>"; };
+		FA79D5CC17FE0C6600E7DD20 /* MAGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGame.h; sourceTree = "<group>"; };
+		FA79D5CD17FE0C6600E7DD20 /* MAGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGame.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +225,7 @@
 		BDADFD6B17EA41C000CB11B8 /* Mapattack-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				FA79D5C817FE0BFA00E7DD20 /* Models */,
 				BE33B39717F6006F0033EFDE /* ext */,
 				BDADFD6C17EA41C000CB11B8 /* Supporting Files */,
 				94A131CB17EB9B7B00E1B15D /* Interface */,
@@ -263,6 +270,17 @@
 				BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */,
 			);
 			name = ext;
+			sourceTree = "<group>";
+		};
+		FA79D5C817FE0BFA00E7DD20 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FA79D5C917FE0C0A00E7DD20 /* MABoard.h */,
+				FA79D5CA17FE0C0A00E7DD20 /* MABoard.m */,
+				FA79D5CC17FE0C6600E7DD20 /* MAGame.h */,
+				FA79D5CD17FE0C6600E7DD20 /* MAGame.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -387,7 +405,9 @@
 				BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
 				BEC25CA817FA5F3E00735CFC /* MAApiConnection.m in Sources */,
+				FA79D5CB17FE0C0A00E7DD20 /* MABoard.m in Sources */,
 				BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */,
+				FA79D5CE17FE0C6600E7DD20 /* MAGame.m in Sources */,
 				94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */,
 				BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
