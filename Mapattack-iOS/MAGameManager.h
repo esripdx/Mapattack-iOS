@@ -17,7 +17,7 @@
 @class MAGameManager;
 
 @protocol MAGameManagerDelegate
-- (void)coin:(NSString *)identifier wasClaimedByTeam:(NSString *)color;
+- (void)coin:(NSString *)identifier wasClaimedByPlayerId:(NSString *)playerId withScore:(NSInteger)playerScore forTeam:(NSString *)team;
 - (void)player:(NSString *)identifier didMoveToLocation:(CLLocation *)location;
 - (void)team:(NSString *)color didReceivePoints:(NSInteger)points;
 - (void)team:(NSString *)color setScore:(NSInteger)score;

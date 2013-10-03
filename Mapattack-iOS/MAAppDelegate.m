@@ -98,6 +98,24 @@ static const int MAFileLoggerMaxFiles = 7;
     [usernameButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
     usernameButton.tintColor = MA_COLOR_WHITE;
 
+//    NSData *avatarData = [[NSUserDefaults standardUserDefaults] dataForKey:kMADefaultsAvatarKey];
+//    UIBarButtonItem *avatarButton;
+//    if (avatarData) {
+//        UIImage *avatarImage = [UIImage imageWithData:avatarData];
+//        CGFloat avatarPadding = 4;
+//        CGFloat avatarHeight = nav.toolbar.frame.size.height - (avatarPadding/2.0f);
+//        if (avatarImage.size.height > avatarHeight) {
+//            UIGraphicsBeginImageContext(CGSizeMake(avatarHeight, avatarHeight));
+//            [avatarImage drawInRect:CGRectMake(0.0, avatarPadding, avatarHeight, avatarHeight)];
+//            avatarImage = UIGraphicsGetImageFromCurrentImageContext();
+//            UIGraphicsEndImageContext();
+//        }
+//        avatarButton = [[UIBarButtonItem alloc] initWithImage:avatarImage style:UIBarButtonItemStylePlain target:nil action:nil];
+//    }
+
+    self.scoreButton = [[UIBarButtonItem alloc] initWithTitle:@"00" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.scoreButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
+
     UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithTitle:@"?"
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:appDelegate
@@ -105,7 +123,7 @@ static const int MAFileLoggerMaxFiles = 7;
     [helpButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
     helpButton.tintColor = MA_COLOR_WHITE;
 
-    NSArray *toolbarItems = @[backButton, space, usernameButton, space, helpButton];
+    NSArray *toolbarItems = @[backButton, space, usernameButton, self.scoreButton, space, helpButton];
 
     return toolbarItems;
 }

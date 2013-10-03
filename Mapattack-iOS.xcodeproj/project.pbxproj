@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		55C3C3CFC6C84F488572B570 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD71C79D415455F8DAB6718 /* libPods.a */; };
 		67EF2A40EC9114F899AB701D /* MAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF21A8CF822FA5157F20CB /* MAConstants.m */; };
+		940DAA2817FDF4B700FC6C17 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940DAA2717FDF4B700FC6C17 /* AudioToolbox.framework */; };
 		94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameManager.m */; };
 		94C6D22617EBB0F900F30187 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22517EBB0F900F30187 /* CoreLocation.framework */; };
 		94C6D22817EC0D2F00F30187 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22717EC0D2F00F30187 /* AVFoundation.framework */; };
@@ -51,6 +52,7 @@
 		4FD71C79D415455F8DAB6718 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		67EF21A8CF822FA5157F20CB /* MAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAConstants.m; sourceTree = "<group>"; };
 		67EF22671CEFC3E013EFBD14 /* MAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAConstants.h; sourceTree = "<group>"; };
+		940DAA2717FDF4B700FC6C17 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		94A131CC17EB9CA500E1B15D /* MAGameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameManager.h; sourceTree = "<group>"; };
 		94A131CD17EB9CA500E1B15D /* MAGameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameManager.m; sourceTree = "<group>"; };
 		94C6D22517EBB0F900F30187 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -114,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				940DAA2817FDF4B700FC6C17 /* AudioToolbox.framework in Frameworks */,
 				94FDAF0D17F236C100D284D4 /* MapKit.framework in Frameworks */,
 				94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */,
 				94C6D23017EC15AA00F30187 /* ImageIO.framework in Frameworks */,
@@ -195,6 +198,7 @@
 		BDADFD6417EA41C000CB11B8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				940DAA2717FDF4B700FC6C17 /* AudioToolbox.framework */,
 				94FDAF0C17F236C100D284D4 /* MapKit.framework */,
 				94C6D23117EC15D000F30187 /* QuartzCore.framework */,
 				94C6D22F17EC15AA00F30187 /* ImageIO.framework */,

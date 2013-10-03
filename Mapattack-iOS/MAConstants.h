@@ -64,6 +64,7 @@ static NSString *const kMAApiRedKey = @"red";
 static NSString *const kMAApiBlueKey = @"blue";
 static NSString *const kMAApiRedScoreKey = @"red_score";
 static NSString *const kMAApiBlueScoreKey = @"blue_score";
+static NSString *const kMAApiPlayerScoreKey = @"player_score";
 static NSString *const kMAApiBoundingBoxKey = @"bbox";
 static NSString *const kMAApiApnsSandboxTokenKey = @"apns_sandbox_token";
 static NSString *const kMAApiApnsProductionTokenKey = @"apns_prod_token";

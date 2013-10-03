@@ -11,7 +11,7 @@
 #import "MAAppDelegate.h"
 #import "MACoinAnnotation.h"
 #import "MAPlayerAnnotation.h"
-#import "AFHTTPSessionManager.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface MAGameViewController ()
 
@@ -186,23 +186,28 @@
     }
 }
 
-- (void)coin:(NSString *)identifier wasClaimedByTeam:(NSString *)color {
+- (void)coin:(NSString *)identifier wasClaimedByPlayerWithId:(NSString *)playerId score:(NSInteger)playerScore forTeam:(NSString *)teamColor {
     for (id <MKAnnotation> annotation in self.mapView.annotations) {
         if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
             MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
             if ([coinAnnotation.identifier isEqualToString:identifier]) {
                 [self.mapView removeAnnotation:annotation];
             }
-            coinAnnotation.team = color;
+            coinAnnotation.team = teamColor;
             [self.mapView addAnnotation:coinAnnotation];
         }
+    }
+
+    if ([playerId isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsDeviceIdKey]]) {
+        [MAAppDelegate appDelegate].scoreButton.title = [NSString stringWithFormat:@"%d", playerScore];
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     }
 }
 
 - (void)team:(NSString *)color addPlayerWithIdentifier:(NSString *)identifier name:(NSString *)name score:(int)score location:(CLLocation *)location {
-    MAPlayerAnnotation *playerAnnoation = [self playerAnnotationForIdentifier:identifier];
-    if (playerAnnoation) {
-        [self.mapView removeAnnotation:playerAnnoation];
+    MAPlayerAnnotation *playerAnnotation = [self playerAnnotationForIdentifier:identifier];
+    if (playerAnnotation) {
+        [self.mapView removeAnnotation:playerAnnotation];
     }
     
     MAPlayerAnnotation *annotation = [[MAPlayerAnnotation alloc] initWithIdentifier:identifier
@@ -210,6 +215,10 @@
                                                                               score:score
                                                                            location:location
                                                                                team:color];
+
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsDeviceIdKey] isEqualToString:identifier]) {
+        [MAAppDelegate appDelegate].scoreButton.title = [NSString stringWithFormat:@"%d", score];
+    }
 
     [self.mapView addAnnotation:annotation];
 }

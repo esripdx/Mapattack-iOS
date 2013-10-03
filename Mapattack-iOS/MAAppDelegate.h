@@ -16,6 +16,9 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+// TODO: HACK! We should refactor this to be stored somewhere else, but this is the easiest way to do it *right* now.
+@property (strong, nonatomic) UIBarButtonItem *scoreButton;
+
 + (MAAppDelegate *)appDelegate;
 
 - (NSArray *)toolbarItems;
