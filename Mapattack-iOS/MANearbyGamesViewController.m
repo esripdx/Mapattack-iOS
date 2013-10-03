@@ -13,6 +13,7 @@
 #import "MAGameListCell.h"
 #import "MAAppDelegate.h"
 #import "MACoinAnnotation.h"
+#import "MABoard.h"
 
 @interface MANearbyGamesViewController () {
     NSInteger _selectedIndex;
@@ -54,9 +55,10 @@
 {
     NSArray *sortedArray;
     sortedArray = [boards sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-
-        NSNumber *first = a[@"game"][@"active"] ? @1 : @0;
-        NSNumber *second = b[@"game"][@"active"] ? @1 : @0;
+        
+        NSNumber *first = ([a[@"game"][@"active"]  isEqual: @1]) ? @1 : @0;
+        NSNumber *second = ([b[@"game"][@"active"]  isEqual: @1]) ? @1 : @0;
+        
         return [second compare:first];
         
     }];
@@ -64,7 +66,7 @@
 }
 
 - (void)beginMonitoringNearbyBoards {
-    NSLog(@"begin monitoring !!!!!!!!");
+
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
@@ -73,6 +75,8 @@
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
             self.nearbyBoards = [self sortByActiveBoards:boards];
+            // this is hiding a row :/ self.inActiveHeaderIndex = [self firstInactiveBoardIndex];
+            
             if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
                                             message:@"No games were found near your current location."
@@ -88,7 +92,6 @@
             
             self.nearbyBoards = [NSArray array];
         }
-        //self.nearbyBoards = [self addHeadersToBoards];
         
         [self.tableView reloadData];
         [hud hide:YES];
@@ -100,14 +103,14 @@
 
     int inActiveHeaderIndex;
     BOOL foundFirstInactiveBoard = NO;
-    for (int thisBoard = 0; thisBoard < [self.nearbyBoards count]; thisBoard++) {
+    for (int thisBoard = 0; thisBoard <= [self.nearbyBoards count]; thisBoard++) {
         if (!foundFirstInactiveBoard) {
             NSDictionary *board = self.nearbyBoards[thisBoard];
             if (thisBoard > 0) {
                 NSDictionary *previousBoard = self.nearbyBoards[thisBoard-1];
                 if (!board[@"game"][@"active"] && previousBoard[@"game"][@"active"]) {
                     foundFirstInactiveBoard = YES;
-                    inActiveHeaderIndex = thisBoard+1;
+                    inActiveHeaderIndex = thisBoard;
                     self.inActiveHeaderIndex = inActiveHeaderIndex;
                 }
             }
@@ -187,48 +190,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
-
-    cell.parent = tableView;
+    
     NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
-    cell.board = board;
-    cell.name = board[@"name"];
-    cell.boardId = [board[@"board_id"] intValue];
-    if (self.currentBoardIndex) {
-        cell.boardIndex = self.currentBoardIndex + 1;
-    } else {
-        cell.boardIndex = 0;
-    }
-
-    cell.gameNameLabel.text = board[@"name"];
-    NSDictionary *game = board[@"game"];
-    int totalPlayers = [game[@"blue_team"] intValue] + [game[@"red_team"] intValue];
-    if (game != nil) {
-        cell.bluePlayersLabel.text = [NSString stringWithFormat:@"%d", totalPlayers];
-    } else {
-        cell.bluePlayersLabel.text = @"0";
-    }
-
-    if (game[@"active"]) {
-        cell.isActive = YES;
-        BOOL isHeader = NO;
-        if (cell.boardIndex == 0) {
-            isHeader = YES;
-        }
-        [cell setActiveBoard:isHeader];
-    } else {
-        if (!self.inActiveHeaderIndex) {
-            self.inActiveHeaderIndex = [self firstInactiveBoardIndex];
-        }
-
-        int isHeader = NO;
-        if (cell.boardIndex == self.inActiveHeaderIndex) {
-            isHeader = YES;
-        }
-
-        cell.isActive = NO;
-        [cell setInactiveBoard:isHeader];
-    }
-
+    [cell populateBoardWithDictionary:board andIndex:self.currentBoardIndex andInactiveHeaderIndex:self.inActiveHeaderIndex andTableView:self.tableView];
     self.currentBoardIndex = self.currentBoardIndex + 1;
     
     return cell;
@@ -237,9 +201,10 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row != _selectedIndex) {
         _selectedIndex = indexPath.row;
-        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
-        NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
-        cell.board = board;
+        // What's this for?
+        //        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
+//        NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
+//        cell.board = [[MABoard alloc] initWithDictionary:board];
     } else {
         _selectedIndex = -1;
     }

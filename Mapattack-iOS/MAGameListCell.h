@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "MABoard.h"
 
 @interface MAGameListCell : UITableViewCell
 
@@ -17,18 +18,14 @@
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIView *cellView;
 
-@property (copy, nonatomic) NSDictionary *board;
-@property (nonatomic) BOOL isActive;
 @property (nonatomic) BOOL isActiveHeader;
 @property (nonatomic) BOOL isInactiveHeader;
 @property (nonatomic, retain) id parent;
 
-@property (nonatomic) int boardIndex;
-@property (nonatomic) int boardId;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic) int numberOfPlayers;
+@property (nonatomic, strong) MABoard *board;
 
 - (void)setActiveBoard:(BOOL)isHeader;
 - (void)setInactiveBoard:(BOOL)isHeader;
+- (void)populateBoardWithDictionary:(NSDictionary *)board andIndex:(int)boardIndex andInactiveHeaderIndex:(int)inActiveHeaderIndex andTableView:(UITableView *)tableView;
 
 @end
