@@ -50,6 +50,19 @@
     [self beginMonitoringNearbyBoards];
 }
 
+- (NSArray *)sortByActiveBoards:(NSArray *)boards
+{
+    NSArray *sortedArray;
+    sortedArray = [boards sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        
+        NSNumber *first = a[@"game"][@"active"] ? @1 : @0;
+        NSNumber *second = b[@"game"][@"active"] ? @1 : @0;
+        return [second compare:first];
+        
+    }];
+    return sortedArray;
+}
+
 - (void)beginMonitoringNearbyBoards {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
@@ -58,7 +71,7 @@
     
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
-            self.nearbyBoards = boards;
+            self.nearbyBoards = [self sortByActiveBoards:boards];
             if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
                                             message:@"No games were found near your current location."
@@ -74,9 +87,39 @@
             
             self.nearbyBoards = [NSArray array];
         }
+        self.nearbyBoards = [self addHeadersToBoards];
+        
         [self.tableView reloadData];
         [hud hide:YES];
     }];
+}
+
+- (NSArray *)addHeadersToBoards
+{
+    NSMutableArray *tmpBoards = [self.nearbyBoards mutableCopy];
+    
+    NSDictionary *activeStuff = @{@"name": @"HEADER", @"game":@{@"active":@1}};
+    [tmpBoards insertObject:activeStuff atIndex:0];
+    
+    self.activeHeaderIndex = 1;
+    
+    BOOL foundFirst = NO;
+    for (int thisBoard = 0; thisBoard <= [self.nearbyBoards count]; thisBoard++) {
+        if (!foundFirst) {
+            NSDictionary *board = self.nearbyBoards[thisBoard];
+            if (!board[@"game"][@"active"]) {
+                foundFirst = YES;
+                self.inActiveHeaderIndex = thisBoard+1;
+            }
+        }
+    }
+    
+    if (self.inActiveHeaderIndex) {
+        NSDictionary *inActiveStuff = @{@"name": @"HEADER", @"game":@{}};
+        [tmpBoards insertObject:inActiveStuff atIndex:self.inActiveHeaderIndex];
+    }
+    
+    return tmpBoards;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -149,17 +192,27 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
 
+    NSLog(@"Cell for row");
+    cell.parent = tableView;
     NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
     cell.gameNameLabel.text = board[@"name"];
     NSDictionary *game = board[@"game"];
+    int totalPlayers = [game[@"blue_team"] intValue] + [game[@"red_team"] intValue];
     if (game != nil) {
-        cell.bluePlayersLabel.text = [game[@"blue_team"] stringValue];
-        cell.redPlayersLabel.text = [game[@"red_team"] stringValue];
+        cell.bluePlayersLabel.text = [NSString stringWithFormat:@"%d", totalPlayers];
     } else {
         cell.bluePlayersLabel.text = @"0";
-        cell.redPlayersLabel.text = @"0";
     }
 
+    BOOL isHeader = [board[@"name"] isEqualToString:@"HEADER"];
+    if (game[@"active"]) {
+        cell.isActive = YES;
+        [cell setActiveBoard:isHeader];
+    } else {
+        cell.isActive = NO;
+        [cell setInactiveBoard:isHeader];
+    }
+    
     return cell;
 }
 

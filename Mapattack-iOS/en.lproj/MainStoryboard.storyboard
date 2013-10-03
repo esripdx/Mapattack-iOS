@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="sxd-kP-9fv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="sxd-kP-9fv">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
@@ -41,26 +41,10 @@
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blue" translatesAutoresizingMaskIntoConstraints="NO" id="4jJ-0r-IaX">
-                                                            <rect key="frame" x="277" y="5" width="33" height="33"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        </imageView>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="99" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DxA-Rt-2WZ" userLabel="Blue Players">
-                                                            <rect key="frame" x="277" y="5" width="33" height="33"/>
+                                                            <rect key="frame" x="277" y="7" width="33" height="33"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="red" translatesAutoresizingMaskIntoConstraints="NO" id="4TO-hl-XlP">
-                                                            <rect key="frame" x="236" y="5" width="33" height="33"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        </imageView>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="99" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rfw-UJ-EUa" userLabel="Red Players">
-                                                            <rect key="frame" x="236" y="5" width="33" height="33"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -70,46 +54,31 @@
                                                         <constraint firstAttribute="height" constant="47" id="qcG-G9-3UQ"/>
                                                     </constraints>
                                                 </view>
-                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="txe-F4-0CS">
-                                                    <rect key="frame" x="0.0" y="47" width="320" height="218"/>
+                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="txe-F4-0CS">
+                                                    <rect key="frame" x="0.0" y="47" width="320" height="278"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="320" id="3fj-RQ-d4r"/>
-                                                        <constraint firstAttribute="height" constant="218" id="Xts-Nw-ZMK"/>
                                                     </constraints>
                                                     <connections>
                                                         <outlet property="delegate" destination="SEu-za-KrJ" id="HRt-Gc-i3R"/>
                                                     </connections>
                                                 </mapView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PIv-3t-ZVz">
-                                                    <rect key="frame" x="20" y="271" width="280" height="46"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                                    <state key="normal" title="JOIN!">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="joinGame:" destination="SEu-za-KrJ" eventType="touchUpInside" id="bwL-vF-0c9"/>
-                                                    </connections>
-                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="PIv-3t-ZVz" firstAttribute="leading" secondItem="Sy1-9L-AlK" secondAttribute="leading" constant="20" id="8V8-C0-GrS"/>
                                                 <constraint firstItem="8wv-Kg-D2q" firstAttribute="leading" secondItem="Sy1-9L-AlK" secondAttribute="leading" id="QYf-vT-m3J"/>
                                                 <constraint firstItem="8wv-Kg-D2q" firstAttribute="top" secondItem="Sy1-9L-AlK" secondAttribute="top" id="X84-uA-did"/>
                                                 <constraint firstItem="txe-F4-0CS" firstAttribute="top" secondItem="8wv-Kg-D2q" secondAttribute="bottom" id="ck3-Zj-HXs"/>
                                                 <constraint firstItem="txe-F4-0CS" firstAttribute="leading" secondItem="Sy1-9L-AlK" secondAttribute="leading" id="dOf-BY-R06"/>
-                                                <constraint firstItem="PIv-3t-ZVz" firstAttribute="top" secondItem="txe-F4-0CS" secondAttribute="bottom" constant="6" id="k2O-Rx-fB6"/>
-                                                <constraint firstAttribute="trailing" secondItem="PIv-3t-ZVz" secondAttribute="trailing" constant="20" id="uWl-lY-sHN"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="bluePlayersLabel" destination="DxA-Rt-2WZ" id="FXW-EC-oTl"/>
+                                            <outlet property="cellView" destination="8wv-Kg-D2q" id="JmV-MC-bYY"/>
                                             <outlet property="gameNameLabel" destination="2ls-wy-idn" id="8nO-zN-SrQ"/>
                                             <outlet property="mapView" destination="txe-F4-0CS" id="Rcd-vE-diU"/>
-                                            <outlet property="redPlayersLabel" destination="Rfw-UJ-EUa" id="OLJ-uc-xkh"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -530,9 +499,7 @@ http://www.pacmanhattan.com/</string>
         </scene>
     </scenes>
     <resources>
-        <image name="blue" width="200" height="200"/>
         <image name="camera-roll" width="96" height="96"/>
-        <image name="red" width="200" height="200"/>
         <image name="tiny-camera" width="96" height="96"/>
         <image name="user-setup-logotype" width="184" height="31"/>
     </resources>

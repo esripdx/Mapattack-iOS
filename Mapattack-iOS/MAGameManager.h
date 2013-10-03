@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-#import <AFNetworking/AFNetworking.h>
 #import <MapKit/MapKit.h>
 #import "MAUdpConnection.h"
 

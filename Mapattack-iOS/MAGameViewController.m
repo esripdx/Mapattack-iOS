@@ -11,6 +11,7 @@
 #import "MAAppDelegate.h"
 #import "MACoinAnnotation.h"
 #import "MAPlayerAnnotation.h"
+#import "AFHTTPSessionManager.h"
 
 @interface MAGameViewController ()
 

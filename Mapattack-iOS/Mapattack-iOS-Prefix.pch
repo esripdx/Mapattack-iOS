@@ -13,5 +13,6 @@
     #import <Foundation/Foundation.h>
     #import "MAConstants.h"
     #import "DDLog.h"
+
     static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #endif

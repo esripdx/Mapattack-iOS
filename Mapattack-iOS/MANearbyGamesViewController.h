@@ -13,4 +13,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
+@property (nonatomic) int activeHeaderIndex;
+@property (nonatomic) int inActiveHeaderIndex;
+
 @end
