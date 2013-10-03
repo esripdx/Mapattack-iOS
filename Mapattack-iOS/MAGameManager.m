@@ -372,7 +372,7 @@
     } else if ([keys containsObject:kMAApiDeviceIdKey]) {
         [self handleUdpPlayerUpdate:dictionary];
     } else if ([keys containsObject:kMAApiBoardIdKey]) {
-        [self handleUdpPlayerUpdate:dictionary];
+        [self handleUdpBoardUpdate:dictionary];
     }
 }
 
@@ -382,9 +382,11 @@
     NSString *coinId = coinUpdate[kMAApiCoinIdKey];
     NSNumber *redScore = coinUpdate[kMAApiRedScoreKey];
     NSNumber *blueScore = coinUpdate[kMAApiBlueScoreKey];
-    if ([self.delegate respondsToSelector:@selector(coin:wasClaimedByTeam:)]) {
+    NSString *playerId = coinUpdate[kMAApiDeviceIdKey];
+    NSNumber *playerScore = coinUpdate[kMAApiPlayerScoreKey];
+    if ([self.delegate respondsToSelector:@selector(coin:wasClaimedByPlayerId:withScore:forTeam:)]) {
         DDLogVerbose(@"setting coinId %@ claimed by %@", coinId, teamColor);
-        [self.delegate coin:coinId wasClaimedByTeam:teamColor];
+        [self.delegate coin:coinId wasClaimedByPlayerId:playerId withScore:[playerScore integerValue] forTeam:teamColor];
     }
     if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
         DDLogVerbose(@"setting team red score to %@", redScore);
