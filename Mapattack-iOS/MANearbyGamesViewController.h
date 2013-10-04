@@ -15,5 +15,6 @@
 
 @property (nonatomic) int activeHeaderIndex;
 @property (nonatomic) int inActiveHeaderIndex;
+@property (nonatomic) int currentBoardIndex;
 
 @end

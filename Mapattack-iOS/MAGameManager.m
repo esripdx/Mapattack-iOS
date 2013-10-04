@@ -104,7 +104,7 @@
         NSArray *boards = response[@"boards"];
         DDLogVerbose(@"Found %lu board%@ nearby", (unsigned long)boards.count, boards.count == 1 ? @"" : @"s");
         for (NSDictionary *game in boards) {
-            DDLogVerbose(@"got game: %@", game);
+            //DDLogVerbose(@"got game: %@", game);
         }
         if (completion != nil) {
             completion(boards, nil);
@@ -237,7 +237,7 @@
     
     MAApiSuccessHandler boardStateSuccess = ^(NSDictionary *response) {
         self.lastBoardStateDict = response;
-        DDLogVerbose(@"board state response: %@", response);
+        //DDLogVerbose(@"board state response: %@", response);
         if (completion != nil) {
             completion(response[kMAApiBoardKey], response[kMAApiCoinsKey], nil);
         }
