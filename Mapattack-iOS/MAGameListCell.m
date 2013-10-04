@@ -44,6 +44,26 @@
 
 }
 
+- (void)populateBoardWithDictionary:(NSDictionary *)board
+{
+    self.board = [[MABoard alloc] initWithDictionary:board];
+    
+    // Set labels
+    self.gameNameLabel.text = self.board.name;
+    if (self.board.game != nil) {
+        self.bluePlayersLabel.text = [NSString stringWithFormat:@"%d", self.board.game.totalPlayers];
+    } else {
+        self.bluePlayersLabel.text = @"0";
+    }
+    
+    // Style as active or inactive
+    if (self.board.game.isActive) {
+        [self setActiveBoard:NO];
+    } else {
+        [self setInactiveBoard:NO];
+    }
+}
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];

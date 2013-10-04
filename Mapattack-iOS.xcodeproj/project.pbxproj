@@ -48,6 +48,7 @@
 		FA00E8A717FC746C00181205 /* Esri.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA00E8A617FC746C00181205 /* Esri.gpx */; };
 		FA79D5CB17FE0C0A00E7DD20 /* MABoard.m in Sources */ = {isa = PBXBuildFile; fileRef = FA79D5CA17FE0C0A00E7DD20 /* MABoard.m */; };
 		FA79D5CE17FE0C6600E7DD20 /* MAGame.m in Sources */ = {isa = PBXBuildFile; fileRef = FA79D5CD17FE0C6600E7DD20 /* MAGame.m */; };
+		FA79D5D117FF16B600E7DD20 /* MAGamesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA79D5D017FF16B600E7DD20 /* MAGamesListViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,6 +116,8 @@
 		FA79D5CA17FE0C0A00E7DD20 /* MABoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MABoard.m; sourceTree = "<group>"; };
 		FA79D5CC17FE0C6600E7DD20 /* MAGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGame.h; sourceTree = "<group>"; };
 		FA79D5CD17FE0C6600E7DD20 /* MAGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGame.m; sourceTree = "<group>"; };
+		FA79D5CF17FF16B600E7DD20 /* MAGamesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGamesListViewController.h; sourceTree = "<group>"; };
+		FA79D5D017FF16B600E7DD20 /* MAGamesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGamesListViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +151,8 @@
 				BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */,
 				BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */,
 				BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */,
+				FA79D5CF17FF16B600E7DD20 /* MAGamesListViewController.h */,
+				FA79D5D017FF16B600E7DD20 /* MAGamesListViewController.m */,
 				94FDAF0917F2245C00D284D4 /* MAGameListCell.h */,
 				94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */,
 				BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */,
@@ -418,6 +423,7 @@
 				BDADFD7617EA41C000CB11B8 /* MAAppDelegate.m in Sources */,
 				BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */,
 				67EF2A40EC9114F899AB701D /* MAConstants.m in Sources */,
+				FA79D5D117FF16B600E7DD20 /* MAGamesListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

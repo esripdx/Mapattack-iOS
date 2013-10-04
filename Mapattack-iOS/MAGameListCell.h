@@ -27,5 +27,6 @@
 - (void)setActiveBoard:(BOOL)isHeader;
 - (void)setInactiveBoard:(BOOL)isHeader;
 - (void)populateBoardWithDictionary:(NSDictionary *)board andIndex:(int)boardIndex andInactiveHeaderIndex:(int)inActiveHeaderIndex andTableView:(UITableView *)tableView;
+- (void)populateBoardWithDictionary:(NSDictionary *)board;
 
 @end
