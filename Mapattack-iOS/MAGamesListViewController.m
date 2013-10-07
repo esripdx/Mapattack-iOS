@@ -17,6 +17,7 @@
 
 @interface MAGamesListViewController () {
     NSInteger _selectedIndex;
+    UITableView *_selectedTable;
 }
 @property (strong, nonatomic) NSArray *currentGames;
 @property (strong, nonatomic) NSArray *nearbyBoards;
@@ -131,7 +132,13 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.square = NO;
-        NSDictionary *board = self.nearbyBoards[(NSUInteger)_selectedIndex];
+        NSDictionary *board;
+        if (_selectedTable == self.currentGamesTableView) {
+            board = self.currentGames[_selectedIndex];
+        } else {
+            board = self.nearbyBoards[_selectedIndex];
+        }
+
         NSDictionary *game = board[@"game"];
         if (game != nil) {
             hud.labelText = @"Joining...";
@@ -212,6 +219,8 @@
     } else {
         _selectedIndex = -1;
     }
+    _selectedTable = tableView;
+    
     return indexPath;
 }
 
