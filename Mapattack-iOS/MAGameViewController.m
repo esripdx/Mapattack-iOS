@@ -10,13 +10,13 @@
 #import "MAGameViewController.h"
 #import "MAAppDelegate.h"
 #import "MACoinAnnotation.h"
-#import "MAPlayerAnnotation.h"
+#import "MAPlayer.h"
+#import "MAPlayerAnnotationView.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 @interface MAGameViewController ()
 
 @property (strong, nonatomic) UIButton *startStopButton;
-@property (strong, nonatomic) NSMutableDictionary *avatars;
 
 @end
 
@@ -36,7 +36,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
-    self.avatars = [NSMutableDictionary new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -134,19 +133,11 @@
         pin.image = coinAnnotation.image;
         return pin;
     }
-    if ([annotation isKindOfClass:[MAPlayerAnnotation class]]) {
-        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"playerAnnotation"];
-        MAPlayerAnnotation *playerAnnotation = (MAPlayerAnnotation *)annotation;
-        UIImage *avatarImage = self.avatars[playerAnnotation.identifier];
-        if (avatarImage == nil) {
-            avatarImage = [UIImage imageNamed:[NSString stringWithFormat:@"player_%@", playerAnnotation.team]];
-            [[MAGameManager sharedManager] fetchIconForPlayerId:playerAnnotation.identifier];
-        }
-        pin.image = avatarImage;
-        return pin;
+    if ([annotation isKindOfClass:[MAPlayer class]]) {
+        MAPlayerAnnotationView *annotationView = [[MAPlayerAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"playerAnnotation"];
+        return annotationView;
     }
-    
-    
+
     return nil;
 }
 
@@ -155,15 +146,6 @@
 }
 
 #pragma mark - MAGameManagerDelegate
-
-- (void)player:(NSString *)identifier didMoveToLocation:(CLLocation *)location {
-    MAPlayerAnnotation *pa = [self playerAnnotationForIdentifier:identifier];
-    if (pa) {
-        [self.mapView removeAnnotation:pa];
-        pa.location = location;
-        [self.mapView addAnnotation:pa];
-    }
-}
 
 - (void)team:(NSString *)color didReceivePoints:(int)points {
     UILabel *scoreLabel;
@@ -204,23 +186,14 @@
     }
 }
 
-- (void)team:(NSString *)color addPlayerWithIdentifier:(NSString *)identifier name:(NSString *)name score:(int)score location:(CLLocation *)location {
-    MAPlayerAnnotation *playerAnnotation = [self playerAnnotationForIdentifier:identifier];
-    if (playerAnnotation) {
-        [self.mapView removeAnnotation:playerAnnotation];
-    }
-    
-    MAPlayerAnnotation *annotation = [[MAPlayerAnnotation alloc] initWithIdentifier:identifier
-                                                                               name:name
-                                                                              score:score
-                                                                           location:location
-                                                                               team:color];
+- (void)updateStateForPlayer:(MAPlayer *)player {
+    [self.mapView removeAnnotation:player];
+    [self.mapView setNeedsDisplay];
+    [self.mapView addAnnotation:player];
 
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsDeviceIdKey] isEqualToString:identifier]) {
-        [MAAppDelegate appDelegate].scoreButton.title = [NSString stringWithFormat:@"%d", score];
+    if (player.isSelf) {
+        [MAAppDelegate appDelegate].scoreButton.title = [NSString stringWithFormat:@"%d", player.score];
     }
-
-    [self.mapView addAnnotation:annotation];
 }
 
 - (void)team:(NSString *)color addCoinWithIdentifier:(NSString *)identifier location:(CLLocation *)location points:(NSInteger)points {
@@ -251,37 +224,6 @@
     [self.startStopButton setTitle:@"START" forState:UIControlStateNormal];
     [self.startStopButton removeTarget:self action:@selector(endGame:) forControlEvents:UIControlEventTouchUpInside];
     [self.startStopButton addTarget:self action:@selector(startGame:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)didFetchIcon:(UIImage *)icon forPlayerId:(NSString *)playerId {
-    DDLogVerbose(@"got avatar image sized %fx%f", icon.size.width, icon.size.height);
-    
-    UIGraphicsBeginImageContext(CGSizeMake(kMAAvatarIconSize, kMAAvatarIconSize));
-    [icon drawInRect:CGRectMake(0.0, 0.0, kMAAvatarIconSize, kMAAvatarIconSize)];
-    UIImage *resizedIcon = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    DDLogVerbose(@"setting avatar image sized %fx%f", resizedIcon.size.width, resizedIcon.size.height);
-    [self.avatars setObject:resizedIcon forKey:playerId];
-    MAPlayerAnnotation *pa = [self playerAnnotationForIdentifier:playerId];
-    if (pa) {
-        [self.mapView removeAnnotation:pa];
-        [self.mapView addAnnotation:pa];
-    }
-}
-
-- (MAPlayerAnnotation *)playerAnnotationForIdentifier:(NSString *)identifier {
-    MAPlayerAnnotation *pa;
-    for (id <MKAnnotation> annotation in self.mapView.annotations) {
-        if ([annotation isKindOfClass:[MAPlayerAnnotation class]]) {
-            MAPlayerAnnotation *playerAnnotation = (MAPlayerAnnotation *)annotation;
-            if ([playerAnnotation.identifier isEqualToString:identifier]) {
-                pa = playerAnnotation;
-                break;
-            }
-        }
-    }
-    return pa;
 }
 
 @end

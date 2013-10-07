@@ -12,6 +12,7 @@
 #import "NSString+UrlEncoding.h"
 #import "NSData+Conversion.h"
 #import "MAApiConnection.h"
+#import "MAPlayer.h"
 
 @interface MAGameManager()
 
@@ -29,7 +30,6 @@
 @implementation MAGameManager {
     BOOL _pushTokenRegistered;
     MAApiConnection *_api;
-    AFHTTPSessionManager *_imageFetcher;
 }
 
 + (MAGameManager *)sharedManager {
@@ -308,24 +308,14 @@
 
 - (void)handlePlayersUpdate:(NSArray *)playersUpdate {
     DDLogVerbose(@"about to iterate players...");
-    if ([self.delegate respondsToSelector:@selector(team:addPlayerWithIdentifier:name:score:location:)]) {
+    if ([self.delegate respondsToSelector:@selector(updateStateForPlayer:)]) {
         
         DDLogVerbose(@"iterating players...");
-        for (NSDictionary *player in playersUpdate) {
-            
-            NSString *teamColor = player[kMAApiTeamKey];
-            NSString *playerId = player[kMAApiDeviceIdKey];
-            NSNumber *score = player[kMAApiScoreKey];
-            NSNumber *latitude = player[kMAApiLatitudeKey];
-            NSNumber *longitude = player[kMAApiLongitudeKey];
-            CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
-                                                                    longitude:[longitude doubleValue]];
-            
-            DDLogVerbose(@"adding player %@ - %@ (%@) at %@,%@", playerId, player[kMAApiNameKey], score, latitude, longitude);
-            [self.delegate team:teamColor addPlayerWithIdentifier:playerId
-                           name:player[kMAApiNameKey]
-                          score:[score integerValue]
-                       location:playerLocation];
+        for (NSDictionary *playerDict in playersUpdate) {
+            MAPlayer *player = [MAPlayer playerWithDictionary:playerDict];
+
+            DDLogVerbose(@"Received player state: %@", player);
+            [self.delegate updateStateForPlayer:player];
         }
     }
 }
@@ -398,14 +388,10 @@
 
 - (void)handleUdpPlayerUpdate:(NSDictionary *)playerUpdate {
     DDLogVerbose(@"got device update");
-    NSString *playerId = playerUpdate[kMAApiDeviceIdKey];
-    NSNumber *latitude = playerUpdate[kMAApiLatitudeKey];
-    NSNumber *longitude = playerUpdate[kMAApiLongitudeKey];
-    CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
-                                                            longitude:[longitude doubleValue]];
-    if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
-        DDLogVerbose(@"moving playerId %@ to %@,%@", playerId, latitude, longitude);
-        [self.delegate player:playerId didMoveToLocation:playerLocation];
+    MAPlayer *player = [MAPlayer playerWithDictionary:playerUpdate];
+    if ([self.delegate respondsToSelector:@selector(updateStateForPlayer:)]) {
+        DDLogVerbose(@"moving playerId %@ to %@", player.playerId, player.location);
+        [self.delegate updateStateForPlayer:player];
     }
 }
 
@@ -483,26 +469,6 @@
     return region;
 }
 
-- (void)fetchIconForPlayerId:(NSString *)playerId {
-    
-    if (!_imageFetcher) {
-        _imageFetcher = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:MAPATTACK_URL]];
-        _imageFetcher.requestSerializer = [AFHTTPRequestSerializer serializer];
-        _imageFetcher.responseSerializer = [AFImageResponseSerializer serializer];
-    }
-    
-    [_imageFetcher GET:[NSString stringWithFormat:@"/user/%@.jpg", playerId] parameters:nil success:^(NSURLSessionDataTask *task, UIImage *avatar) {
-        DDLogVerbose(@"user/%@.jpg response: %@", playerId, avatar);
-        if ([self.delegate respondsToSelector:@selector(didFetchIcon:forPlayerId:)]) {
-            if (avatar && avatar.size.height > 0 && avatar.size.width > 0) {
-                [self.delegate didFetchIcon:avatar forPlayerId:playerId];
-            } else {
-                DDLogError(@"fetched avatar image is 0x0!");
-            }
-        }
-    } failure:nil];
-    
-}
 
 #pragma mark - MAUdpConnectionDelegate methods
 
