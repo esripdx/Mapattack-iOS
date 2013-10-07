@@ -154,30 +154,33 @@
 
 // FIXME don't know if cell is active or not yet!
 - (void)setMapView:(MKMapView *)mapView {
+    DDLogInfo(@"Setting mapview");
+    
     NSString *template = @"http://mapattack-tiles-0.pdx.esri.com/dark/{z}/{y}/{x}";
     MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
     overlay.canReplaceMapContent = YES;
+    
+//    NSInteger newHeight = mapView.frame.size.height + 250;
+//    CGRect newFrame = CGRectMake(mapView.frame.origin.x, mapView.frame.origin.y, newHeight, mapView.frame.size.width);
+//    mapView.frame = newFrame;
+    
     [mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
     mapView.showsUserLocation = YES;
     
     // Join button
-    UIButton *joinButton = [[UIButton alloc] initWithFrame:CGRectMake(42, mapView.frame.size.height - 44, mapView.frame.size.width * 0.75f, 66)];
+    UIButton *joinButton = [[UIButton alloc] initWithFrame:CGRectMake(42, kCellExpandedHeight-100, mapView.frame.size.width * 0.75f, 66)];
     joinButton.titleLabel.font = [UIFont fontWithName:@"M41_LOVEBIT" size:24];
     joinButton.titleLabel.textColor = MA_COLOR_RED;
     joinButton.layer.borderColor = MA_COLOR_WHITE.CGColor;
     joinButton.layer.borderWidth = 2;
     
-    // Fixme is join or create??
-    //if (self.board.game.isActive) {
-    if (YES) {
-        [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
-        [joinButton addTarget:self.parent action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
-    } else {
-        [joinButton setTitle:@"CREATE" forState:UIControlStateNormal];
-        [joinButton addTarget:self.parent action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
-    }
+    // We'll change this in cellForRow later, if necessary
+    [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
+    [joinButton addTarget:self.parent action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     
-    [mapView addSubview:joinButton];
+    self.startButton = joinButton;
+    [mapView addSubview:self.startButton
+     ];
     _mapView = mapView;
 }
 

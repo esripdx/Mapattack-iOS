@@ -207,9 +207,10 @@
         board = self.currentGames[(NSUInteger)indexPath.row];
     } else {
         board = self.nearbyBoards[(NSUInteger)indexPath.row];
+        [cell.startButton setTitle:@"CREATE" forState:UIControlStateNormal];
+        [cell.startButton addTarget:tableView action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
     }
     [cell populateBoardWithDictionary:board];
-    
     return cell;
 }
 
@@ -232,9 +233,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == _selectedIndex) {
-        return 326;
+        return kCellExpandedHeight;
     } else {
-        return 44;
+        return kCellHeight;
     }
 }
 

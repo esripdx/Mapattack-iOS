@@ -449,7 +449,7 @@ http://www.pacmanhattan.com/</string>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                                 </view>
                                                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5wf-1G-TM9">
-                                                    <rect key="frame" x="0.0" y="47" width="320" height="150"/>
+                                                    <rect key="frame" x="0.0" y="47" width="320" height="282"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="SEu-za-KrJ" id="VrR-9N-scW"/>
@@ -501,7 +501,7 @@ http://www.pacmanhattan.com/</string>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                                 </view>
                                                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Acj-OB-BN7">
-                                                    <rect key="frame" x="0.0" y="47" width="320" height="150"/>
+                                                    <rect key="frame" x="0.0" y="47" width="320" height="282"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="SEu-za-KrJ" id="Uwj-9M-8l0"/>

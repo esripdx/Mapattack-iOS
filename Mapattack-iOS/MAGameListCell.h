@@ -20,7 +20,8 @@
 
 @property (nonatomic) BOOL isActiveHeader;
 @property (nonatomic) BOOL isInactiveHeader;
-@property (nonatomic, retain) id parent;
+@property (nonatomic, retain) UITableView *parent;
+@property (nonatomic, retain) UIButton *startButton;
 
 @property (nonatomic, strong) MABoard *board;
 
