@@ -13,5 +13,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *currentGamesTableView;
 @property (strong, nonatomic) IBOutlet UITableView *nearbyBoardsTableView;
+@property (weak, nonatomic) IBOutlet UILabel *currentGamesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nearbyBoardsLabel;
 
 @end

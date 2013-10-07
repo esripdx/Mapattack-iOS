@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="sxd-kP-9fv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="sxd-kP-9fv">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
@@ -23,7 +23,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="gameCell" rowHeight="326" id="MQ3-dc-CQK" customClass="MAGameListCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="gameListCell" rowHeight="326" id="MQ3-dc-CQK" customClass="MAGameListCell">
                                         <rect key="frame" x="0.0" y="86" width="320" height="326"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MQ3-dc-CQK" id="Sy1-9L-AlK">
@@ -403,19 +403,71 @@ http://www.pacmanhattan.com/</string>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CURRENT GAMES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNd-wi-nFa">
-                                <rect key="frame" x="20" y="20" width="280" height="21"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="NEARBY BOARDS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JIC-2j-HVI">
-                                <rect key="frame" x="20" y="277" width="280" height="21"/>
+                                <rect key="frame" x="0.0" y="272" width="320" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="V8O-md-GJH">
+                                <rect key="frame" x="0.0" y="54" width="320" height="210"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="gameCell" rowHeight="326" id="Adk-aS-eO9" customClass="MAGameListCell">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="326"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Adk-aS-eO9" id="pru-Vd-UrQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="325"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p2J-Ws-fy6" userLabel="Game Info View">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Game ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rRW-bo-7RR">
+                                                            <rect key="frame" x="11" y="5" width="198" height="33"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="99" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T5K-ze-R1F" userLabel="Blue Players">
+                                                            <rect key="frame" x="267" y="7" width="33" height="33"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                </view>
+                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5wf-1G-TM9">
+                                                    <rect key="frame" x="0.0" y="47" width="320" height="150"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="SEu-za-KrJ" id="VrR-9N-scW"/>
+                                                    </connections>
+                                                </mapView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="bluePlayersLabel" destination="T5K-ze-R1F" id="epF-a5-WFR"/>
+                                            <outlet property="cellView" destination="p2J-Ws-fy6" id="21b-mY-zg5"/>
+                                            <outlet property="gameNameLabel" destination="rRW-bo-7RR" id="LGz-pc-UYY"/>
+                                            <outlet property="mapView" destination="5wf-1G-TM9" id="pWy-j4-ypm"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fag-wu-Fpr">
                                 <rect key="frame" x="0.0" y="306" width="320" height="220"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -468,64 +520,14 @@ http://www.pacmanhattan.com/</string>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="V8O-md-GJH">
-                                <rect key="frame" x="0.0" y="49" width="320" height="220"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="gameCell" rowHeight="326" id="Adk-aS-eO9" customClass="MAGameListCell">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="326"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Adk-aS-eO9" id="pru-Vd-UrQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="325"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p2J-Ws-fy6" userLabel="Game Info View">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <subviews>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Game ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rRW-bo-7RR">
-                                                            <rect key="frame" x="11" y="5" width="198" height="33"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="99" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T5K-ze-R1F" userLabel="Blue Players">
-                                                            <rect key="frame" x="267" y="7" width="33" height="33"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                                </view>
-                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5wf-1G-TM9">
-                                                    <rect key="frame" x="0.0" y="47" width="320" height="150"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <connections>
-                                                        <outlet property="delegate" destination="SEu-za-KrJ" id="VrR-9N-scW"/>
-                                                    </connections>
-                                                </mapView>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <outlet property="bluePlayersLabel" destination="T5K-ze-R1F" id="epF-a5-WFR"/>
-                                            <outlet property="cellView" destination="p2J-Ws-fy6" id="21b-mY-zg5"/>
-                                            <outlet property="gameNameLabel" destination="rRW-bo-7RR" id="LGz-pc-UYY"/>
-                                            <outlet property="mapView" destination="5wf-1G-TM9" id="pWy-j4-ypm"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="TLI-V8-Wz2"/>
                     <connections>
+                        <outlet property="currentGamesLabel" destination="aNd-wi-nFa" id="MvL-MU-nW8"/>
                         <outlet property="currentGamesTableView" destination="V8O-md-GJH" id="nyG-Bi-yhs"/>
+                        <outlet property="nearbyBoardsLabel" destination="JIC-2j-HVI" id="9fm-UE-x4A"/>
                         <outlet property="nearbyBoardsTableView" destination="fag-wu-Fpr" id="BwP-Py-QSW"/>
                     </connections>
                 </viewController>

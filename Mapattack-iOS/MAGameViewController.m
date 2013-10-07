@@ -40,6 +40,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", [MAGameManager sharedManager].joinedTeamColor];
     DDLogVerbose(@"using template: %@", template);
     MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
