@@ -452,7 +452,7 @@ http://www.pacmanhattan.com/</string>
                                                     <rect key="frame" x="0.0" y="47" width="320" height="282"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <connections>
-                                                        <outlet property="delegate" destination="SEu-za-KrJ" id="VrR-9N-scW"/>
+                                                        <outlet property="delegate" destination="Oip-wq-HF8" id="GrI-by-xef"/>
                                                     </connections>
                                                 </mapView>
                                             </subviews>
@@ -504,7 +504,7 @@ http://www.pacmanhattan.com/</string>
                                                     <rect key="frame" x="0.0" y="47" width="320" height="282"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <connections>
-                                                        <outlet property="delegate" destination="SEu-za-KrJ" id="Uwj-9M-8l0"/>
+                                                        <outlet property="delegate" destination="Oip-wq-HF8" id="n3T-EC-Nv0"/>
                                                     </connections>
                                                 </mapView>
                                             </subviews>

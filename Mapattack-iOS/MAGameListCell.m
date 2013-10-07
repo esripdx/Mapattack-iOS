@@ -152,19 +152,18 @@
     [self setHeaderWithText:@"NEARBY BOARDS" andBackgroundColor:MA_COLOR_CREAM andTextColor:MA_COLOR_RED];
 }
 
-// FIXME don't know if cell is active or not yet!
-- (void)setMapView:(MKMapView *)mapView {
-    DDLogInfo(@"Setting mapview");
-    
-    NSString *template = @"http://mapattack-tiles-0.pdx.esri.com/dark/{z}/{y}/{x}";
+- (void)setMapTemplateWithTileColor:(NSString *)color
+{
+    NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", color];
     MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
     overlay.canReplaceMapContent = YES;
     
-//    NSInteger newHeight = mapView.frame.size.height + 250;
-//    CGRect newFrame = CGRectMake(mapView.frame.origin.x, mapView.frame.origin.y, newHeight, mapView.frame.size.width);
-//    mapView.frame = newFrame;
+    [_mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
+}
+
+- (void)setMapView:(MKMapView *)mapView {
+    DDLogInfo(@"Setting mapview");
     
-    [mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
     mapView.showsUserLocation = YES;
     
     // Join button

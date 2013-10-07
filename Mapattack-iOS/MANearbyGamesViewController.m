@@ -201,10 +201,6 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row != _selectedIndex) {
         _selectedIndex = indexPath.row;
-        // What's this for?
-        //        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
-//        NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
-//        cell.board = [[MABoard alloc] initWithDictionary:board];
     } else {
         _selectedIndex = -1;
     }

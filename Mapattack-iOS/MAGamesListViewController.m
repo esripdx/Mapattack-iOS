@@ -205,10 +205,12 @@
     NSDictionary *board;
     if (tableView == self.currentGamesTableView) {
         board = self.currentGames[(NSUInteger)indexPath.row];
+        [cell setMapTemplateWithTileColor:@"blue"];
     } else {
         board = self.nearbyBoards[(NSUInteger)indexPath.row];
         [cell.startButton setTitle:@"CREATE" forState:UIControlStateNormal];
         [cell.startButton addTarget:tableView action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
+        [cell setMapTemplateWithTileColor:@"red"];
     }
     [cell populateBoardWithDictionary:board];
     return cell;
