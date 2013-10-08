@@ -20,12 +20,15 @@
 
 @property (nonatomic) BOOL isActiveHeader;
 @property (nonatomic) BOOL isInactiveHeader;
-@property (nonatomic, retain) id parent;
+@property (nonatomic, retain) UITableView *parent;
+@property (nonatomic, retain) UIButton *startButton;
 
 @property (nonatomic, strong) MABoard *board;
 
-- (void)setActiveBoard:(BOOL)isHeader;
-- (void)setInactiveBoard:(BOOL)isHeader;
+- (void)setActiveBoard;
+- (void)setInactiveBoard;
 - (void)populateBoardWithDictionary:(NSDictionary *)board andIndex:(int)boardIndex andInactiveHeaderIndex:(int)inActiveHeaderIndex andTableView:(UITableView *)tableView;
+- (void)populateBoardWithDictionary:(NSDictionary *)board;
+- (void)setMapTemplateWithTileColor:(NSString *)color;
 
 @end

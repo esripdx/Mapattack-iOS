@@ -19,7 +19,11 @@
     self = [super init];
     if (self) {
         self.gameId = game[kMAApiGameIdKey];
-        self.isActive = [game[kMAApiActiveKey] boolValue];
+        if (game[kMAApiActiveKey] && [game[kMAApiActiveKey] intValue] > 0) {
+            self.isActive = YES;
+        } else {
+            self.isActive = NO;
+        }
         self.redTeamPlayers =  [game[@"red_team"] intValue];
         self.blueTeamPlayers =  [game[@"blue_team"] intValue];
         self.totalPlayers = self.redTeamPlayers + self.blueTeamPlayers;
@@ -40,6 +44,11 @@
              @"blue_team": [NSNumber numberWithInt:self.blueTeamPlayers],
              @"blue_score": [NSNumber numberWithInt:self.blueScore],
              };
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%d %@", self.totalPlayers, (self.isActive ? @"active" : @"inactive") ];
 }
 
 @end

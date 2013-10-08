@@ -1,73 +1,115 @@
 //
-//  MANearbyGamesViewController.m
+//  MAGamesListTableViewController.m
 //  Mapattack-iOS
 //
-//  Created by Jen on 9/18/13.
+//  Created by Jen on 10/8/13.
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
-#import <MBProgressHUD/MBProgressHUD.h>
-#import "MANearbyGamesViewController.h"
+#import "MAGamesListTableViewController.h"
+#import "MBProgressHUD.h"
 #import "MAGameManager.h"
-#import "MAGameViewController.h"
-#import "MAGameListCell.h"
 #import "MAAppDelegate.h"
-#import "MABoard.h"
-#import "MACoin.h"
+#import "MAGameListCell.h"
 #import "MACoinAnnotationView.h"
+#import "MAGameViewController.h"
+#import "MABorderSetter.h"
+#import "MACoin.h"
 
-@interface MANearbyGamesViewController () {
+@interface MAGamesListTableViewController () {
     NSInteger _selectedIndex;
+    NSInteger _selectedSection;
 }
+@property (strong, nonatomic) NSArray *currentGames;
 @property (strong, nonatomic) NSArray *nearbyBoards;
 
 @end
 
-@implementation MANearbyGamesViewController
+@implementation MAGamesListTableViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
     if (self) {
+        // Custom initialization
     }
     return self;
 }
 
-- (void)viewDidLoad {
-    self.view.backgroundColor = MA_COLOR_CREAM;
-    self.tableView.backgroundColor = [UIColor clearColor];
-    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    [self.tableView setDelegate:self];
+    [self.tableView setDataSource:self];
+
+    self.tableView.sectionHeaderHeight = kMACellHeight-3;
+    self.view.backgroundColor = MA_COLOR_CREAM;
+    self.tableView.backgroundColor = MA_COLOR_CREAM;
+    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+    
     UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.tintColor = MA_COLOR_WHITE;
     toolbar.barStyle = UIBarStyleBlack;
     toolbar.translucent = YES;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.navigationController.toolbarHidden = NO;
-
+    
     _selectedIndex = -1;
     [self beginMonitoringNearbyBoards];
 }
 
-- (NSArray *)sortByActiveBoards:(NSArray *)boards
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[MAGameManager sharedManager] stopMonitoringNearbyGames];
+}
+
+- (BOOL)isActiveSection:(NSInteger)section
 {
-    NSArray *sortedArray;
-    sortedArray = [boards sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-        
-        NSNumber *first = ([a[@"game"][@"active"]  isEqual: @1]) ? @1 : @0;
-        NSNumber *second = ([b[@"game"][@"active"]  isEqual: @1]) ? @1 : @0;
-        
-        return [second compare:first];
-        
-    }];
-    return sortedArray;
+    if (section == 0) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (UITableViewHeaderFooterView *)makeHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor
+{
+
+    NSInteger x = 42;
+    NSInteger y = 0;
+    NSInteger width = kMATableWidth;
+    NSInteger height = kMACellHeight;
+
+    CGRect viewFrame = CGRectMake(x, y, width, height);
+    UITableViewHeaderFooterView *view = [[UITableViewHeaderFooterView alloc] initWithFrame:viewFrame];
+    view.contentView.backgroundColor = bgColor;
+    [MABorderSetter setBottomBorderForView:view withColor:textColor];
+
+    CGRect labelFrame = CGRectMake(x, y, width, height);
+
+    UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
+    label.font = MA_FONT_MENSCH_HEADER;
+    label.text = text;
+    label.textColor = textColor;
+
+    [view addSubview:label];
+
+    return view;
 }
 
 - (void)beginMonitoringNearbyBoards {
-
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
@@ -75,8 +117,7 @@
     
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
-            self.nearbyBoards = [self sortByActiveBoards:boards];
-            // this is hiding a row :/ self.inActiveHeaderIndex = [self firstInactiveBoardIndex];
+            [self separateBoards:boards];
             
             if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
@@ -91,49 +132,44 @@
                               cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             // TODO: Should probably set ourselves as the delegate for the alert view and give a retry button.
             
-            self.nearbyBoards = [NSArray array];
         }
-        
-        [self.tableView reloadData];
+
         [hud hide:YES];
     }];
 }
 
-- (int)firstInactiveBoardIndex
+-(void)separateBoards:(NSArray *)boards
 {
-
-    int inActiveHeaderIndex;
-    BOOL foundFirstInactiveBoard = NO;
-    for (int thisBoard = 0; thisBoard <= [self.nearbyBoards count]; thisBoard++) {
-        if (!foundFirstInactiveBoard) {
-            NSDictionary *board = self.nearbyBoards[thisBoard];
-            if (thisBoard > 0) {
-                NSDictionary *previousBoard = self.nearbyBoards[thisBoard-1];
-                if (!board[@"game"][@"active"] && previousBoard[@"game"][@"active"]) {
-                    foundFirstInactiveBoard = YES;
-                    inActiveHeaderIndex = thisBoard;
-                    self.inActiveHeaderIndex = inActiveHeaderIndex;
-                }
-            }
+    NSMutableArray *active = [NSMutableArray array];
+    NSMutableArray *inactive = [NSMutableArray array];
+    for (NSDictionary *board in boards) {
+        if (board[@"game"][@"active"] && [board[@"game"][@"active"] intValue] > 0) {
+            [active addObject:board];
+        } else {
+            [inactive addObject:board];
         }
     }
-
-    return inActiveHeaderIndex;
+ 
+    self.currentGames = active;
+    self.nearbyBoards = inactive;
     
+    [self.tableView reloadData];
+
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [[MAGameManager sharedManager] stopMonitoringNearbyGames];
-}
-
-- (IBAction)joinGame:(id)sender {
-    if (_selectedIndex >= 0 && _selectedIndex < self.nearbyBoards.count) {
+- (void)joinGame:(id)sender {
+    if (_selectedIndex >= 0 && _selectedIndex) { // No longer applicable < self.nearbyBoards.count) {
         [[MAGameManager sharedManager] stopMonitoringNearbyGames];
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.square = NO;
-        NSDictionary *board = self.nearbyBoards[(NSUInteger)_selectedIndex];
+        NSDictionary *board;
+        if ([self isActiveSection:_selectedSection]) {
+            board = self.currentGames[_selectedIndex];
+        } else {
+            board = self.nearbyBoards[_selectedIndex];
+        }
+
         NSDictionary *game = board[@"game"];
         if (game != nil) {
             hud.labelText = @"Joining...";
@@ -184,31 +220,56 @@
 }
 
 #pragma mark - UITableViewDelegate/Datasource
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+
+{
+    if ([self isActiveSection:section]) {
+        return [self makeHeaderWithText:@"CURRENT GAMES" andBackgroundColor:MA_COLOR_BODYBLUE andTextColor:MA_COLOR_WHITE];
+    } else {
+        return [self makeHeaderWithText:@"NEARBY BOARDS" andBackgroundColor:MA_COLOR_CREAM andTextColor:MA_COLOR_RED];
+    }
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 2;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.nearbyBoards.count;
+    if ([self isActiveSection:section]) {
+        return [self.currentGames count];
+    } else {
+        return [self.nearbyBoards count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameCell" forIndexPath:indexPath];
+    MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameListCell" forIndexPath:indexPath];
     
-    NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
-    [cell populateBoardWithDictionary:board andIndex:self.currentBoardIndex andInactiveHeaderIndex:self.inActiveHeaderIndex andTableView:self.tableView];
-    self.currentBoardIndex = self.currentBoardIndex + 1;
-    
+    NSDictionary *board;
+
+    if ([self isActiveSection:indexPath.section]) {
+        board = self.currentGames[(NSUInteger)indexPath.row];
+        [cell setMapTemplateWithTileColor:@"blue"];
+    } else {
+        board = self.nearbyBoards[(NSUInteger)indexPath.row];
+        [cell.startButton setTitle:@"CREATE" forState:UIControlStateNormal];
+        [cell.startButton addTarget:tableView action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
+        [cell setMapTemplateWithTileColor:@"red"];
+    }
+    [cell populateBoardWithDictionary:board];
     return cell;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row != _selectedIndex) {
         _selectedIndex = indexPath.row;
-        // What's this for?
-        //        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
-//        NSDictionary *board = self.nearbyBoards[(NSUInteger)indexPath.row];
-//        cell.board = [[MABoard alloc] initWithDictionary:board];
     } else {
         _selectedIndex = -1;
     }
+    _selectedSection = indexPath.section;
+
     return indexPath;
 }
 
@@ -219,10 +280,10 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == _selectedIndex) {
-        return 326;
+    if (indexPath.row == _selectedIndex && indexPath.section == _selectedSection) {
+        return kMACellExpandedHeight;
     } else {
-        return 44;
+        return kMACellHeight;
     }
 }
 
@@ -244,5 +305,7 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [self beginMonitoringNearbyBoards];
 }
+
+
 
 @end
