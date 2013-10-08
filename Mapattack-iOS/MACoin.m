@@ -18,8 +18,14 @@
     self = [super init];
     if (self) {
         self.coinId = dictionary[kMAApiCoinIdKey];
-        self.team = dictionary[kMAApiTeamKey];
         self.value = [dictionary[kMAApiPointsKey] integerValue];
+
+        NSString *team = dictionary[kMAApiTeamKey];
+        if (team && ![team isEqual:[NSNull null]]) {
+            self.team = team;
+        } else {
+            self.team = @"";
+        }
 
         NSNumber *latitude = dictionary[kMAApiLatitudeKey];
         NSNumber *longitude = dictionary[kMAApiLongitudeKey];
@@ -66,7 +72,6 @@
 
 - (UIImage *)image {
     NSString *imageName = [NSString stringWithFormat:@"coin%@%d", self.team, self.value];
-    imageName = [[imageName stringByReplacingOccurrencesOfString:@"<null>" withString:@""] stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
     UIImage *image = [UIImage imageNamed:imageName];
     return [UIImage imageWithCGImage:image.CGImage scale:2.0f orientation:UIImageOrientationUp];
 }
