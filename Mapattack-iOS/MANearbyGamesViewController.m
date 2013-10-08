@@ -12,8 +12,9 @@
 #import "MAGameViewController.h"
 #import "MAGameListCell.h"
 #import "MAAppDelegate.h"
-#import "MACoinAnnotation.h"
 #import "MABoard.h"
+#import "MACoin.h"
+#import "MACoinAnnotationView.h"
 
 @interface MANearbyGamesViewController () {
     NSInteger _selectedIndex;
@@ -228,11 +229,8 @@
 #pragma mark MKMapViewDelegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-    if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
-        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
-        MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
-        pin.image = coinAnnotation.image;
-        return pin;
+    if ([annotation isKindOfClass:[MACoin class]]) {
+        return [[MACoinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
     }
     return nil;
 }

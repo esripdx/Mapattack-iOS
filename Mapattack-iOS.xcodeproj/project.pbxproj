@@ -10,6 +10,10 @@
 		55C3C3CFC6C84F488572B570 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD71C79D415455F8DAB6718 /* libPods.a */; };
 		67EF2A40EC9114F899AB701D /* MAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF21A8CF822FA5157F20CB /* MAConstants.m */; };
 		940DAA2817FDF4B700FC6C17 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940DAA2717FDF4B700FC6C17 /* AudioToolbox.framework */; };
+		940DAA2B17FF2C2900FC6C17 /* MAPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 940DAA2A17FF2C2900FC6C17 /* MAPlayer.m */; };
+		942C20B91803728D003FB7CE /* MAPlayerAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */; };
+		942C20BD18037960003FB7CE /* MACoin.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20BC18037960003FB7CE /* MACoin.m */; };
+		942C20C018039D12003FB7CE /* MACoinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20BF18039D12003FB7CE /* MACoinAnnotationView.m */; };
 		94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameManager.m */; };
 		94C6D22617EBB0F900F30187 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22517EBB0F900F30187 /* CoreLocation.framework */; };
 		94C6D22817EC0D2F00F30187 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22717EC0D2F00F30187 /* AVFoundation.framework */; };
@@ -18,8 +22,6 @@
 		94C6D22E17EC152E00F30187 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22D17EC152E00F30187 /* CoreVideo.framework */; };
 		94C6D23017EC15AA00F30187 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22F17EC15AA00F30187 /* ImageIO.framework */; };
 		94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D23117EC15D000F30187 /* QuartzCore.framework */; };
-		94D4D65D17F78EAD008E0F7A /* MACoinAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D4D65C17F78EAD008E0F7A /* MACoinAnnotation.m */; };
-		94D4D66017F79860008E0F7A /* MAPlayerAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D4D65F17F79860008E0F7A /* MAPlayerAnnotation.m */; };
 		94D4D66217F79A6B008E0F7A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94D4D66117F79A6B008E0F7A /* Images.xcassets */; };
 		94FDAF0B17F2245C00D284D4 /* MAGameListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */; };
 		94FDAF0D17F236C100D284D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94FDAF0C17F236C100D284D4 /* MapKit.framework */; };
@@ -55,6 +57,14 @@
 		67EF21A8CF822FA5157F20CB /* MAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAConstants.m; sourceTree = "<group>"; };
 		67EF22671CEFC3E013EFBD14 /* MAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAConstants.h; sourceTree = "<group>"; };
 		940DAA2717FDF4B700FC6C17 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		940DAA2917FF2C2900FC6C17 /* MAPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPlayer.h; sourceTree = "<group>"; };
+		940DAA2A17FF2C2900FC6C17 /* MAPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPlayer.m; sourceTree = "<group>"; };
+		942C20B71803728D003FB7CE /* MAPlayerAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPlayerAnnotationView.h; sourceTree = "<group>"; };
+		942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPlayerAnnotationView.m; sourceTree = "<group>"; };
+		942C20BB18037960003FB7CE /* MACoin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACoin.h; sourceTree = "<group>"; };
+		942C20BC18037960003FB7CE /* MACoin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoin.m; sourceTree = "<group>"; };
+		942C20BE18039D12003FB7CE /* MACoinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACoinAnnotationView.h; sourceTree = "<group>"; };
+		942C20BF18039D12003FB7CE /* MACoinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoinAnnotationView.m; sourceTree = "<group>"; };
 		94A131CC17EB9CA500E1B15D /* MAGameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameManager.h; sourceTree = "<group>"; };
 		94A131CD17EB9CA500E1B15D /* MAGameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameManager.m; sourceTree = "<group>"; };
 		94C6D22517EBB0F900F30187 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -64,10 +74,6 @@
 		94C6D22D17EC152E00F30187 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		94C6D22F17EC15AA00F30187 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		94C6D23117EC15D000F30187 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		94D4D65B17F78EAD008E0F7A /* MACoinAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACoinAnnotation.h; sourceTree = "<group>"; };
-		94D4D65C17F78EAD008E0F7A /* MACoinAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoinAnnotation.m; sourceTree = "<group>"; };
-		94D4D65E17F79860008E0F7A /* MAPlayerAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPlayerAnnotation.h; sourceTree = "<group>"; };
-		94D4D65F17F79860008E0F7A /* MAPlayerAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPlayerAnnotation.m; sourceTree = "<group>"; };
 		94D4D66117F79A6B008E0F7A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		94FDAF0917F2245C00D284D4 /* MAGameListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameListCell.h; sourceTree = "<group>"; };
 		94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameListCell.m; sourceTree = "<group>"; };
@@ -141,10 +147,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		94A131CB17EB9B7B00E1B15D /* Interface */ = {
+		942C20BA18037296003FB7CE /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				94D4D65A17F78E54008E0F7A /* Annotations */,
+				942C20B71803728D003FB7CE /* MAPlayerAnnotationView.h */,
+				942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */,
+				942C20BE18039D12003FB7CE /* MACoinAnnotationView.h */,
+				942C20BF18039D12003FB7CE /* MACoinAnnotationView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		94A131CB17EB9B7B00E1B15D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
 				BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */,
 				BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */,
 				BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */,
@@ -159,18 +175,7 @@
 				94FDAF1E17F5660E00D284D4 /* MALovebitTextField.h */,
 				94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */,
 			);
-			name = Interface;
-			sourceTree = "<group>";
-		};
-		94D4D65A17F78E54008E0F7A /* Annotations */ = {
-			isa = PBXGroup;
-			children = (
-				94D4D65B17F78EAD008E0F7A /* MACoinAnnotation.h */,
-				94D4D65C17F78EAD008E0F7A /* MACoinAnnotation.m */,
-				94D4D65E17F79860008E0F7A /* MAPlayerAnnotation.h */,
-				94D4D65F17F79860008E0F7A /* MAPlayerAnnotation.m */,
-			);
-			name = Annotations;
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		94FDAF0E17F4A60B00D284D4 /* fonts */ = {
@@ -225,10 +230,11 @@
 		BDADFD6B17EA41C000CB11B8 /* Mapattack-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				FA79D5C817FE0BFA00E7DD20 /* Models */,
 				BE33B39717F6006F0033EFDE /* ext */,
 				BDADFD6C17EA41C000CB11B8 /* Supporting Files */,
-				94A131CB17EB9B7B00E1B15D /* Interface */,
+				FA79D5C817FE0BFA00E7DD20 /* Models */,
+				942C20BA18037296003FB7CE /* Views */,
+				94A131CB17EB9B7B00E1B15D /* Controllers */,
 				BDADFD7417EA41C000CB11B8 /* MAAppDelegate.h */,
 				BDADFD7517EA41C000CB11B8 /* MAAppDelegate.m */,
 				BE2228E517EA601500EFF703 /* MAUdpConnection.h */,
@@ -279,6 +285,10 @@
 				FA79D5CA17FE0C0A00E7DD20 /* MABoard.m */,
 				FA79D5CC17FE0C6600E7DD20 /* MAGame.h */,
 				FA79D5CD17FE0C6600E7DD20 /* MAGame.m */,
+				940DAA2917FF2C2900FC6C17 /* MAPlayer.h */,
+				940DAA2A17FF2C2900FC6C17 /* MAPlayer.m */,
+				942C20BB18037960003FB7CE /* MACoin.h */,
+				942C20BC18037960003FB7CE /* MACoin.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -400,20 +410,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94D4D65D17F78EAD008E0F7A /* MACoinAnnotation.m in Sources */,
 				BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */,
 				BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
 				BEC25CA817FA5F3E00735CFC /* MAApiConnection.m in Sources */,
+				942C20B91803728D003FB7CE /* MAPlayerAnnotationView.m in Sources */,
+				942C20BD18037960003FB7CE /* MACoin.m in Sources */,
+				940DAA2B17FF2C2900FC6C17 /* MAPlayer.m in Sources */,
 				FA79D5CB17FE0C0A00E7DD20 /* MABoard.m in Sources */,
 				BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */,
 				FA79D5CE17FE0C6600E7DD20 /* MAGame.m in Sources */,
 				94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */,
+				942C20C018039D12003FB7CE /* MACoinAnnotationView.m in Sources */,
 				BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
 				94FDAF2017F5660F00D284D4 /* MALovebitTextField.m in Sources */,
 				BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */,
-				94D4D66017F79860008E0F7A /* MAPlayerAnnotation.m in Sources */,
 				94FDAF0B17F2245C00D284D4 /* MAGameListCell.m in Sources */,
 				BDADFD7617EA41C000CB11B8 /* MAAppDelegate.m in Sources */,
 				BD69CBD517EA6B9C00E63C71 /* MAGameViewController.m in Sources */,

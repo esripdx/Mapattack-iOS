@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 //NSString *const kMapAttackHostname = @"localhost";
 NSString *const kMapAttackHostname = @"api.mapattack.org";
 
