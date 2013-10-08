@@ -129,10 +129,10 @@ static const int MAMapAttackUdpSendDataTimeout = -1;
 }
 
 - (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError *)error {
-    DDLogVerbose(@"socket closed!");
     if (error) {
         self.lastError = error;
     }
+    DDLogVerbose(@"socket closed %@!", error);
 }
 
 @end

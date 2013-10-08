@@ -19,7 +19,7 @@
     self = [super init];
     if (self) {
         self.gameId = game[kMAApiGameIdKey];
-        if (game[kMAApiActiveKey] && [game[kMAApiActiveKey] intValue] > 0) {
+        if (game[kMAApiActiveKey]) {
             self.isActive = YES;
         } else {
             self.isActive = NO;

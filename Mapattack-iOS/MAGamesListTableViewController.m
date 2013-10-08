@@ -143,7 +143,7 @@
     NSMutableArray *active = [NSMutableArray array];
     NSMutableArray *inactive = [NSMutableArray array];
     for (NSDictionary *board in boards) {
-        if (board[@"game"][@"active"] && [board[@"game"][@"active"] intValue] > 0) {
+        if (board[@"game"][@"active"]) {
             [active addObject:board];
         } else {
             [inactive addObject:board];
@@ -255,10 +255,11 @@
     } else {
         board = self.nearbyBoards[(NSUInteger)indexPath.row];
         [cell.startButton setTitle:@"CREATE" forState:UIControlStateNormal];
-        [cell.startButton addTarget:tableView action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
+        [cell.startButton addTarget:[MAGameManager sharedManager] action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
         [cell setMapTemplateWithTileColor:@"red"];
     }
     [cell populateBoardWithDictionary:board];
+    //[tableView scrollRectToVisible:CGRectMake(0, 600, self.view.frame.size.width,self.view.frame.size.height) animated:YES];
     return cell;
 }
 
@@ -277,6 +278,11 @@
     // these cause the tableview to animate the cell expanding to show the map
     [tableView beginUpdates];
     [tableView endUpdates];
+    NSInteger scrollTo = indexPath.row;
+    NSIndexPath *path = [NSIndexPath indexPathForItem:scrollTo inSection:indexPath.section];
+    [self.tableView scrollToRowAtIndexPath:path
+                              atScrollPosition:UITableViewScrollPositionTop
+                                      animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
