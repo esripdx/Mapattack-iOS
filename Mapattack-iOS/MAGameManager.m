@@ -140,6 +140,7 @@
 #pragma mark - Game creating/joining
 
 - (NSString *)joinedGameId {
+    DDLogInfo(@"JoinedGameId %@", (NSString *)_joinedGameBoard[kMAApiGameKey][kMAApiGameIdKey]);
     return (NSString *)_joinedGameBoard[kMAApiGameKey][kMAApiGameIdKey];
 }
 
@@ -226,7 +227,12 @@
 }
 
 - (void)startGame {
-    [_api postToPath:kMAApiGameStartPath params:@{ kMAApiGameIdKey: self.joinedGameId }];
+    if (self.joinedGameId) {
+        NSDictionary *gameParams =@{ kMAApiGameIdKey: self.joinedGameId };
+        [_api postToPath:kMAApiGameStartPath params:gameParams];
+    } else {
+        DDLogError(@"Couldn't find joinedGameId! Can't start game!");
+    }
 }
 
 - (void)endGame {
@@ -240,7 +246,7 @@
     
     MAApiSuccessHandler boardStateSuccess = ^(NSDictionary *response) {
         self.lastBoardStateDict = response;
-        //DDLogVerbose(@"board state response: %@", response);
+        DDLogVerbose(@"board state response: %@", response);
         if (completion != nil) {
             completion(response[kMAApiBoardKey], response[kMAApiCoinsKey], nil);
         }

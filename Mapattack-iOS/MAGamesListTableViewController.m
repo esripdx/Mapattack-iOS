@@ -143,7 +143,7 @@
     NSMutableArray *active = [NSMutableArray array];
     NSMutableArray *inactive = [NSMutableArray array];
     for (NSDictionary *board in boards) {
-        if (board[@"game"][@"active"] && [board[@"game"][@"active"] intValue] > 0) {
+        if (board[@"game"][@"active"]) {
             [active addObject:board];
         } else {
             [inactive addObject:board];
@@ -255,7 +255,7 @@
     } else {
         board = self.nearbyBoards[(NSUInteger)indexPath.row];
         [cell.startButton setTitle:@"CREATE" forState:UIControlStateNormal];
-        [cell.startButton addTarget:tableView action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
+        [cell.startButton addTarget:[MAGameManager sharedManager] action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
         [cell setMapTemplateWithTileColor:@"red"];
     }
     [cell populateBoardWithDictionary:board];
