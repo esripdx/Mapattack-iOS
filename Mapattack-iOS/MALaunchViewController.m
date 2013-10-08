@@ -86,14 +86,12 @@
 
     [self updateEnterButton];
 
-    self.avatars = @[
-            [UIImage imageNamed:@"256_cat_a.png"],
-            [UIImage imageNamed:@"256_cat_b.png"],
-            [UIImage imageNamed:@"256_cat_c.png"],
-            [UIImage imageNamed:@"256_cat_d.png"],
-            [UIImage imageNamed:@"256_cat_e.png"]
-    ];
-    self.selectedAvatarIndex = 0;
+    self.avatars = @[];
+    for (NSString *defaultAvatarImageName in MA_DEFAULT_AVATARS) {
+        self.avatars = [self.avatars arrayByAddingObject:[UIImage imageNamed:defaultAvatarImageName]];
+    }
+
+    self.selectedAvatarIndex = arc4random_uniform(self.avatars.count);
     NSData *avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
     if (avatarData) {
         [self saveAvatar:[UIImage imageWithData:avatarData]];
@@ -137,6 +135,12 @@
     hud.square = NO;
     hud.labelText = @"Registering...";
 
+    if ([[NSUserDefaults standardUserDefaults] dataForKey:kMADefaultsAvatarKey] == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(self.avatarImageView.image, 1.0f)
+                                                  forKey:kMADefaultsAvatarKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+
     [[MAGameManager sharedManager] registerDeviceWithCompletionBlock:^(NSError *error) {
         if (error != nil) {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error registering device with server" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
@@ -156,7 +160,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [[NSUserDefaults standardUserDefaults] setObject:self.userNameField.text forKey:kMADefaultsUserNameKey];
+    [[NSUserDefaults standardUserDefaults] setObject:[self.userNameField.text uppercaseString] forKey:kMADefaultsUserNameKey];
     _isUserNameSet = ![self.userNameField.text isEqualToString:@""];
 
     [self updateEnterButton];
