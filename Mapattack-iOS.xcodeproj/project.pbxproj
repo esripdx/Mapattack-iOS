@@ -150,6 +150,10 @@
 		942C20BA18037296003FB7CE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				94FDAF0917F2245C00D284D4 /* MAGameListCell.h */,
+				94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */,
+				94FDAF1E17F5660E00D284D4 /* MALovebitTextField.h */,
+				94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */,
 				942C20B71803728D003FB7CE /* MAPlayerAnnotationView.h */,
 				942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */,
 				942C20BE18039D12003FB7CE /* MACoinAnnotationView.h */,
@@ -163,17 +167,12 @@
 			children = (
 				BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */,
 				BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */,
-				BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */,
-				94FDAF0917F2245C00D284D4 /* MAGameListCell.h */,
-				94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */,
 				BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */,
 				BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */,
 				BD69CBD017EA69D200E63C71 /* MAHelpViewController.h */,
 				BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */,
 				BD69CBD317EA6B9C00E63C71 /* MAGameViewController.h */,
 				BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */,
-				94FDAF1E17F5660E00D284D4 /* MALovebitTextField.h */,
-				94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -235,6 +234,7 @@
 				FA79D5C817FE0BFA00E7DD20 /* Models */,
 				942C20BA18037296003FB7CE /* Views */,
 				94A131CB17EB9B7B00E1B15D /* Controllers */,
+				BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */,
 				BDADFD7417EA41C000CB11B8 /* MAAppDelegate.h */,
 				BDADFD7517EA41C000CB11B8 /* MAAppDelegate.m */,
 				BE2228E517EA601500EFF703 /* MAUdpConnection.h */,
