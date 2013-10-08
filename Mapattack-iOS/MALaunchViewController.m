@@ -91,7 +91,7 @@
         self.avatars = [self.avatars arrayByAddingObject:[UIImage imageNamed:defaultAvatarImageName]];
     }
 
-    self.selectedAvatarIndex = 0;
+    self.selectedAvatarIndex = arc4random_uniform(self.avatars.count);
     NSData *avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
     if (avatarData) {
         [self saveAvatar:[UIImage imageWithData:avatarData]];
