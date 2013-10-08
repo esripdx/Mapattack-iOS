@@ -38,9 +38,9 @@
     
     // Style as active or inactive
     if (self.board.game.isActive) {
-        [self setActiveBoard:(self.board.indexInBoardList == 0)];
+        [self setActiveBoard];
     } else {
-        [self setInactiveBoard:self.board.indexInBoardList == inActiveHeaderIndex];
+        [self setInactiveBoard];
     }
 
 }
@@ -59,9 +59,9 @@
     
     // Style as active or inactive
     if (self.board.game.isActive) {
-        [self setActiveBoard:NO];
+        [self setActiveBoard];
     } else {
-        [self setInactiveBoard:NO];
+        [self setInactiveBoard];
     }
 }
 
@@ -85,12 +85,9 @@
 }
 
 #pragma mark - Cell Contents
-- (void)setActiveBoard:(BOOL)isHeader
+- (void)setActiveBoard
 {
-    if (isHeader) {
-        [self setActiveBoardHeader];
-        return;
-    }
+
     self.cellView.backgroundColor = MA_COLOR_BODYBLUE;
     self.bluePlayersLabel.textColor = MA_COLOR_WHITE;
     self.bluePlayersLabel.font = [self fontType];
@@ -101,41 +98,9 @@
 
 }
 
-- (void)setHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor
+- (void)setInactiveBoard
 {
-    
-    [self.gameNameLabel removeFromSuperview];
-    [self.bluePlayersLabel removeFromSuperview];
-    
-    CGRect viewFrame = CGRectMake(self.cellView.frame.origin.x, self.cellView.frame.origin.y, self.cellView.frame.size.width, self.cellView.frame.size.height);
-    UIView *view = [[UIView alloc] initWithFrame:viewFrame];
-    view.backgroundColor = bgColor;
-    [MABorderSetter setBottomBorderForView:view withColor:textColor];
 
-    CGRect labelFrame = CGRectMake(self.gameNameLabel.frame.origin.x, self.gameNameLabel.frame.origin.y-4, self.cellView.frame.size.width, self.cellView.frame.size.height);
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
-    label.font = MA_FONT_MENSCH_HEADER;
-    label.text = text;
-    label.textColor = textColor;
-    self.userInteractionEnabled = NO;
-    
-    [view addSubview:label];
-    [self addSubview:view];
-    
-}
-
-- (void)setActiveBoardHeader
-{
-    self.isActiveHeader = YES;
-    [self setHeaderWithText:@"CURRENT GAMES" andBackgroundColor:MA_COLOR_BODYBLUE andTextColor:MA_COLOR_WHITE];
-}
-
-- (void)setInactiveBoard:(BOOL)isHeader
-{
-    if (isHeader) {
-        [self setInactiveBoardHeader];
-    }
     self.cellView.backgroundColor = MA_COLOR_CREAM;
     self.bluePlayersLabel.textColor = MA_COLOR_RED;
     self.bluePlayersLabel.font = [self fontType];
@@ -144,12 +109,6 @@
     [MABorderSetter setBottomBorderForView:self.cellView withColor:MA_COLOR_RED];
     [MABorderSetter setLeftBorderForView:self.cellView withColor:MA_COLOR_RED];
 
-}
-
-- (void)setInactiveBoardHeader
-{
-    self.isInactiveHeader = YES;
-    [self setHeaderWithText:@"NEARBY BOARDS" andBackgroundColor:MA_COLOR_CREAM andTextColor:MA_COLOR_RED];
 }
 
 - (void)setMapTemplateWithTileColor:(NSString *)color
@@ -162,12 +121,10 @@
 }
 
 - (void)setMapView:(MKMapView *)mapView {
-    DDLogInfo(@"Setting mapview");
-    
     mapView.showsUserLocation = YES;
     
     // Join button
-    UIButton *joinButton = [[UIButton alloc] initWithFrame:CGRectMake(42, kCellExpandedHeight-100, mapView.frame.size.width * 0.75f, 66)];
+    UIButton *joinButton = [[UIButton alloc] initWithFrame:CGRectMake(42, kMACellExpandedHeight-100, mapView.frame.size.width * 0.75f, 66)];
     joinButton.titleLabel.font = [UIFont fontWithName:@"M41_LOVEBIT" size:24];
     joinButton.titleLabel.textColor = MA_COLOR_RED;
     joinButton.layer.borderColor = MA_COLOR_WHITE.CGColor;

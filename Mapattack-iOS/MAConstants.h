@@ -13,8 +13,9 @@ static NSUInteger const kMAMaxUsernameLength = 3;
 static float const kMAAvatarSize = 256.0f;
 static float const kMAAvatarIconSize = 55.0f;
 
-static NSUInteger const kCellHeight = 44;
-static NSUInteger const kCellExpandedHeight = 326;
+static NSUInteger const kMACellHeight = 44;
+static NSUInteger const kMACellExpandedHeight = 326;
+static NSUInteger const kMATableWidth = 320;
 
 /* UserDefaults keys
  */

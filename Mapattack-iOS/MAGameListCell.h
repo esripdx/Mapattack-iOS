@@ -25,10 +25,11 @@
 
 @property (nonatomic, strong) MABoard *board;
 
-- (void)setActiveBoard:(BOOL)isHeader;
-- (void)setInactiveBoard:(BOOL)isHeader;
+- (void)setActiveBoard;
+- (void)setInactiveBoard;
 - (void)populateBoardWithDictionary:(NSDictionary *)board andIndex:(int)boardIndex andInactiveHeaderIndex:(int)inActiveHeaderIndex andTableView:(UITableView *)tableView;
 - (void)populateBoardWithDictionary:(NSDictionary *)board;
 - (void)setMapTemplateWithTileColor:(NSString *)color;
++ (UITableViewHeaderFooterView *)makeHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor;
 
 @end

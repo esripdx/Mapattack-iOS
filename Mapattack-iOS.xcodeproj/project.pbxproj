@@ -29,6 +29,7 @@
 		94FDAF1317F4A60B00D284D4 /* lovebit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF1017F4A60B00D284D4 /* lovebit.ttf */; };
 		94FDAF1417F4A60B00D284D4 /* mensch.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF1117F4A60B00D284D4 /* mensch.ttf */; };
 		94FDAF2017F5660F00D284D4 /* MALovebitTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */; };
+		BD3E227D1804861B00775B71 /* MAGamesListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3E227C1804861B00775B71 /* MAGamesListTableViewController.m */; };
 		BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */; };
 		BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */; };
 		BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */; };
@@ -85,6 +86,8 @@
 		94FDAF1117F4A60B00D284D4 /* mensch.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = mensch.ttf; sourceTree = "<group>"; };
 		94FDAF1E17F5660E00D284D4 /* MALovebitTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MALovebitTextField.h; sourceTree = "<group>"; };
 		94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MALovebitTextField.m; sourceTree = "<group>"; };
+		BD3E227B1804861B00775B71 /* MAGamesListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGamesListTableViewController.h; sourceTree = "<group>"; };
+		BD3E227C1804861B00775B71 /* MAGamesListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGamesListTableViewController.m; sourceTree = "<group>"; };
 		BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MANearbyGamesViewController.h; sourceTree = "<group>"; };
 		BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MANearbyGamesViewController.m; sourceTree = "<group>"; };
 		BD69CBCD17EA695B00E63C71 /* MALaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MALaunchViewController.h; sourceTree = "<group>"; };
@@ -184,6 +187,8 @@
 				94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */,
 				FA3A479118031C53002282DD /* MABorderSetter.h */,
 				FA3A479218031C53002282DD /* MABorderSetter.m */,
+				BD3E227B1804861B00775B71 /* MAGamesListTableViewController.h */,
+				BD3E227C1804861B00775B71 /* MAGamesListTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -434,6 +439,7 @@
 				94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */,
 				942C20C018039D12003FB7CE /* MACoinAnnotationView.m in Sources */,
 				BE33B3A017F602900033EFDE /* NSString+UrlEncoding.m in Sources */,
+				BD3E227D1804861B00775B71 /* MAGamesListTableViewController.m in Sources */,
 				BD69CBD217EA69D200E63C71 /* MAHelpViewController.m in Sources */,
 				94FDAF2017F5660F00D284D4 /* MALovebitTextField.m in Sources */,
 				BD69CBC317EA68B900E63C71 /* MANearbyGamesViewController.m in Sources */,
