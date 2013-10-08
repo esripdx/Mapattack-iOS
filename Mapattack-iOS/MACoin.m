@@ -60,34 +60,6 @@
     return description;
 }
 
-- (BOOL)isEqual:(id)other {
-    if (other == self) {
-        return YES;
-    }
-    if (!other || ![[other class] isEqual:[self class]]) {
-        return NO;
-    }
-
-    return [self isEqualToCoin:other];
-}
-
-- (BOOL)isEqualToCoin:(MACoin *)coin {
-    if (self == coin) {
-        return YES;
-    }
-    if (coin == nil) {
-        return NO;
-    }
-    if (self.coinId == coin.coinId || [self.coinId isEqualToString:coin.coinId]) {
-        return YES;
-    }
-    return NO;
-}
-
-- (NSUInteger)hash {
-    return [self.coinId hash];
-}
-
 - (CLLocationCoordinate2D)coordinate {
     return self.location.coordinate;
 }
@@ -97,6 +69,18 @@
     imageName = [imageName stringByReplacingOccurrencesOfString:@"<null>" withString:@""];
     UIImage *image = [UIImage imageNamed:imageName];
     return [UIImage imageWithCGImage:image.CGImage scale:2.0f orientation:UIImageOrientationUp];
+}
+
+- (void)updateWithCoin:(MACoin *)coin {
+    [self willChangeValueForKey:@"team"];
+    self.team = coin.team;
+    [self didChangeValueForKey:@"team"];
+
+    self.value = coin.value;
+
+    [self willChangeValueForKey:@"coordinate"];
+    self.location = coin.location;
+    [self didChangeValueForKey:@"coordinate"];
 }
 
 @end

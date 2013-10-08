@@ -30,11 +30,9 @@
 + (instancetype)playerWithDictionary:(NSDictionary *)dictionary;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (NSDictionary *)toDictionary;
-- (UIImage *)mapAvatar;
 
-- (BOOL)isEqual:(id)other;
-- (BOOL)isEqualToPlayer:(MAPlayer *)player;
-- (NSUInteger)hash;
+- (void)updateWithPlayer:(MAPlayer *)player;
+- (UIImage *)mapAvatar;
 
 - (NSString *)description;
 

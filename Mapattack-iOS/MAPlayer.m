@@ -78,6 +78,16 @@
     return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
+- (void)updateWithPlayer:(MAPlayer *)player {
+    self.playerName = player.playerName;
+    self.score = player.score;
+    self.team = player.team;
+
+    [self willChangeValueForKey:@"coordinate"];
+    self.location = player.location;
+    [self didChangeValueForKey:@"coordinate"];
+}
+
 #pragma mark - Avatar stuff
 
 - (UIImage *)mapAvatar {
@@ -116,36 +126,6 @@
                    DDLogError(@"Error fetching avatar for player: %@\n%@", self, error);
                }];
 
-}
-
-#pragma mark - Equality stuff
-
-- (BOOL)isEqual:(id)other {
-    if (other == self) {
-        return YES;
-    }
-    if (!other || ![[other class] isEqual:[self class]]) {
-        return NO;
-    }
-
-    return [self isEqualToPlayer:other];
-}
-
-- (BOOL)isEqualToPlayer:(MAPlayer *)player {
-    if (self == player) {
-        return YES;
-    }
-    if (player == nil) {
-        return NO;
-    }
-    if (self.playerId == player.playerId || [self.playerId isEqualToString:player.playerId]) {
-        return YES;
-    }
-    return NO;
-}
-
-- (NSUInteger)hash {
-    return [self.playerId hash];
 }
 
 #pragma mark - MKAnnotation

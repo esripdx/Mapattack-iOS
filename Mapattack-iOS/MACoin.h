@@ -24,11 +24,7 @@
 
 - (NSString *)description;
 
-- (BOOL)isEqual:(id)other;
-
-- (BOOL)isEqualToCoin:(MACoin *)coin;
-
-- (NSUInteger)hash;
-
 - (UIImage *)image;
+- (void)updateWithCoin:(MACoin *)coin;
+
 @end

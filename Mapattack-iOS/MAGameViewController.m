@@ -13,6 +13,7 @@
 #import "MAPlayer.h"
 #import "MAPlayerAnnotationView.h"
 #import "MACoin.h"
+#import "MACoinAnnotationView.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 @interface MAGameViewController ()
@@ -129,9 +130,7 @@
         return nil;
     }
     if ([annotation isKindOfClass:[MACoin class]]) {
-        MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
-        MACoin *coin = (MACoin *)annotation;
-        annotationView.image = coin.image;
+        MACoinAnnotationView *annotationView = [[MACoinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
         return annotationView;
     }
     if ([annotation isKindOfClass:[MAPlayer class]]) {
@@ -170,23 +169,43 @@
 }
 
 - (void)updateStateForCoin:(MACoin *)coin {
-    [self.mapView removeAnnotation:coin];
-    [self.mapView addAnnotation:coin];
-    [self performSelectorOnMainThread:@selector(refreshMap) withObject:nil waitUntilDone:NO];
+    BOOL found = NO;
+    for (id <MKAnnotation> annotation in self.mapView.annotations) {
+        if ([annotation isKindOfClass:[MACoin class]]) {
+            MACoin *coinAnnotation = (MACoin *)annotation;
+            if ([coinAnnotation.coinId isEqualToString:coin.coinId]) {
+                [coinAnnotation updateWithCoin:coin];
+                found = YES;
+                break;
+            }
+        }
+    }
+
+    if (!found) {
+        [self.mapView addAnnotation:coin];
+    }
 }
 
 - (void)updateStateForPlayer:(MAPlayer *)player {
-    [self.mapView removeAnnotation:player];
-    [self.mapView addAnnotation:player];
-    [self performSelectorOnMainThread:@selector(refreshMap) withObject:nil waitUntilDone:NO];
+    BOOL found = NO;
+    for (id <MKAnnotation> annotation in self.mapView.annotations) {
+        if ([annotation isKindOfClass:[MAPlayer class]]) {
+            MAPlayer *playerAnnotation = (MAPlayer *)annotation;
+            if ([playerAnnotation.playerId isEqualToString:player.playerId]) {
+                [playerAnnotation updateWithPlayer:player];
+                found = YES;
+                break;
+            }
+        }
+    }
+
+    if (!found) {
+        [self.mapView addAnnotation:player];
+    }
 
     if (player.isSelf) {
         [MAAppDelegate appDelegate].scoreButton.title = [NSString stringWithFormat:@"%d", player.score];
     }
-}
-
-- (void)refreshMap {
-    [self.mapView setRegion:self.mapView.region animated:YES];
 }
 
 - (void)gameDidStart {
