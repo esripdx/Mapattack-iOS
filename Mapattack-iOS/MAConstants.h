@@ -1,4 +1,6 @@
+@class NSString;
 extern NSString *const kMapAttackHostname;
+static NSString *const kMapAttackWebHostname = @"http://web.mapattack.org";
 static int const kMapAttackUdpPort = 5309;
 static int const kMapAttackTcpPort = 8080;
 #define MAPATTACK_URL [NSString stringWithFormat:@"http://%@:%d", kMapAttackHostname, kMapAttackTcpPort]
@@ -33,6 +35,8 @@ static NSString *const kMAApiGameCreatePath = @"/game/create";
 static NSString *const kMAApiGameStartPath = @"/game/start";
 static NSString *const kMAApiGameEndPath = @"/game/end";
 static NSString *const kMAApiGameStatePath = @"/game/state";
+static NSString *const kMAApiPlayerAvatarPathTemplate = @"/user/%@.jpg";
+static NSString *const kMAApiMapAvatarPathTemplate = @"/map-avatar/%@-%@-%@@2x.png"; // deviceId, teamColor, playerName
 
 /* API keys
  */
@@ -104,3 +108,5 @@ typedef enum {
 } MAPushTokenType;
 
 static MAPushTokenType const kPushTokenType = MAPushTokenTypeSandbox;
+
+#define MA_DEFAULT_AVATARS @[@"256_cat_a", @"256_cat_b", @"256_cat_c", @"256_cat_d", @"256_cat_e"]

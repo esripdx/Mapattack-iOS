@@ -8,10 +8,14 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "MAGameManager.h"
 #import "NSString+UrlEncoding.h"
 #import "NSData+Conversion.h"
 #import "MAApiConnection.h"
+#import "MAPlayer.h"
+#import "MACoin.h"
+#import "MAAppDelegate.h"
 
 @interface MAGameManager()
 
@@ -29,7 +33,6 @@
 @implementation MAGameManager {
     BOOL _pushTokenRegistered;
     MAApiConnection *_api;
-    AFHTTPSessionManager *_imageFetcher;
 }
 
 + (MAGameManager *)sharedManager {
@@ -308,46 +311,27 @@
 
 - (void)handlePlayersUpdate:(NSArray *)playersUpdate {
     DDLogVerbose(@"about to iterate players...");
-    if ([self.delegate respondsToSelector:@selector(team:addPlayerWithIdentifier:name:score:location:)]) {
+    if ([self.delegate respondsToSelector:@selector(updateStateForPlayer:)]) {
         
         DDLogVerbose(@"iterating players...");
-        for (NSDictionary *player in playersUpdate) {
-            
-            NSString *teamColor = player[kMAApiTeamKey];
-            NSString *playerId = player[kMAApiDeviceIdKey];
-            NSNumber *score = player[kMAApiScoreKey];
-            NSNumber *latitude = player[kMAApiLatitudeKey];
-            NSNumber *longitude = player[kMAApiLongitudeKey];
-            CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
-                                                                    longitude:[longitude doubleValue]];
-            
-            DDLogVerbose(@"adding player %@ - %@ (%@) at %@,%@", playerId, player[kMAApiNameKey], score, latitude, longitude);
-            [self.delegate team:teamColor addPlayerWithIdentifier:playerId
-                           name:player[kMAApiNameKey]
-                          score:[score integerValue]
-                       location:playerLocation];
+        for (NSDictionary *playerDict in playersUpdate) {
+            MAPlayer *player = [MAPlayer playerWithDictionary:playerDict];
+
+            DDLogVerbose(@"Received player state: %@", player);
+            [self.delegate updateStateForPlayer:player];
         }
     }
 }
 
 - (void)handleCoinsUpdate:(NSArray *)coinsUpdate {
     DDLogVerbose(@"about to iterate coins...");
-    if ([self.delegate respondsToSelector:@selector(team:addCoinWithIdentifier:location:points:)]) {
+    if ([self.delegate respondsToSelector:@selector(updateStateForCoin:)]) {
         
         DDLogVerbose(@"iterating coins...");
-        for (NSDictionary *coin in coinsUpdate) {
-            
-            NSString *teamColor = coin[kMAApiTeamKey];
-            NSString *coinId = coin[kMAApiCoinIdKey];
-            NSNumber *points = coin[kMAApiPointsKey];
-            NSNumber *latitude = coin[kMAApiLatitudeKey];
-            NSNumber *longitude = coin[kMAApiLongitudeKey];
-            CLLocation *coinLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
-                                                                  longitude:[longitude doubleValue]];
-            DDLogVerbose(@"adding coin %@ (%@) at %@,%@", coinId, points, latitude, longitude);
-            [self.delegate team:teamColor addCoinWithIdentifier:coinId
-                       location:coinLocation
-                         points:[points integerValue]];
+        for (NSDictionary *coinUpdate in coinsUpdate) {
+            MACoin *coin = [MACoin coinWithDictionary:coinUpdate];
+            DDLogVerbose(@"Updating coin %@", coin);
+            [self.delegate updateStateForCoin:coin];
         }
     }
 }
@@ -378,15 +362,14 @@
 
 - (void)handleUdpCoinUpdate:(NSDictionary *)coinUpdate {
     DDLogVerbose(@"got coin update");
-    NSString *teamColor = coinUpdate[kMAApiTeamKey];
-    NSString *coinId = coinUpdate[kMAApiCoinIdKey];
+    MACoin *coin = [MACoin coinWithDictionary:coinUpdate];
     NSNumber *redScore = coinUpdate[kMAApiRedScoreKey];
     NSNumber *blueScore = coinUpdate[kMAApiBlueScoreKey];
     NSString *playerId = coinUpdate[kMAApiDeviceIdKey];
     NSNumber *playerScore = coinUpdate[kMAApiPlayerScoreKey];
-    if ([self.delegate respondsToSelector:@selector(coin:wasClaimedByPlayerId:withScore:forTeam:)]) {
-        DDLogVerbose(@"setting coinId %@ claimed by %@", coinId, teamColor);
-        [self.delegate coin:coinId wasClaimedByPlayerId:playerId withScore:[playerScore integerValue] forTeam:teamColor];
+    if ([self.delegate respondsToSelector:@selector(updateStateForCoin:)]) {
+        DDLogVerbose(@"setting coinId %@ claimed by %@", coin.coinId, coin.team);
+        [self.delegate updateStateForCoin:coin];
     }
     if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
         DDLogVerbose(@"setting team red score to %@", redScore);
@@ -394,18 +377,18 @@
         DDLogVerbose(@"setting team blue score to %@", blueScore);
         [self.delegate team:kMAApiBlueKey setScore:[blueScore integerValue]];
     }
+    if ([playerId isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsDeviceIdKey]]) {
+        [MAAppDelegate appDelegate].scoreButton.title = [playerScore stringValue];
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    }
 }
 
 - (void)handleUdpPlayerUpdate:(NSDictionary *)playerUpdate {
     DDLogVerbose(@"got device update");
-    NSString *playerId = playerUpdate[kMAApiDeviceIdKey];
-    NSNumber *latitude = playerUpdate[kMAApiLatitudeKey];
-    NSNumber *longitude = playerUpdate[kMAApiLongitudeKey];
-    CLLocation *playerLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
-                                                            longitude:[longitude doubleValue]];
-    if ([self.delegate respondsToSelector:@selector(player:didMoveToLocation:)]) {
-        DDLogVerbose(@"moving playerId %@ to %@,%@", playerId, latitude, longitude);
-        [self.delegate player:playerId didMoveToLocation:playerLocation];
+    MAPlayer *player = [MAPlayer playerWithDictionary:playerUpdate];
+    if ([self.delegate respondsToSelector:@selector(updateStateForPlayer:)]) {
+        DDLogVerbose(@"moving playerId %@ to %@", player.playerId, player.location);
+        [self.delegate updateStateForPlayer:player];
     }
 }
 
@@ -483,26 +466,6 @@
     return region;
 }
 
-- (void)fetchIconForPlayerId:(NSString *)playerId {
-    
-    if (!_imageFetcher) {
-        _imageFetcher = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:MAPATTACK_URL]];
-        _imageFetcher.requestSerializer = [AFHTTPRequestSerializer serializer];
-        _imageFetcher.responseSerializer = [AFImageResponseSerializer serializer];
-    }
-    
-    [_imageFetcher GET:[NSString stringWithFormat:@"/user/%@.jpg", playerId] parameters:nil success:^(NSURLSessionDataTask *task, UIImage *avatar) {
-        DDLogVerbose(@"user/%@.jpg response: %@", playerId, avatar);
-        if ([self.delegate respondsToSelector:@selector(didFetchIcon:forPlayerId:)]) {
-            if (avatar && avatar.size.height > 0 && avatar.size.width > 0) {
-                [self.delegate didFetchIcon:avatar forPlayerId:playerId];
-            } else {
-                DDLogError(@"fetched avatar image is 0x0!");
-            }
-        }
-    } failure:nil];
-    
-}
 
 #pragma mark - MAUdpConnectionDelegate methods
 

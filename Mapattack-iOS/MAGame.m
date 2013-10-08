@@ -12,6 +12,11 @@
 
 - (id)initWithDictionary:(NSDictionary *)game
 {
+    if (game == nil) {
+        return nil;
+    }
+
+    self = [super init];
     if (self) {
         self.gameId = game[kMAApiGameIdKey];
         self.isActive = [game[kMAApiActiveKey] boolValue];
@@ -21,7 +26,7 @@
         self.redScore = [game[kMAApiRedScoreKey] intValue];
         self.blueScore = [game[kMAApiBlueScoreKey] intValue];
     }
-    
+
     return self;
 }
 
