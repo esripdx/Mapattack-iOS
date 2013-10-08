@@ -92,14 +92,20 @@
 
 - (UIImage *)mapAvatar {
     if (!_mapAvatar) {
-        // Grab a random default avatar while we load the one from the server
-        NSArray *defaultAvatars = MA_DEFAULT_AVATARS;
-        NSString *imageName = defaultAvatars[(NSUInteger)rand()%(defaultAvatars.count-1)];
-        UIImage *icon = [UIImage imageNamed:imageName];
-        UIGraphicsBeginImageContext(CGSizeMake(kMAAvatarIconSize, kMAAvatarIconSize));
-        [icon drawInRect:CGRectMake(0.0, 0.0, kMAAvatarIconSize, kMAAvatarIconSize)];
-        _mapAvatar = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+        if ([self.team isEqualToString:@"red"]) {
+            _mapAvatar = [UIImage imageNamed:@"player_red"];
+        } else if ([self.team isEqualToString:@"blue"]) {
+            _mapAvatar = [UIImage imageNamed:@"player_blue"];
+        } else {
+            // Grab a random default avatar while we load the one from the server
+            NSArray *defaultAvatars = MA_DEFAULT_AVATARS;
+            NSString *imageName = defaultAvatars[(NSUInteger)rand()%(defaultAvatars.count-1)];
+            UIImage *icon = [UIImage imageNamed:imageName];
+            UIGraphicsBeginImageContext(CGSizeMake(kMAAvatarIconSize, kMAAvatarIconSize));
+            [icon drawInRect:CGRectMake(0.0, 0.0, kMAAvatarIconSize, kMAAvatarIconSize)];
+            _mapAvatar = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+        }
 
         [self fetchMapAvatar];
     }

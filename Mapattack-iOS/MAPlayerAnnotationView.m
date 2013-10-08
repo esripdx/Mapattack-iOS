@@ -17,6 +17,7 @@
             MAPlayer *player = (MAPlayer *)annotation;
             player.delegate = self;
             self.image = [player mapAvatar];
+            self.centerOffset = CGPointMake(0, -self.image.size.height/2);
         }
     }
 
@@ -25,6 +26,7 @@
 
 - (void)didUpdateAvatar:(UIImage *)avatar {
     self.image = avatar;
+    self.centerOffset = CGPointMake(0, -self.image.size.height/2);
 }
 
 @end
