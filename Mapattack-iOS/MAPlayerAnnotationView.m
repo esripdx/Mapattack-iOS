@@ -18,6 +18,7 @@
             player.delegate = self;
             self.image = [player mapAvatar];
             self.centerOffset = CGPointMake(0, -self.image.size.height/2);
+            self.canShowCallout = YES;
         }
     }
 

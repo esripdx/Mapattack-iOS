@@ -14,6 +14,8 @@
     UIImage *_mapAvatar;
 }
 
+@property (copy, nonatomic) NSString *title;
+
 @end
 
 @implementation MAPlayer
@@ -137,6 +139,11 @@
 #pragma mark - MKAnnotation
 - (CLLocationCoordinate2D)coordinate {
     return self.location.coordinate;
+}
+
+- (void)setScore:(NSInteger)score {
+    _score = score;
+    self.title = [NSString stringWithFormat:@"%d", score];
 }
 
 @end
