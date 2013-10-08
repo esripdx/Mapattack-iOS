@@ -66,7 +66,7 @@
 
 - (UIImage *)image {
     NSString *imageName = [NSString stringWithFormat:@"coin%@%d", self.team, self.value];
-    imageName = [imageName stringByReplacingOccurrencesOfString:@"<null>" withString:@""];
+    imageName = [[imageName stringByReplacingOccurrencesOfString:@"<null>" withString:@""] stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
     UIImage *image = [UIImage imageNamed:imageName];
     return [UIImage imageWithCGImage:image.CGImage scale:2.0f orientation:UIImageOrientationUp];
 }

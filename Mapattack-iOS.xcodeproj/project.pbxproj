@@ -22,7 +22,6 @@
 		94C6D22E17EC152E00F30187 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22D17EC152E00F30187 /* CoreVideo.framework */; };
 		94C6D23017EC15AA00F30187 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22F17EC15AA00F30187 /* ImageIO.framework */; };
 		94C6D23217EC15D000F30187 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D23117EC15D000F30187 /* QuartzCore.framework */; };
-		94D4D65D17F78EAD008E0F7A /* MACoinAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D4D65C17F78EAD008E0F7A /* MACoinAnnotation.m */; };
 		94D4D66217F79A6B008E0F7A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94D4D66117F79A6B008E0F7A /* Images.xcassets */; };
 		94FDAF0B17F2245C00D284D4 /* MAGameListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */; };
 		94FDAF0D17F236C100D284D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94FDAF0C17F236C100D284D4 /* MapKit.framework */; };
@@ -75,8 +74,6 @@
 		94C6D22D17EC152E00F30187 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		94C6D22F17EC15AA00F30187 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		94C6D23117EC15D000F30187 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		94D4D65B17F78EAD008E0F7A /* MACoinAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACoinAnnotation.h; sourceTree = "<group>"; };
-		94D4D65C17F78EAD008E0F7A /* MACoinAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoinAnnotation.m; sourceTree = "<group>"; };
 		94D4D66117F79A6B008E0F7A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		94FDAF0917F2245C00D284D4 /* MAGameListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameListCell.h; sourceTree = "<group>"; };
 		94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameListCell.m; sourceTree = "<group>"; };
@@ -164,7 +161,6 @@
 		94A131CB17EB9B7B00E1B15D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				94D4D65A17F78E54008E0F7A /* Annotations */,
 				BD69CBC117EA68B900E63C71 /* MANearbyGamesViewController.h */,
 				BD69CBC217EA68B900E63C71 /* MANearbyGamesViewController.m */,
 				BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */,
@@ -180,15 +176,6 @@
 				94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */,
 			);
 			name = Controllers;
-			sourceTree = "<group>";
-		};
-		94D4D65A17F78E54008E0F7A /* Annotations */ = {
-			isa = PBXGroup;
-			children = (
-				94D4D65B17F78EAD008E0F7A /* MACoinAnnotation.h */,
-				94D4D65C17F78EAD008E0F7A /* MACoinAnnotation.m */,
-			);
-			name = Annotations;
 			sourceTree = "<group>";
 		};
 		94FDAF0E17F4A60B00D284D4 /* fonts */ = {
@@ -423,7 +410,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94D4D65D17F78EAD008E0F7A /* MACoinAnnotation.m in Sources */,
 				BD69CBCF17EA695B00E63C71 /* MALaunchViewController.m in Sources */,
 				BE2228E717EA601500EFF703 /* MAUdpConnection.m in Sources */,
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,

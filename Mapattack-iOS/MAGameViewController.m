@@ -9,7 +9,6 @@
 #import "MAGameManager.h"
 #import "MAGameViewController.h"
 #import "MAAppDelegate.h"
-#import "MACoinAnnotation.h"
 #import "MAPlayer.h"
 #import "MAPlayerAnnotationView.h"
 #import "MACoin.h"
