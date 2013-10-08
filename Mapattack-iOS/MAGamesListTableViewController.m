@@ -259,6 +259,7 @@
         [cell setMapTemplateWithTileColor:@"red"];
     }
     [cell populateBoardWithDictionary:board];
+    //[tableView scrollRectToVisible:CGRectMake(0, 600, self.view.frame.size.width,self.view.frame.size.height) animated:YES];
     return cell;
 }
 
@@ -277,6 +278,11 @@
     // these cause the tableview to animate the cell expanding to show the map
     [tableView beginUpdates];
     [tableView endUpdates];
+    NSInteger scrollTo = indexPath.row;
+    NSIndexPath *path = [NSIndexPath indexPathForItem:scrollTo inSection:indexPath.section];
+    [self.tableView scrollToRowAtIndexPath:path
+                              atScrollPosition:UITableViewScrollPositionTop
+                                      animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

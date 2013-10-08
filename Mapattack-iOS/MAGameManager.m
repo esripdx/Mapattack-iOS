@@ -246,7 +246,7 @@
     
     MAApiSuccessHandler boardStateSuccess = ^(NSDictionary *response) {
         self.lastBoardStateDict = response;
-        DDLogVerbose(@"board state response: %@", response);
+        //DDLogVerbose(@"board state response: %@", response);
         if (completion != nil) {
             completion(response[kMAApiBoardKey], response[kMAApiCoinsKey], nil);
         }

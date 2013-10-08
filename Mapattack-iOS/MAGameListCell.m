@@ -113,7 +113,8 @@
 
 - (void)setMapTemplateWithTileColor:(NSString *)color
 {
-    NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", color];
+    // Changing this all to dark for now...
+    NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", @"dark"];
     MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
     overlay.canReplaceMapContent = YES;
     if ([color isEqualToString:@"blue"]) {
