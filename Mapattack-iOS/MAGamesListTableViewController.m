@@ -49,11 +49,10 @@
     [super viewDidLoad];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
-    //[self.tableView setStyle:UITableViewStyleGrouped];
 
+    self.tableView.sectionHeaderHeight = kMACellHeight;
     self.view.backgroundColor = MA_COLOR_CREAM;
     self.tableView.backgroundColor = MA_COLOR_CREAM;
-    //self.tableView.backgroundColor = [UIColor clearColor];
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
     
     UIToolbar *toolbar = self.navigationController.toolbar;
@@ -214,7 +213,6 @@
     }
 }
 
-// TODO: Need this?
 - (void)showGameViewControllerWithStartButton:(BOOL)created color:(UIColor *)color {
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     MAGameViewController *gvc = (MAGameViewController *)[sb instantiateViewControllerWithIdentifier:@"gameViewController"];
