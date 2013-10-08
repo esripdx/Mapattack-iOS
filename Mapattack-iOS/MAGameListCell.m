@@ -116,7 +116,12 @@
     NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", color];
     MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
     overlay.canReplaceMapContent = YES;
-    
+    if ([color isEqualToString:@"blue"]) {
+        _mapView.tintColor = MA_COLOR_BLUE;
+    }
+    else {
+        _mapView.tintColor = MA_COLOR_RED;
+    }
     [_mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
 }
 

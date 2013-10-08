@@ -36,7 +36,7 @@
     }
     if ([borderType isEqualToString:@"left"]) {
         // 0, 0, borderWidth, view.frame.size.height
-        frameX = 235;
+        frameX = 255;
         frameY = 0;
         frameWidth = borderWidth;
         frameHeight = view.frame.size.height;

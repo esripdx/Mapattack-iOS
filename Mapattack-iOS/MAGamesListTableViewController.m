@@ -7,9 +7,6 @@
 //
 
 #import "MAGamesListTableViewController.h"
-
-
-#import "MAGamesListViewController.h"
 #import "MBProgressHUD.h"
 #import "MAGameManager.h"
 #import "MAAppDelegate.h"
@@ -17,6 +14,7 @@
 #import "MACoinAnnotationView.h"
 #import "MAGameViewController.h"
 #import "MABorderSetter.h"
+#import "MACoin.h"
 
 @interface MAGamesListTableViewController () {
     NSInteger _selectedIndex;
@@ -50,7 +48,7 @@
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
 
-    self.tableView.sectionHeaderHeight = kMACellHeight;
+    self.tableView.sectionHeaderHeight = kMACellHeight-3;
     self.view.backgroundColor = MA_COLOR_CREAM;
     self.tableView.backgroundColor = MA_COLOR_CREAM;
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
@@ -292,11 +290,8 @@
 #pragma mark MKMapViewDelegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-    if ([annotation isKindOfClass:[MACoinAnnotationView class]]) {
-        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
-        MACoinAnnotationView *coinAnnotation = (MACoinAnnotationView *)annotation;
-        pin.image = coinAnnotation.image;
-        return pin;
+    if ([annotation isKindOfClass:[MACoin class]]) {
+        return [[MACoinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
     }
     return nil;
 }
