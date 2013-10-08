@@ -11,7 +11,7 @@
 #import "MAGameManager.h"
 #import "MAAppDelegate.h"
 #import "MAGameListCell.h"
-#import "MACoinAnnotation.h"
+#import "MACoinAnnotationView.h"
 #import "MAGameViewController.h"
 #import "MABorderSetter.h"
 
@@ -244,9 +244,9 @@
 #pragma mark MKMapViewDelegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-    if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
+    if ([annotation isKindOfClass:[MACoinAnnotationView class]]) {
         MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
-        MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
+        MACoinAnnotationView *coinAnnotation = (MACoinAnnotationView *)annotation;
         pin.image = coinAnnotation.image;
         return pin;
     }

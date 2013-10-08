@@ -7,7 +7,6 @@
 //
 
 #import "MAAppDelegate.h"
-#import "MAHelpViewController.h"
 #import "MAGameManager.h"
 
 static const int MAFileLoggerRollingFrequency = 60*60*24;

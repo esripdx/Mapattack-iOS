@@ -10,8 +10,8 @@
 #import <MapKit/MapKit.h>
 #import "MAGameListCell.h"
 #import "MAGameManager.h"
-#import "MACoinAnnotation.h"
 #import "MABorderSetter.h"
+#import "MACoin.h"
 
 @implementation MAGameListCell
 
@@ -192,11 +192,7 @@
                                                       completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
                                                           if (error == nil) {
                                                               for (NSDictionary *coin in coins) {
-                                                                  CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([coin[@"latitude"] doubleValue], [coin[@"longitude"] doubleValue]);
-                                                                  MACoinAnnotation *annotation = [[MACoinAnnotation alloc] initWithIdentifier:coin[@"coin_id"]
-                                                                                                                                   coordinate:coord
-                                                                                                                                   pointValue:[coin[@"value"] integerValue]
-                                                                                                                                         team:coin[@"team"]];
+                                                                  MACoin *annotation = [MACoin coinWithDictionary:coin];
                                                                   [self.mapView addAnnotation:annotation];
                                                               }
                                                           }

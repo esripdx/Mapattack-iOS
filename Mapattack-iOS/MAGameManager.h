@@ -15,27 +15,18 @@
 @class MAUdpConnection;
 @class AFHTTPSessionManager;
 @class MAGameManager;
+@class MAPlayer;
+@class MACoin;
 
 @protocol MAGameManagerDelegate
-- (void)coin:(NSString *)identifier wasClaimedByPlayerId:(NSString *)playerId withScore:(NSInteger)playerScore forTeam:(NSString *)team;
-- (void)player:(NSString *)identifier didMoveToLocation:(CLLocation *)location;
 - (void)team:(NSString *)color didReceivePoints:(NSInteger)points;
 - (void)team:(NSString *)color setScore:(NSInteger)score;
 
-- (void)team:(NSString *)color addPlayerWithIdentifier:(NSString *)identifier
-        name:(NSString *)name
-       score:(NSInteger)score
-    location:(CLLocation *)location;
-
-// if `color` is `nil`, coin has not been claimed yet
-//
-- (void)team:(NSString *)color addCoinWithIdentifier:(NSString *)identifier
-    location:(CLLocation *)location
-      points:(NSInteger)points;
+- (void)updateStateForPlayer:(MAPlayer *)player;
+- (void)updateStateForCoin:(MACoin *)coin;
 
 - (void)gameDidStart;
 - (void)gameDidEnd;
-- (void)didFetchIcon:(UIImage *)icon forPlayerId:(NSString *)playerId;
 @end
 
 @interface MAGameManager : NSObject <CLLocationManagerDelegate, MAUdpConnectionDelegate>
