@@ -156,7 +156,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [[NSUserDefaults standardUserDefaults] setObject:self.userNameField.text forKey:kMADefaultsUserNameKey];
+    [[NSUserDefaults standardUserDefaults] setObject:[self.userNameField.text uppercaseString] forKey:kMADefaultsUserNameKey];
     _isUserNameSet = ![self.userNameField.text isEqualToString:@""];
 
     [self updateEnterButton];
