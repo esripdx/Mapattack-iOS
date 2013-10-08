@@ -12,6 +12,7 @@
 #import "MACoinAnnotation.h"
 #import "MAPlayer.h"
 #import "MAPlayerAnnotationView.h"
+#import "MACoin.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 @interface MAGameViewController ()
@@ -127,11 +128,11 @@
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
         return nil;
     }
-    if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
-        MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
-        MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
-        pin.image = coinAnnotation.image;
-        return pin;
+    if ([annotation isKindOfClass:[MACoin class]]) {
+        MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
+        MACoin *coin = (MACoin *)annotation;
+        annotationView.image = coin.image;
+        return annotationView;
     }
     if ([annotation isKindOfClass:[MAPlayer class]]) {
         MAPlayerAnnotationView *annotationView = [[MAPlayerAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"playerAnnotation"];
@@ -168,50 +169,24 @@
     }
 }
 
-- (void)coin:(NSString *)identifier wasClaimedByPlayerWithId:(NSString *)playerId score:(NSInteger)playerScore forTeam:(NSString *)teamColor {
-    for (id <MKAnnotation> annotation in self.mapView.annotations) {
-        if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
-            MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
-            if ([coinAnnotation.identifier isEqualToString:identifier]) {
-                [self.mapView removeAnnotation:annotation];
-            }
-            coinAnnotation.team = teamColor;
-            [self.mapView addAnnotation:coinAnnotation];
-        }
-    }
-
-    if ([playerId isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsDeviceIdKey]]) {
-        [MAAppDelegate appDelegate].scoreButton.title = [NSString stringWithFormat:@"%d", playerScore];
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    }
+- (void)updateStateForCoin:(MACoin *)coin {
+    [self.mapView removeAnnotation:coin];
+    [self.mapView addAnnotation:coin];
+    [self performSelectorOnMainThread:@selector(refreshMap) withObject:nil waitUntilDone:NO];
 }
 
 - (void)updateStateForPlayer:(MAPlayer *)player {
     [self.mapView removeAnnotation:player];
-    [self.mapView setNeedsDisplay];
     [self.mapView addAnnotation:player];
+    [self performSelectorOnMainThread:@selector(refreshMap) withObject:nil waitUntilDone:NO];
 
     if (player.isSelf) {
         [MAAppDelegate appDelegate].scoreButton.title = [NSString stringWithFormat:@"%d", player.score];
     }
 }
 
-- (void)team:(NSString *)color addCoinWithIdentifier:(NSString *)identifier location:(CLLocation *)location points:(NSInteger)points {
-    for (id <MKAnnotation> annotation in self.mapView.annotations) {
-        if ([annotation isKindOfClass:[MACoinAnnotation class]]) {
-            MACoinAnnotation *coinAnnotation = (MACoinAnnotation *)annotation;
-            if ([coinAnnotation.identifier isEqualToString:identifier]) {
-                [self.mapView removeAnnotation:annotation];
-            }
-        }
-    }
-
-    MACoinAnnotation *annotation = [[MACoinAnnotation alloc] initWithIdentifier:identifier
-                                                                     coordinate:location.coordinate
-                                                                     pointValue:points
-                                                                           team:color];
-    
-    [self.mapView addAnnotation:annotation];
+- (void)refreshMap {
+    [self.mapView setRegion:self.mapView.region animated:YES];
 }
 
 - (void)gameDidStart {

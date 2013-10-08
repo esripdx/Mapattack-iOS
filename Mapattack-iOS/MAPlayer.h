@@ -36,4 +36,6 @@
 - (BOOL)isEqualToPlayer:(MAPlayer *)player;
 - (NSUInteger)hash;
 
+- (NSString *)description;
+
 @end

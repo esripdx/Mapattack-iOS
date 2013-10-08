@@ -50,9 +50,15 @@
     return self;
 }
 
-- (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"Player {playerId: %@, playerName: %@, score: %d, team: %@, location: %@}",
-                                      self.playerId, self.playerName, self.score, self.team, self.location];
+- (NSString *)description {
+    NSMutableString *description = [NSMutableString stringWithFormat:@"<%@: ", NSStringFromClass([self class])];
+    [description appendFormat:@"self.playerId=%@", self.playerId];
+    [description appendFormat:@", self.playerName=%@", self.playerName];
+    [description appendFormat:@", self.team=%@", self.team];
+    [description appendFormat:@", self.score=%i", self.score];
+    [description appendFormat:@", self.location=%@", self.location];
+    [description appendString:@">"];
+    return description;
 }
 
 - (NSDictionary *)toDictionary {
@@ -69,8 +75,10 @@
     [dictionary setValue:@(self.location.course) forKey:kMAApiBearingKey]; // TODO: I'm not sure this is correct... we're not really using it yet anyway
     [dictionary setValue:@(self.location.horizontalAccuracy) forKey:kMAApiAccuracyKey];
 
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
+
+#pragma mark - Avatar stuff
 
 - (UIImage *)mapAvatar {
     if (!_mapAvatar) {
@@ -86,11 +94,6 @@
         [self fetchMapAvatar];
     }
     return _mapAvatar;
-}
-
-#pragma mark - MKAnnotation
-- (CLLocationCoordinate2D)coordinate {
-    return self.location.coordinate;
 }
 
 - (void)fetchMapAvatar {
@@ -114,6 +117,8 @@
                }];
 
 }
+
+#pragma mark - Equality stuff
 
 - (BOOL)isEqual:(id)other {
     if (other == self) {
@@ -141,6 +146,11 @@
 
 - (NSUInteger)hash {
     return [self.playerId hash];
+}
+
+#pragma mark - MKAnnotation
+- (CLLocationCoordinate2D)coordinate {
+    return self.location.coordinate;
 }
 
 @end

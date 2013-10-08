@@ -12,6 +12,7 @@
 		940DAA2817FDF4B700FC6C17 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940DAA2717FDF4B700FC6C17 /* AudioToolbox.framework */; };
 		940DAA2B17FF2C2900FC6C17 /* MAPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 940DAA2A17FF2C2900FC6C17 /* MAPlayer.m */; };
 		942C20B91803728D003FB7CE /* MAPlayerAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */; };
+		942C20BD18037960003FB7CE /* MACoin.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20BC18037960003FB7CE /* MACoin.m */; };
 		94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameManager.m */; };
 		94C6D22617EBB0F900F30187 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22517EBB0F900F30187 /* CoreLocation.framework */; };
 		94C6D22817EC0D2F00F30187 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22717EC0D2F00F30187 /* AVFoundation.framework */; };
@@ -60,6 +61,8 @@
 		940DAA2A17FF2C2900FC6C17 /* MAPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPlayer.m; sourceTree = "<group>"; };
 		942C20B71803728D003FB7CE /* MAPlayerAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPlayerAnnotationView.h; sourceTree = "<group>"; };
 		942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPlayerAnnotationView.m; sourceTree = "<group>"; };
+		942C20BB18037960003FB7CE /* MACoin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACoin.h; sourceTree = "<group>"; };
+		942C20BC18037960003FB7CE /* MACoin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoin.m; sourceTree = "<group>"; };
 		94A131CC17EB9CA500E1B15D /* MAGameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameManager.h; sourceTree = "<group>"; };
 		94A131CD17EB9CA500E1B15D /* MAGameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameManager.m; sourceTree = "<group>"; };
 		94C6D22517EBB0F900F30187 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -292,6 +295,8 @@
 				FA79D5CD17FE0C6600E7DD20 /* MAGame.m */,
 				940DAA2917FF2C2900FC6C17 /* MAPlayer.h */,
 				940DAA2A17FF2C2900FC6C17 /* MAPlayer.m */,
+				942C20BB18037960003FB7CE /* MACoin.h */,
+				942C20BC18037960003FB7CE /* MACoin.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -419,6 +424,7 @@
 				BDADFD7217EA41C000CB11B8 /* main.m in Sources */,
 				BEC25CA817FA5F3E00735CFC /* MAApiConnection.m in Sources */,
 				942C20B91803728D003FB7CE /* MAPlayerAnnotationView.m in Sources */,
+				942C20BD18037960003FB7CE /* MACoin.m in Sources */,
 				940DAA2B17FF2C2900FC6C17 /* MAPlayer.m in Sources */,
 				FA79D5CB17FE0C0A00E7DD20 /* MABoard.m in Sources */,
 				BE33B39D17F600E00033EFDE /* NSData+Conversion.m in Sources */,

@@ -25,13 +25,15 @@
 
 - (NSDictionary *)toDictionary
 {
-    return @{
-             kMAApiBoardIdKey:self.boardId,
-             kMAApiNameKey:self.name,
-             @"meters": [NSNumber numberWithInt:self.meters],
-             kMAApiBoundingBoxKey:self.bbox,
-             kMAApiGameKey:[self.game toDictionary]
-             };
+    NSMutableDictionary *dictionary = [NSMutableDictionary new];
+
+    [dictionary setValue:self.boardId forKey:kMAApiBoardIdKey];
+    [dictionary setValue:self.name forKey:kMAApiNameKey];
+    [dictionary setValue:@(self.meters) forKey:@"meters"];
+    [dictionary setValue:self.bbox forKey:kMAApiBoundingBoxKey];
+    [dictionary setValue:[self.game toDictionary] forKey:kMAApiGameKey];
+
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 - (NSString *)description

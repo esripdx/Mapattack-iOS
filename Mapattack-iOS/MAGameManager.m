@@ -8,11 +8,14 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "MAGameManager.h"
 #import "NSString+UrlEncoding.h"
 #import "NSData+Conversion.h"
 #import "MAApiConnection.h"
 #import "MAPlayer.h"
+#import "MACoin.h"
+#import "MAAppDelegate.h"
 
 @interface MAGameManager()
 
@@ -322,22 +325,13 @@
 
 - (void)handleCoinsUpdate:(NSArray *)coinsUpdate {
     DDLogVerbose(@"about to iterate coins...");
-    if ([self.delegate respondsToSelector:@selector(team:addCoinWithIdentifier:location:points:)]) {
+    if ([self.delegate respondsToSelector:@selector(updateStateForCoin:)]) {
         
         DDLogVerbose(@"iterating coins...");
-        for (NSDictionary *coin in coinsUpdate) {
-            
-            NSString *teamColor = coin[kMAApiTeamKey];
-            NSString *coinId = coin[kMAApiCoinIdKey];
-            NSNumber *points = coin[kMAApiPointsKey];
-            NSNumber *latitude = coin[kMAApiLatitudeKey];
-            NSNumber *longitude = coin[kMAApiLongitudeKey];
-            CLLocation *coinLocation = [[CLLocation alloc] initWithLatitude:[latitude doubleValue]
-                                                                  longitude:[longitude doubleValue]];
-            DDLogVerbose(@"adding coin %@ (%@) at %@,%@", coinId, points, latitude, longitude);
-            [self.delegate team:teamColor addCoinWithIdentifier:coinId
-                       location:coinLocation
-                         points:[points integerValue]];
+        for (NSDictionary *coinUpdate in coinsUpdate) {
+            MACoin *coin = [MACoin coinWithDictionary:coinUpdate];
+            DDLogVerbose(@"Updating coin %@", coin);
+            [self.delegate updateStateForCoin:coin];
         }
     }
 }
@@ -368,21 +362,24 @@
 
 - (void)handleUdpCoinUpdate:(NSDictionary *)coinUpdate {
     DDLogVerbose(@"got coin update");
-    NSString *teamColor = coinUpdate[kMAApiTeamKey];
-    NSString *coinId = coinUpdate[kMAApiCoinIdKey];
+    MACoin *coin = [MACoin coinWithDictionary:coinUpdate];
     NSNumber *redScore = coinUpdate[kMAApiRedScoreKey];
     NSNumber *blueScore = coinUpdate[kMAApiBlueScoreKey];
     NSString *playerId = coinUpdate[kMAApiDeviceIdKey];
     NSNumber *playerScore = coinUpdate[kMAApiPlayerScoreKey];
-    if ([self.delegate respondsToSelector:@selector(coin:wasClaimedByPlayerId:withScore:forTeam:)]) {
-        DDLogVerbose(@"setting coinId %@ claimed by %@", coinId, teamColor);
-        [self.delegate coin:coinId wasClaimedByPlayerId:playerId withScore:[playerScore integerValue] forTeam:teamColor];
+    if ([self.delegate respondsToSelector:@selector(updateStateForCoin:)]) {
+        DDLogVerbose(@"setting coinId %@ claimed by %@", coin.coinId, coin.team);
+        [self.delegate updateStateForCoin:coin];
     }
     if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
         DDLogVerbose(@"setting team red score to %@", redScore);
         [self.delegate team:kMAApiRedKey setScore:[redScore integerValue]];
         DDLogVerbose(@"setting team blue score to %@", blueScore);
         [self.delegate team:kMAApiBlueKey setScore:[blueScore integerValue]];
+    }
+    if ([playerId isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsDeviceIdKey]]) {
+        [MAAppDelegate appDelegate].scoreButton.title = [playerScore stringValue];
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     }
 }
 
