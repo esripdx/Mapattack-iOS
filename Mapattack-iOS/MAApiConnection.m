@@ -50,14 +50,16 @@
         [_tcpConnection POST:path
                   parameters:paramsWithToken
                      success:^(NSURLSessionTask *task, NSDictionary *responseObject) {
-                         NSDictionary *errorResponse = responseObject[kMAApiErrorKey];
-                         if (errorResponse) {
+                         NSString *errorMessage = responseObject[kMAApiErrorKey];
+                         if (errorMessage) {
                              if (errorHandler) {
                                  errorHandler([NSError errorWithDomain:kMADefaultsDomain
-                                                                  code:(int)errorResponse[kMAApiErrorCodeKey]
-                                                              userInfo:errorResponse]);
+                                                                  code:400
+                                                              userInfo:@{
+                                                                      NSLocalizedDescriptionKey: errorMessage
+                                                              }]);
                              } else {
-                                 DDLogError(@"api error for path '%@': %@", path, errorResponse);
+                                 DDLogError(@"api error for path '%@': %@", path, errorMessage);
                                  DDLogError(@"--- params: %@", paramsWithToken);
                              }
                          } else {
