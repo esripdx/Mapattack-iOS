@@ -297,6 +297,13 @@
     }];
 }
 
+- (void)leaveGame {
+    [self.udpConnection disconnect];
+    DDLogVerbose(@"Stopping game location updates.");
+    [self.locationManager stopUpdatingLocation];
+    [self stopPollingGameState];
+}
+
 #pragma mark - TCP State handlers
 
 - (void)registerGameStateSuccessHandler {
