@@ -13,7 +13,6 @@
 #import "MAPlayerAnnotationView.h"
 #import "MACoin.h"
 #import "MACoinAnnotationView.h"
-#import <AudioToolbox/AudioToolbox.h>
 
 @interface MAGameViewController ()
 
