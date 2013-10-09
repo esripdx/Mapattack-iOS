@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
+#import <AudioToolbox/AudioToolbox.h>
 #import "MAAppDelegate.h"
 #import "MAGameManager.h"
 
@@ -13,6 +14,10 @@ static const int MAFileLoggerRollingFrequency = 60*60*24;
 static const int MAFileLoggerMaxFiles = 7;
 
 @implementation MAAppDelegate
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 

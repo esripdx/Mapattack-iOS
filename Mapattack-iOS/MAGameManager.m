@@ -8,7 +8,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import <AudioToolbox/AudioToolbox.h>
 #import "MAGameManager.h"
 #import "NSString+UrlEncoding.h"
 #import "NSData+Conversion.h"
@@ -385,7 +384,11 @@
     }
     if ([playerId isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsDeviceIdKey]]) {
         [MAAppDelegate appDelegate].scoreButton.title = [playerScore stringValue];
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        UILocalNotification *lote = [[UILocalNotification alloc] init];
+        lote.alertAction = @"View";
+        lote.alertBody = [NSString stringWithFormat:@"You collected %d points for your team!", coin.value];
+        lote.soundName = UILocalNotificationDefaultSoundName;
+        [[UIApplication sharedApplication] presentLocalNotificationNow:lote];
     }
 }
 
