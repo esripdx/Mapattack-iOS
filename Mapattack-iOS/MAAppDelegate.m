@@ -119,6 +119,7 @@ static const int MAFileLoggerMaxFiles = 7;
 
     self.scoreButton = [[UIBarButtonItem alloc] initWithTitle:@"00" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.scoreButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
+    self.scoreButton.tintColor = MA_COLOR_WHITE;
 
     UIBarButtonItem *helpButton = [[UIBarButtonItem alloc] initWithTitle:@"?"
                                                                    style:UIBarButtonItemStylePlain

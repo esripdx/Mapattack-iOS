@@ -141,8 +141,7 @@
     [joinButton addTarget:self.parent action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     
     self.startButton = joinButton;
-    [mapView addSubview:self.startButton
-     ];
+    [mapView addSubview:self.startButton];
     _mapView = mapView;
 }
 
@@ -151,15 +150,25 @@
 
     // Configure the view for the selected state
     if (selected) {
-        [[MAGameManager sharedManager] fetchBoardStateForBoardId:self.board.boardId
-                                                      completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
-                                                          if (error == nil) {
-                                                              for (NSDictionary *coin in coins) {
-                                                                  MACoin *annotation = [MACoin coinWithDictionary:coin];
-                                                                  [self.mapView addAnnotation:annotation];
+        if (self.board.game.gameId) {
+            // TODO: We may want to set this up to poll game state while the board is selected. Maybe not though: lotsa data and... meh.
+            [[MAGameManager sharedManager] fetchGameStateForGameId:self.board.game.gameId
+                                                        completion:^(NSArray *coins, NSError *error) {
+                                                            if (error == nil) {
+                                                                [self.mapView addAnnotations:coins];
+                                                            }
+                                                        }];
+        } else {
+            [[MAGameManager sharedManager] fetchBoardStateForBoardId:self.board.boardId
+                                                          completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
+                                                              if (error == nil) {
+                                                                  for (NSDictionary *coin in coins) {
+                                                                      MACoin *annotation = [MACoin coinWithDictionary:coin];
+                                                                      [self.mapView addAnnotation:annotation];
+                                                                  }
                                                               }
-                                                          }
-                                                      }];
+                                                          }];
+        }
         MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:[self.board toDictionary]];
         [self.mapView setRegion:region animated:NO];
     }
