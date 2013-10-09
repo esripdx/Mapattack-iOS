@@ -15,6 +15,7 @@
 #import "MAPlayer.h"
 #import "MACoin.h"
 #import "MAAppDelegate.h"
+#import "MAGame.h"
 
 @interface MAGameManager()
 
@@ -254,6 +255,33 @@
     [_api postToPath:kMAApiBoardStatePath
               params:@{ kMAApiBoardIdKey: boardId }
              success:boardStateSuccess];
+}
+
+- (void)fetchGameStateForGameId:(NSString *)gameId completion:(void (^)(NSArray *coins, NSError *error))completion {
+    DDLogVerbose(@"fetching game state for game: %@", gameId);
+
+    MAApiSuccessHandler gameStateSuccess = ^(NSDictionary *response) {
+        if (completion != nil) {
+            NSArray *coinsResponse = response[kMAApiCoinsKey];
+
+            NSMutableArray *coins = [NSMutableArray new];
+
+            for (NSDictionary *coinDict in coinsResponse) {
+                MACoin *coin = [MACoin coinWithDictionary:coinDict];
+                [coins addObject:coin];
+            }
+
+            completion([NSArray arrayWithArray:coins], nil);
+        }
+    };
+
+    MAApiErrorHandler gameStateError = ^(NSError *error) {
+        if (completion != nil) {
+            completion(nil, error);
+        }
+    };
+
+    [_api postToPath:kMAApiGameStatePath params:@{ kMAApiGameIdKey: gameId } success:gameStateSuccess error:gameStateError];
 }
 
 - (void)startPollingGameState {
