@@ -78,7 +78,15 @@
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userName = [defaults stringForKey:kMADefaultsUserNameKey];
-    NSString *avatar = [[[defaults dataForKey:kMADefaultsAvatarKey] base64EncodedStringWithOptions:0] urlEncode];
+    NSData *avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
+    if (!avatarData) {
+        // No custom avatar found, use the selected default avatar.
+        NSNumber *defaultAvatarIndex = [defaults valueForKey:kMADefaultsDefaultAvatarSelectedKey];
+        NSString *imageName = MA_DEFAULT_AVATARS[[defaultAvatarIndex unsignedIntegerValue]];
+        UIImage *avatarImage = [UIImage imageNamed:imageName];
+        avatarData = UIImageJPEGRepresentation(avatarImage, 1.0f);
+    }
+    NSString *avatarString = [[avatarData base64EncodedStringWithOptions:0] urlEncode];
     MAApiSuccessHandler deviceRegisterSuccess = ^(NSDictionary *response) {
         NSString *dk = response[kMAApiDeviceIdKey];
         NSString *at = response[kMAApiAccessTokenKey];
@@ -91,7 +99,7 @@
         }
     };
     [_api postToPath:kMAApiDeviceRegisterPath
-              params:@{ kMAApiNameKey: userName, kMAApiAvatarKey: avatar }
+              params:@{ kMAApiNameKey: userName, kMAApiAvatarKey: avatarString}
              success:deviceRegisterSuccess
                error:^(NSError *error) {
                    if (completion != nil) {
