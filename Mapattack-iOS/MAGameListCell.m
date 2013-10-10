@@ -125,6 +125,8 @@
                                                         completion:^(NSArray *coins, NSError *error) {
                                                             if (error == nil) {
                                                                 [self.mapView addAnnotations:coins];
+                                                            } else {
+                                                                DDLogError(@"Error fetching game state: %@", [error localizedDescription]);
                                                             }
                                                         }];
         } else {
@@ -135,6 +137,8 @@
                                                                       MACoin *annotation = [MACoin coinWithDictionary:coin];
                                                                       [self.mapView addAnnotation:annotation];
                                                                   }
+                                                              } else {
+                                                                  DDLogError(@"Error fetching board state: %@", [error localizedDescription]);
                                                               }
                                                           }];
         }
