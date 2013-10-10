@@ -118,28 +118,37 @@
     MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
     overlay.canReplaceMapContent = YES;
     if ([color isEqualToString:@"blue"]) {
-        _mapView.tintColor = MA_COLOR_BLUE;
+        self.mapView.tintColor = MA_COLOR_BLUE;
+        [self.startButton setTitleColor:MA_COLOR_BLUE forState:UIControlStateNormal];
     }
     else {
-        _mapView.tintColor = MA_COLOR_RED;
+        self.mapView.tintColor = MA_COLOR_RED;
+        [self.startButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
     }
-    [_mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
+    [self.mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
 }
 
 - (void)setMapView:(MKMapView *)mapView {
     mapView.showsUserLocation = YES;
     
     // Join button
-    UIButton *joinButton = [[UIButton alloc] initWithFrame:CGRectMake(42, kMACellExpandedHeight-100, mapView.frame.size.width * 0.75f, 66)];
-    joinButton.titleLabel.font = [UIFont fontWithName:@"M41_LOVEBIT" size:24];
-    joinButton.titleLabel.textColor = MA_COLOR_RED;
-    joinButton.layer.borderColor = MA_COLOR_WHITE.CGColor;
-    joinButton.layer.borderWidth = 2;
-    
-    // We'll change this in cellForRow later, if necessary
+    UIButton *joinButton = [[UIButton alloc] init];
+    joinButton.titleLabel.font = MA_FONT_MENSCH_HEADER;
+    joinButton.contentEdgeInsets = UIEdgeInsetsMake(7.0, 0, 0, 0);
+    joinButton.backgroundColor = MA_COLOR_CREAM;
+    joinButton.alpha = 0.93f;
+    joinButton.layer.cornerRadius = 10;
+    joinButton.clipsToBounds = YES;
+    [joinButton addTarget:self.parent.delegate action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
+
+    CGSize btnSize = CGSizeMake(mapView.frame.size.width * 0.75f, 50);
+    CGFloat btnPadding = 16;
+    joinButton.frame = CGRectMake(mapView.frame.size.width/2 - btnSize.width/2, CGRectGetMaxY(mapView.bounds) - btnSize.height - btnPadding, btnSize.width, btnSize.height);
+
+    // We'll change these in cellForRow later, if necessary
     [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
-    [joinButton addTarget:self.parent action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
-    
+    [joinButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
+
     self.startButton = joinButton;
     [mapView addSubview:self.startButton];
     _mapView = mapView;
