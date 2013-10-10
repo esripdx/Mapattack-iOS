@@ -15,36 +15,6 @@
 
 @implementation MAGameListCell
 
-- (void)populateBoardWithDictionary:(NSDictionary *)board andIndex:(int)boardIndex andInactiveHeaderIndex:(int)inActiveHeaderIndex andTableView:(UITableView *)tableView
-{
-
-    self.board = [[MABoard alloc] initWithDictionary:board];
-    self.parent = tableView;
-    
-    // First one...
-    if (!boardIndex) {
-        self.board.indexInBoardList = 0;
-    } else {
-        self.board.indexInBoardList = boardIndex;
-    }
-    
-    // Set labels
-    self.gameNameLabel.text = self.board.name;
-    if (self.board.game != nil) {
-        self.bluePlayersLabel.text = [NSString stringWithFormat:@"%d", self.board.game.totalPlayers];
-    } else {
-        self.bluePlayersLabel.text = @"0";
-    }
-    
-    // Style as active or inactive
-    if (self.board.game.isActive) {
-        [self setActiveBoard];
-    } else {
-        [self setInactiveBoard];
-    }
-
-}
-
 - (void)populateBoardWithDictionary:(NSDictionary *)board
 {
     self.board = [[MABoard alloc] initWithDictionary:board];
@@ -52,9 +22,9 @@
     // Set labels
     self.gameNameLabel.text = self.board.name;
     if (self.board.game != nil) {
-        self.bluePlayersLabel.text = [NSString stringWithFormat:@"%d", self.board.game.totalPlayers];
+        self.playersLabel.text = [NSString stringWithFormat:@"%d", self.board.game.totalPlayers];
     } else {
-        self.bluePlayersLabel.text = @"0";
+        self.playersLabel.text = @"0";
     }
     
     // Style as active or inactive
@@ -74,11 +44,6 @@
 }
 
 #pragma mark - Helpers
-- (UIFont *)headerFontType
-{
-    return MA_FONT_MENSCH_HEADER;
-}
-
 - (UIFont *)fontType
 {
     return MA_FONT_KARLA_REGULAR;
@@ -89,8 +54,8 @@
 {
 
     self.cellView.backgroundColor = MA_COLOR_BODYBLUE;
-    self.bluePlayersLabel.textColor = MA_COLOR_WHITE;
-    self.bluePlayersLabel.font = [self fontType];
+    self.playersLabel.textColor = MA_COLOR_WHITE;
+    self.playersLabel.font = [self fontType];
     self.gameNameLabel.textColor = MA_COLOR_WHITE;
     self.gameNameLabel.font = [self fontType];
     [MABorderSetter setBottomBorderForView:self.cellView withColor:MA_COLOR_WHITE];
@@ -102,8 +67,8 @@
 {
 
     self.cellView.backgroundColor = MA_COLOR_CREAM;
-    self.bluePlayersLabel.textColor = MA_COLOR_RED;
-    self.bluePlayersLabel.font = [self fontType];
+    self.playersLabel.textColor = MA_COLOR_RED;
+    self.playersLabel.font = [self fontType];
     self.gameNameLabel.textColor = MA_COLOR_RED;
     self.gameNameLabel.font = [self fontType];
     [MABorderSetter setBottomBorderForView:self.cellView withColor:MA_COLOR_RED];
@@ -139,15 +104,10 @@
     joinButton.alpha = 0.93f;
     joinButton.layer.cornerRadius = 10;
     joinButton.clipsToBounds = YES;
-    [joinButton addTarget:self.parent.delegate action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
 
     CGSize btnSize = CGSizeMake(mapView.frame.size.width * 0.75f, 50);
     CGFloat btnPadding = 16;
     joinButton.frame = CGRectMake(mapView.frame.size.width/2 - btnSize.width/2, CGRectGetMaxY(mapView.bounds) - btnSize.height - btnPadding, btnSize.width, btnSize.height);
-
-    // We'll change these in cellForRow later, if necessary
-    [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
-    [joinButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
 
     self.startButton = joinButton;
     [mapView addSubview:self.startButton];

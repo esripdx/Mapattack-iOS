@@ -250,6 +250,7 @@
 
     if ([self isActiveSection:indexPath.section]) {
         board = self.currentGames[(NSUInteger)indexPath.row];
+        [cell.startButton setTitle:@"JOIN" forState:UIControlStateNormal];
         [cell setMapTemplateWithTileColor:@"blue"];
     } else {
         board = self.nearbyBoards[(NSUInteger)indexPath.row];
@@ -257,6 +258,7 @@
         [cell setMapTemplateWithTileColor:@"red"];
     }
     [cell populateBoardWithDictionary:board];
+    [cell.startButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
 }
 

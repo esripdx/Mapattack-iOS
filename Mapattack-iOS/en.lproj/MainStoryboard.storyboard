@@ -75,10 +75,10 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <outlet property="bluePlayersLabel" destination="DxA-Rt-2WZ" id="FXW-EC-oTl"/>
                                             <outlet property="cellView" destination="8wv-Kg-D2q" id="JmV-MC-bYY"/>
                                             <outlet property="gameNameLabel" destination="2ls-wy-idn" id="8nO-zN-SrQ"/>
                                             <outlet property="mapView" destination="txe-F4-0CS" id="Rcd-vE-diU"/>
+                                            <outlet property="playersLabel" destination="DxA-Rt-2WZ" id="FXW-EC-oTl"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -460,10 +460,10 @@ http://www.pacmanhattan.com/</string>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <outlet property="bluePlayersLabel" destination="T5K-ze-R1F" id="epF-a5-WFR"/>
                                             <outlet property="cellView" destination="p2J-Ws-fy6" id="21b-mY-zg5"/>
                                             <outlet property="gameNameLabel" destination="rRW-bo-7RR" id="LGz-pc-UYY"/>
                                             <outlet property="mapView" destination="5wf-1G-TM9" id="pWy-j4-ypm"/>
+                                            <outlet property="playersLabel" destination="T5K-ze-R1F" id="epF-a5-WFR"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -512,10 +512,10 @@ http://www.pacmanhattan.com/</string>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <outlet property="bluePlayersLabel" destination="NsQ-20-nhu" id="ELB-n8-xpJ"/>
                                             <outlet property="cellView" destination="Ins-lb-SGa" id="cWn-Z1-We8"/>
                                             <outlet property="gameNameLabel" destination="MKV-ay-NvA" id="6Or-Vu-1Dg"/>
                                             <outlet property="mapView" destination="Acj-OB-BN7" id="htb-QD-pZr"/>
+                                            <outlet property="playersLabel" destination="NsQ-20-nhu" id="ELB-n8-xpJ"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -596,10 +596,10 @@ http://www.pacmanhattan.com/</string>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
-                                    <outlet property="bluePlayersLabel" destination="cfZ-Ej-7Qa" id="4ew-oM-LEh"/>
                                     <outlet property="cellView" destination="GGY-dX-fA9" id="ns8-Gs-Uwl"/>
                                     <outlet property="gameNameLabel" destination="CLf-10-qhJ" id="qbc-4X-tQE"/>
                                     <outlet property="mapView" destination="c2W-KM-LfK" id="TEI-rl-W2x"/>
+                                    <outlet property="playersLabel" destination="cfZ-Ej-7Qa" id="4ew-oM-LEh"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
