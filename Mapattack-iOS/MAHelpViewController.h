@@ -8,13 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MAHelpViewController : UIViewController
+@interface MAHelpViewController : UIViewController <UIWebViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UILabel *creditsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *technologyLabel;
-@property (weak, nonatomic) IBOutlet UILabel *historyLabel;
-@property (weak, nonatomic) IBOutlet UITextView *creditsTextView;
-@property (weak, nonatomic) IBOutlet UITextView *technologyTextView;
-@property (weak, nonatomic) IBOutlet UITextView *historyTextView;
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @end

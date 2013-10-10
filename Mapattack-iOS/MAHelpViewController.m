@@ -8,8 +8,13 @@
 
 #import "MAHelpViewController.h"
 #import "MAAppDelegate.h"
+#import "MBProgressHUD.h"
 
-@interface MAHelpViewController ()
+@interface MAHelpViewController () {
+
+    MBProgressHUD *_hud;
+
+}
 
 @end
 
@@ -26,27 +31,23 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
-    [self makeTitleWithText:self.creditsLabel];
-    [self makeTitleWithText:self.technologyLabel];
-    [self makeTitleWithText:self.historyLabel];
-    [self makeNiceNiceText:self.creditsTextView];
-    [self makeNiceNiceText:self.technologyTextView];
-    [self makeNiceNiceText:self.historyTextView];
+
+    _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _hud.dimBackground = YES;
+    _hud.square = NO;
+    _hud.labelText = @"Loading...";
+
+    NSURL *url =[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kMapAttackWebHostname, kMAWebHelpPath]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+
+    [self.webView setDelegate:self];
+    [self.webView loadRequest:request];
 
 }
 
-- (void)makeTitleWithText:(UILabel *)thing
+- (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    thing.font = [UIFont fontWithName:@"M41_LOVEBIT" size:18.0f];
-    thing.textColor = MA_COLOR_RED;
-    thing.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-}
-
-- (void)makeNiceNiceText:(UITextView *)thing
-{
-    thing.font = [UIFont fontWithName:@"Karla" size:9];
-    thing.textColor = MA_COLOR_DARKGRAY;
+    [_hud hide:YES];
 }
 
 - (void)viewDidLoad

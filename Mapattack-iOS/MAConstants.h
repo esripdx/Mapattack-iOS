@@ -17,6 +17,8 @@ static NSUInteger const kMACellHeight = 44;
 static NSUInteger const kMACellExpandedHeight = 326;
 static NSUInteger const kMATableWidth = 320;
 
+static NSString *const kMAWebHelpPath = @"/info";
+
 /* UserDefaults keys
  */
 static NSString * const kMADefaultsDomain = @"com.esri.portland.mapattack";
