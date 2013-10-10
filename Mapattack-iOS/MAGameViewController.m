@@ -68,6 +68,9 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    for (MKTileOverlay *overlay in self.mapView.overlays) {
+        [self.mapView removeOverlay:overlay];
+    }
     [MAGameManager sharedManager].delegate = nil;
     [[MAGameManager sharedManager] leaveGame];
 }
