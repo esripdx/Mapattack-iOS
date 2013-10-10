@@ -12,22 +12,17 @@
 
 @interface MAGameListCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet UILabel *bluePlayersLabel;
-@property (strong, nonatomic) IBOutlet UILabel *redPlayersLabel;
+@property (strong, nonatomic) IBOutlet UILabel *playersLabel;
 @property (strong, nonatomic) IBOutlet UILabel *gameNameLabel;
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIView *cellView;
 
-@property (nonatomic) BOOL isActiveHeader;
-@property (nonatomic) BOOL isInactiveHeader;
-@property (nonatomic, retain) UITableView *parent;
-@property (nonatomic, retain) UIButton *startButton;
+@property (strong, nonatomic) UIButton *startButton;
 
-@property (nonatomic, strong) MABoard *board;
+@property (strong, nonatomic) MABoard *board;
 
 - (void)setActiveBoard;
 - (void)setInactiveBoard;
-- (void)populateBoardWithDictionary:(NSDictionary *)board andIndex:(int)boardIndex andInactiveHeaderIndex:(int)inActiveHeaderIndex andTableView:(UITableView *)tableView;
 - (void)populateBoardWithDictionary:(NSDictionary *)board;
 - (void)setMapTemplateWithTileColor:(NSString *)color;
 

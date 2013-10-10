@@ -57,7 +57,6 @@
     toolbar.tintColor = MA_COLOR_WHITE;
     toolbar.barStyle = UIBarStyleBlack;
     toolbar.translucent = YES;
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -158,16 +157,16 @@
 }
 
 - (void)joinGame:(id)sender {
-    if (_selectedIndex >= 0 && _selectedIndex) { // No longer applicable < self.nearbyBoards.count) {
+    if (_selectedIndex >= 0) {
         [[MAGameManager sharedManager] stopMonitoringNearbyGames];
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.square = NO;
         NSDictionary *board;
         if ([self isActiveSection:_selectedSection]) {
-            board = self.currentGames[_selectedIndex];
+            board = self.currentGames[(NSUInteger)_selectedIndex];
         } else {
-            board = self.nearbyBoards[_selectedIndex];
+            board = self.nearbyBoards[(NSUInteger)_selectedIndex];
         }
 
         NSDictionary *game = board[@"game"];
@@ -251,15 +250,15 @@
 
     if ([self isActiveSection:indexPath.section]) {
         board = self.currentGames[(NSUInteger)indexPath.row];
+        [cell.startButton setTitle:@"JOIN" forState:UIControlStateNormal];
         [cell setMapTemplateWithTileColor:@"blue"];
     } else {
         board = self.nearbyBoards[(NSUInteger)indexPath.row];
         [cell.startButton setTitle:@"CREATE" forState:UIControlStateNormal];
-        [cell.startButton addTarget:[MAGameManager sharedManager] action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
         [cell setMapTemplateWithTileColor:@"red"];
     }
     [cell populateBoardWithDictionary:board];
-    //[tableView scrollRectToVisible:CGRectMake(0, 600, self.view.frame.size.width,self.view.frame.size.height) animated:YES];
+    [cell.startButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
 }
 
