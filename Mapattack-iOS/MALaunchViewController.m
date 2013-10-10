@@ -86,15 +86,31 @@
 
     [self updateEnterButton];
 
+    // Load up the default avatars
     self.avatars = @[];
     for (NSString *defaultAvatarImageName in MA_DEFAULT_AVATARS) {
         self.avatars = [self.avatars arrayByAddingObject:[UIImage imageNamed:defaultAvatarImageName]];
     }
 
-    self.selectedAvatarIndex = arc4random_uniform(self.avatars.count);
+    // Load a custom avatar if one has been saved.
     NSData *avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
     if (avatarData) {
-        [self saveAvatar:[UIImage imageWithData:avatarData]];
+        UIImage *avatar = [UIImage imageWithData:avatarData];
+        self.avatars = [self.avatars arrayByAddingObject:avatar];
+    }
+
+    // If there's a selected default avatar index in the defaults use that default avatar
+    NSNumber *selectedDefault = [defaults valueForKey:kMADefaultsDefaultAvatarSelectedKey];
+    if (selectedDefault != nil) {
+        self.selectedAvatarIndex = [selectedDefault integerValue];
+    } else {
+        // otherwise, if we loaded a custom avatar from defaults, use that one (it'll be the last avatar in the array
+        if (avatarData) {
+            self.selectedAvatarIndex = self.avatars.count - 1;
+        } else {
+            // No avatar previously selected, choose a random default avatar.
+            self.selectedAvatarIndex = arc4random_uniform(self.avatars.count);
+        }
     }
 }
 
@@ -134,12 +150,6 @@
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Registering...";
-
-    if ([[NSUserDefaults standardUserDefaults] dataForKey:kMADefaultsAvatarKey] == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(self.avatarImageView.image, 1.0f)
-                                                  forKey:kMADefaultsAvatarKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
 
     [[MAGameManager sharedManager] registerDeviceWithCompletionBlock:^(NSError *error) {
         if (error != nil) {
@@ -185,15 +195,20 @@
     } else {
         _selectedAvatarIndex = selectedAvatarIndex;
     }
+
+    // If they've selected one of the default avatars, put which one they used in defaults so we can load it next time the app is launched.
+    if (_selectedAvatarIndex < [MA_DEFAULT_AVATARS count]) {
+        [[NSUserDefaults standardUserDefaults] setValue:@(_selectedAvatarIndex) forKey:kMADefaultsDefaultAvatarSelectedKey];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kMADefaultsDefaultAvatarSelectedKey];
+    }
     self.avatarImageView.image = self.avatars[(NSUInteger)_selectedAvatarIndex];
 }
 
-- (void)saveAvatar:(UIImage *)image {
-    [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(image, 1.0f)
+- (void)persistChosenAvatar {
+    [[NSUserDefaults standardUserDefaults] setObject:UIImageJPEGRepresentation(self.avatarImageView.image, 1.0f)
                                               forKey:kMADefaultsAvatarKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    self.avatars = [self.avatars arrayByAddingObject:image];
-    self.selectedAvatarIndex = self.avatars.count - 1;
 }
 
 #pragma mark - Capture Avatar
@@ -308,6 +323,12 @@
     
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection
                                                        completionHandler:captureStillCompletionHandler];
+}
+
+- (void)saveAvatar:(UIImage *)image {
+    [self persistChosenAvatar];
+    self.avatars = [self.avatars arrayByAddingObject:image];
+    self.selectedAvatarIndex = self.avatars.count - 1;
 }
 
 #pragma mark - Pick Avatar / UIImagePickerControllerDelegate methods
