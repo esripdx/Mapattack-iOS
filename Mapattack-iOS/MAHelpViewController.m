@@ -52,6 +52,23 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        NSURL *url = request.URL;
+        if ([url.host isEqualToString:@"twitter.com"]) {
+            NSString *userName = request.URL.lastPathComponent;
+            NSURL *nativeUrl = [NSURL URLWithString:[NSString stringWithFormat:@"twitter://user?screen_name=%@", userName]];
+            if ([[UIApplication sharedApplication] canOpenURL:nativeUrl]) {
+                url = nativeUrl;
+            }
+        }
+        [[UIApplication sharedApplication] openURL:url];
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [_hud hide:YES];
