@@ -1,12 +1,12 @@
 //
-//  MAGamesListTableViewController.m
+//  MAGamesListViewController.m
 //  Mapattack-iOS
 //
 //  Created by Jen on 10/8/13.
 //  Copyright (c) 2013 Geoloqi. All rights reserved.
 //
 
-#import "MAGamesListTableViewController.h"
+#import "MAGamesListViewController.h"
 #import "MBProgressHUD.h"
 #import "MAGameManager.h"
 #import "MAAppDelegate.h"
@@ -16,7 +16,7 @@
 #import "MABorderSetter.h"
 #import "MACoin.h"
 
-@interface MAGamesListTableViewController () {
+@interface MAGamesListViewController () {
     NSInteger _selectedIndex;
     NSInteger _selectedSection;
 }
@@ -25,16 +25,7 @@
 
 @end
 
-@implementation MAGamesListTableViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@implementation MAGamesListViewController
 
 - (void)didReceiveMemoryWarning
 {
@@ -49,14 +40,22 @@
     [self.tableView setDataSource:self];
 
     self.tableView.sectionHeaderHeight = kMACellHeight-3;
-    self.view.backgroundColor = MA_COLOR_CREAM;
+    // Move the section header up to the tippy-top of the tableview, accounting for the push down that the
+    // navigation controller is doing to account for the status bar
+    self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
+    self.tableView.backgroundView = nil;
     self.tableView.backgroundColor = MA_COLOR_CREAM;
+    self.view.backgroundColor = MA_COLOR_BODYBLUE;
+
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
-    
     UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.tintColor = MA_COLOR_WHITE;
     toolbar.barStyle = UIBarStyleBlack;
     toolbar.translucent = YES;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -218,6 +217,14 @@
     [self.navigationController pushViewController:gvc animated:YES];
 }
 
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // don't bounce on scrolling up, only down.
+    if (scrollView.contentOffset.y < 0) {
+        scrollView.contentOffset = CGPointMake(0, 0);
+    }
+}
+
 #pragma mark - UITableViewDelegate/Datasource
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 
@@ -259,6 +266,7 @@
     }
     [cell populateBoardWithDictionary:board];
     [cell.startButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
+    cell.mapView.delegate = self;
     return cell;
 }
 
