@@ -1,5 +1,5 @@
 //
-//  MAGamesListTableViewController.h
+//  MAGamesListViewController.h
 //  Mapattack-iOS
 //
 //  Created by Jen on 10/8/13.
@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-@interface MAGamesListTableViewController : UITableViewController <MKMapViewDelegate, UIAlertViewDelegate>
+
+@interface MAGamesListViewController : UIViewController <MKMapViewDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
