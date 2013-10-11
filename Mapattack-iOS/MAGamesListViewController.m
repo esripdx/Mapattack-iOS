@@ -266,6 +266,7 @@
     }
     [cell populateBoardWithDictionary:board];
     [cell.startButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
+    cell.mapView.delegate = self;
     return cell;
 }
 
