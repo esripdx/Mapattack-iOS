@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MAHelpViewController : UIViewController <UIWebViewDelegate>
+@interface MAHelpViewController : UIViewController <UIWebViewDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (strong, nonatomic) IBOutlet UIView *statusBarBG;
 
 @end
