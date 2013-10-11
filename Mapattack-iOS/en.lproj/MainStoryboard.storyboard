@@ -202,16 +202,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oFL-gu-l5h">
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oFL-gu-l5h">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </webView>
+                            <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UNi-aI-BPj" userLabel="Status Bar Background View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="Vmn-Yq-J4Z"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.98823535439999999" blue="0.95686280729999995" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstItem="oFL-gu-l5h" firstAttribute="trailing" secondItem="UNi-aI-BPj" secondAttribute="trailing" id="MBi-eA-gXV"/>
+                            <constraint firstItem="oFL-gu-l5h" firstAttribute="top" secondItem="UNi-aI-BPj" secondAttribute="top" id="QQn-4d-l5i"/>
+                            <constraint firstItem="oFL-gu-l5h" firstAttribute="leading" secondItem="YFU-1K-Jmk" secondAttribute="leading" id="W88-xq-6dV"/>
+                            <constraint firstItem="oFL-gu-l5h" firstAttribute="top" secondItem="YFU-1K-Jmk" secondAttribute="top" id="ktR-vA-cqO"/>
+                            <constraint firstItem="nBB-Mf-YNn" firstAttribute="top" secondItem="oFL-gu-l5h" secondAttribute="bottom" id="mwu-ox-hem"/>
+                            <constraint firstAttribute="trailing" secondItem="oFL-gu-l5h" secondAttribute="trailing" id="rVn-IJ-r58"/>
+                            <constraint firstItem="oFL-gu-l5h" firstAttribute="leading" secondItem="UNi-aI-BPj" secondAttribute="leading" id="wx7-I5-EBE"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="bwe-Bh-lXu"/>
                     <connections>
+                        <outlet property="statusBarBG" destination="UNi-aI-BPj" id="Lsi-Qx-m8A"/>
                         <outlet property="webView" destination="oFL-gu-l5h" id="jdg-An-4lC"/>
                     </connections>
                 </viewController>
@@ -231,7 +249,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Mve-08-mtM">
+                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Mve-08-mtM">
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -296,6 +314,12 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Mve-08-mtM" secondAttribute="trailing" id="OJE-1R-D4k"/>
+                            <constraint firstItem="Mve-08-mtM" firstAttribute="leading" secondItem="QQA-2S-S27" secondAttribute="leading" id="aze-tg-aTr"/>
+                            <constraint firstItem="Mve-08-mtM" firstAttribute="top" secondItem="QQA-2S-S27" secondAttribute="top" constant="20" symbolic="YES" id="bfF-WV-Ana"/>
+                            <constraint firstAttribute="bottom" secondItem="Mve-08-mtM" secondAttribute="bottom" id="qgR-HY-4ME"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="8j8-ek-ckp"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -402,7 +426,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="GPY-JC-gsu">
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.94999999999999996" contentMode="scaleToFill" barStyle="black" id="GPY-JC-gsu">
                         <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>

@@ -41,8 +41,15 @@
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
 
     [self.webView setDelegate:self];
+    self.webView.scrollView.delegate = self;
+    self.webView.scrollView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
+    self.webView.backgroundColor = MA_COLOR_DARKGRAY;
     [self.webView loadRequest:request];
+    self.statusBarBG.alpha = 0.75;
+}
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -62,6 +69,20 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.webView scrollViewDidScroll:scrollView];
+
+    if (scrollView.contentOffset.y > 910) {
+        self.statusBarBG.backgroundColor = MA_COLOR_DARKGRAY;
+    } else {
+        self.statusBarBG.backgroundColor = MA_COLOR_BLUE;
+    }
+
+    if (scrollView.contentOffset.y < 0) {
+        scrollView.contentOffset = CGPointMake(0, 0);
+    }
 }
 
 @end
