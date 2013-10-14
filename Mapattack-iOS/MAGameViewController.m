@@ -13,6 +13,7 @@
 #import "MAPlayerAnnotationView.h"
 #import "MACoin.h"
 #import "MACoinAnnotationView.h"
+#import "MABoard.h"
 
 @interface MAGameViewController ()
 
@@ -91,7 +92,7 @@
     UIFont *karla = [UIFont fontWithName:@"Karla" size:19];
     self.gameNameLabel.font = mensch;
     self.gameNameLabel.textColor = MA_COLOR_CREAM;
-    self.gameNameLabel.text = manager.joinedGameName;
+    self.gameNameLabel.text = manager.joinedGameBoard.name;
     self.gameNameLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 
     self.redScoreLabel.font = karla;

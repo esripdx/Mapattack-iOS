@@ -23,10 +23,8 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocationManager *gameListLocationManager;
 @property (strong, nonatomic) MAUdpConnection *udpConnection;
-@property (strong, nonatomic) AFHTTPSessionManager *tcpConnection;
 @property (strong, nonatomic) NSString *joinedTeamColor;
-@property (copy, nonatomic, readwrite) NSDictionary *joinedGameBoard;
-@property (copy, nonatomic, readwrite) NSDictionary *lastBoardStateDict;
+@property (strong, nonatomic, readwrite) MABoard *joinedGameBoard;
 @property (strong, nonatomic) NSTimer *syncTimer;
 
 @end
@@ -150,67 +148,58 @@
 
 #pragma mark - Game creating/joining
 
-- (NSString *)joinedGameId {
-    DDLogInfo(@"JoinedGameId %@", (NSString *)_joinedGameBoard[kMAApiGameKey][kMAApiGameIdKey]);
-    return (NSString *)_joinedGameBoard[kMAApiGameKey][kMAApiGameIdKey];
-}
-
-- (NSString *)joinedGameName {
-    return (NSString *)_joinedGameBoard[kMAApiNameKey];
-}
-
-- (void)joinGameOnBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion {
+- (void)joinGameOnBoard:(MABoard *)board completion:(void (^)(NSString *joinedTeam, NSError *error))completion {
     [self registerForPushToken];
     
-    DDLogVerbose(@"Joining game: %@", board[kMAApiGameKey][kMAApiGameIdKey]);
+    DDLogVerbose(@"Joining game: %@", board.game.gameId);
     
     MAApiSuccessHandler gameJoinSuccess = ^(NSDictionary *response) {
         DDLogVerbose(@"game/join response: %@", response);
         self.joinedGameBoard = board;
         self.joinedTeamColor = response[kMAApiTeamKey];
-        if (completion != nil) {
-            completion(nil, response);
-        }
-        if (board[kMAApiGameKey][kMAApiActiveKey]) {
+        if (board.game != nil) {
             [self.locationManager startUpdatingLocation];
+            [self startPollingGameState];
         }
-        [self startPollingGameState];
-        
+
+        if (completion != nil) {
+            completion(self.joinedTeamColor, nil);
+        }
     };
     MAApiErrorHandler gameJoinError = ^(NSError *error) {
         DDLogError(@"Error joining game: %@", [error debugDescription]);
         if (completion != nil) {
-            completion(error, nil);
+            completion(nil, error);
         }
     };
     [_api postToPath:kMAApiGameJoinPath
-              params:@{ kMAApiGameIdKey: board[kMAApiGameKey][kMAApiGameIdKey]}
+              params:@{ kMAApiGameIdKey: board.game.gameId }
              success:gameJoinSuccess
                error:gameJoinError];
 }
 
-- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion {
+- (void)createGameForBoard:(MABoard *)board completion:(void (^)(NSString *joinedTeam, NSError *error))completion {
     [self registerForPushToken];
     
-    DDLogVerbose(@"Creating game for board: %@", board[kMAApiBoardIdKey]);
+    DDLogVerbose(@"Creating game for board: %@", board);
     
     MAApiSuccessHandler gameCreateSuccess = ^(NSDictionary *response) {
         DDLogVerbose(@"game/create response: %@", response);
         self.joinedGameBoard = board;
         self.joinedTeamColor = response[kMAApiTeamKey];
         if (completion != nil) {
-            completion(nil, response);
+            completion(self.joinedTeamColor, nil);
         }
     };
     MAApiErrorHandler gameCreateError = ^(NSError *error) {
         DDLogError(@"Error creating game: %@", [error debugDescription]);
         if (completion != nil) {
-            completion(error, nil);
+            completion(nil, error);
         }
     };
     
     [_api postToPath:kMAApiGameCreatePath
-              params:@{ kMAApiBoardIdKey: board[kMAApiBoardIdKey] }
+              params:@{ kMAApiBoardIdKey: board.boardId }
              success:gameCreateSuccess
                error:gameCreateError];
 }
@@ -238,8 +227,8 @@
 }
 
 - (void)startGame {
-    if (self.joinedGameId) {
-        NSDictionary *gameParams =@{ kMAApiGameIdKey: self.joinedGameId };
+    if (self.joinedGameBoard.game.gameId) {
+        NSDictionary *gameParams =@{ kMAApiGameIdKey: self.joinedGameBoard.game.gameId };
         [_api postToPath:kMAApiGameStartPath params:gameParams];
     } else {
         DDLogError(@"Couldn't find joinedGameId! Can't start game!");
@@ -247,19 +236,27 @@
 }
 
 - (void)endGame {
-    [_api postToPath:kMAApiGameEndPath params:@{ kMAApiGameIdKey: self.joinedGameId }];
+    [_api postToPath:kMAApiGameEndPath params:@{ kMAApiGameIdKey: self.joinedGameBoard.game.gameId }];
 }
 
 - (void)fetchBoardStateForBoardId:(NSString *)boardId
-                       completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion {
+                       completion:(void (^)(MABoard *board, NSArray *coins, NSError *error))completion {
     
     DDLogVerbose(@"fetching board state for board: %@", boardId);
     
     MAApiSuccessHandler boardStateSuccess = ^(NSDictionary *response) {
-        self.lastBoardStateDict = response;
         //DDLogVerbose(@"board state response: %@", response);
         if (completion != nil) {
-            completion(response[kMAApiBoardKey], response[kMAApiCoinsKey], nil);
+            NSArray *coinsResponse = response[kMAApiCoinsKey];
+
+            NSMutableArray *coins = [NSMutableArray new];
+
+            for (NSDictionary *coinDict in coinsResponse) {
+                MACoin *coin = [MACoin coinWithDictionary:coinDict];
+                [coins addObject:coin];
+            }
+
+            completion([[MABoard alloc] initWithDictionary:response[kMAApiBoardKey]], [NSArray arrayWithArray:coins], nil);
         }
     };
     
@@ -313,7 +310,7 @@
 
 - (void)syncGameState {
     DDLogVerbose(@"syncing game state");
-    [_api postToPath:kMAApiGameStatePath params:@{ kMAApiGameIdKey: self.joinedGameId }];
+    [_api postToPath:kMAApiGameStatePath params:@{ kMAApiGameIdKey: self.joinedGameBoard.game.gameId }];
     // TODO: if it errors, tell the user about it in some way? Maybe just keep track how many times we fail a sync
 }
 
@@ -500,8 +497,8 @@
     return [self regionForBoard:self.joinedGameBoard];
 }
 
-- (MKCoordinateRegion)regionForBoard:(NSDictionary *)board {
-    NSArray *bbox = board[kMAApiBoundingBoxKey];
+- (MKCoordinateRegion)regionForBoard:(MABoard *)board {
+    NSArray *bbox = board.bbox;
     double lng1 = [bbox[0] doubleValue];
     double lat1 = [bbox[1] doubleValue];
     double lng2 = [bbox[2] doubleValue];
