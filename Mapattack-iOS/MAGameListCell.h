@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import "MABoard.h"
+
+@class MABoard;
 
 @interface MAGameListCell : UITableViewCell
 
@@ -21,9 +22,7 @@
 
 @property (strong, nonatomic) MABoard *board;
 
-- (void)setActiveBoard;
-- (void)setInactiveBoard;
-- (void)populateBoardWithDictionary:(NSDictionary *)board;
-- (void)setMapTemplateWithTileColor:(NSString *)color;
+- (void)styleAsActiveBoard;
+- (void)styleAsInactiveBoard;
 
 @end
