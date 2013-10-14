@@ -15,6 +15,7 @@
 #import "MAGameViewController.h"
 #import "MABorderSetter.h"
 #import "MACoin.h"
+#import "MABoard.h"
 
 @interface MAGamesListViewController () {
     NSInteger _selectedIndex;
@@ -72,13 +73,8 @@
     [[MAGameManager sharedManager] stopMonitoringNearbyGames];
 }
 
-- (BOOL)isActiveSection:(NSInteger)section
-{
-    if (section == 0) {
-        return YES;
-    } else {
-        return NO;
-    }
+- (BOOL)isActiveSection:(NSInteger)section {
+    return section == 0;
 }
 
 - (UITableViewHeaderFooterView *)makeHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor
@@ -136,23 +132,21 @@
     }];
 }
 
--(void)separateBoards:(NSArray *)boards
-{
+-(void)separateBoards:(NSArray *)boards {
     NSMutableArray *active = [NSMutableArray array];
     NSMutableArray *inactive = [NSMutableArray array];
-    for (NSDictionary *board in boards) {
-        if (board[@"game"][@"active"]) {
+    for (MABoard *board in boards) {
+        if (board.game.isActive) {
             [active addObject:board];
         } else {
             [inactive addObject:board];
         }
     }
- 
+
     self.currentGames = active;
     self.nearbyBoards = inactive;
-    
-    [self.tableView reloadData];
 
+    [self.tableView reloadData];
 }
 
 - (void)joinGame:(id)sender {
@@ -252,27 +246,46 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameListCell" forIndexPath:indexPath];
-    
-    NSDictionary *board;
 
     if ([self isActiveSection:indexPath.section]) {
-        board = self.currentGames[(NSUInteger)indexPath.row];
-        [cell.startButton setTitle:@"JOIN" forState:UIControlStateNormal];
-        [cell setMapTemplateWithTileColor:@"blue"];
+        cell.board = self.currentGames[(NSUInteger)indexPath.row];
     } else {
-        board = self.nearbyBoards[(NSUInteger)indexPath.row];
-        [cell.startButton setTitle:@"CREATE" forState:UIControlStateNormal];
-        [cell setMapTemplateWithTileColor:@"red"];
+        cell.board = self.nearbyBoards[(NSUInteger)indexPath.row];
     }
-    [cell populateBoardWithDictionary:board];
     [cell.startButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     cell.mapView.delegate = self;
+
+    // DDLogVerbose(@"dequeued cell for %@", cell.board);
     return cell;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row != _selectedIndex) {
         _selectedIndex = indexPath.row;
+        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
+        if (cell.board.game.gameId) {
+            // TODO: We may want to set this up to poll game state while the board is selected. Maybe not though: lotsa data and... meh.
+            [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
+                                                        completion:^(NSArray *coins, NSError *error) {
+                                                            if (error == nil) {
+                                                                [cell.mapView addAnnotations:coins];
+                                                            } else {
+                                                                DDLogError(@"Error fetching game state: %@", [error localizedDescription]);
+                                                            }
+                                                        }];
+        } else {
+            [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
+                                                          completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
+                                                              if (error == nil) {
+                                                                  for (NSDictionary *coin in coins) {
+                                                                      MACoin *annotation = [MACoin coinWithDictionary:coin];
+                                                                      [cell.mapView addAnnotation:annotation];
+                                                                  }
+                                                              } else {
+                                                                  DDLogError(@"Error fetching board state: %@", [error localizedDescription]);
+                                                              }
+                                                          }];
+        }
     } else {
         _selectedIndex = -1;
     }

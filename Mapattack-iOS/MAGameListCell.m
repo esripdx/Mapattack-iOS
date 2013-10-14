@@ -11,48 +11,17 @@
 #import "MAGameListCell.h"
 #import "MAGameManager.h"
 #import "MABorderSetter.h"
-#import "MACoin.h"
+#import "MABoard.h"
 
 @implementation MAGameListCell
 
-- (void)populateBoardWithDictionary:(NSDictionary *)board
-{
-    self.board = [[MABoard alloc] initWithDictionary:board];
-    
-    // Set labels
-    self.gameNameLabel.text = self.board.name;
-    if (self.board.game != nil) {
-        self.playersLabel.text = [NSString stringWithFormat:@"%d", self.board.game.totalPlayers];
-    } else {
-        self.playersLabel.text = @"0";
-    }
-    
-    // Style as active or inactive
-    if (self.board.game.isActive) {
-        [self setActiveBoard];
-    } else {
-        [self setInactiveBoard];
-    }
-}
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-    }
-    return self;
-}
-
 #pragma mark - Helpers
-- (UIFont *)fontType
-{
+- (UIFont *)fontType {
     return MA_FONT_KARLA_REGULAR;
 }
 
 #pragma mark - Cell Contents
-- (void)setActiveBoard
-{
-
+- (void)styleAsActiveBoard {
     self.cellView.backgroundColor = MA_COLOR_BODYBLUE;
     self.playersLabel.textColor = MA_COLOR_WHITE;
     self.playersLabel.font = [self fontType];
@@ -61,11 +30,12 @@
     [MABorderSetter setBottomBorderForView:self.cellView withColor:MA_COLOR_WHITE];
     [MABorderSetter setLeftBorderForView:self.cellView withColor:MA_COLOR_WHITE];
 
+    self.mapView.tintColor = MA_COLOR_BLUE;
+    [self.startButton setTitleColor:MA_COLOR_BLUE forState:UIControlStateNormal];
+    [self.startButton setTitle:@"JOIN" forState:UIControlStateNormal];
 }
 
-- (void)setInactiveBoard
-{
-
+- (void)styleAsInactiveBoard {
     self.cellView.backgroundColor = MA_COLOR_CREAM;
     self.playersLabel.textColor = MA_COLOR_RED;
     self.playersLabel.font = [self fontType];
@@ -74,28 +44,34 @@
     [MABorderSetter setBottomBorderForView:self.cellView withColor:MA_COLOR_RED];
     [MABorderSetter setLeftBorderForView:self.cellView withColor:MA_COLOR_RED];
 
+    self.mapView.tintColor = MA_COLOR_RED;
+    [self.startButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
+    [self.startButton setTitle:@"CREATE" forState:UIControlStateNormal];
 }
 
-- (void)setMapTemplateWithTileColor:(NSString *)color
-{
-    // Changing this all to dark for now...
-    NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", @"dark"];
-    MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
-    overlay.canReplaceMapContent = YES;
-    if ([color isEqualToString:@"blue"]) {
-        self.mapView.tintColor = MA_COLOR_BLUE;
-        [self.startButton setTitleColor:MA_COLOR_BLUE forState:UIControlStateNormal];
+#pragma mark - Custom setters
+- (void)setBoard:(MABoard *)board {
+    _board = board;
+
+    // Set labels
+    self.gameNameLabel.text = self.board.name;
+    if (self.board.game != nil) {
+        self.playersLabel.text = [NSString stringWithFormat:@"%d", self.board.game.totalPlayers];
+    } else {
+        self.playersLabel.text = @"0";
     }
-    else {
-        self.mapView.tintColor = MA_COLOR_RED;
-        [self.startButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
+
+    // Style as active or inactive
+    if (self.board.game.isActive) {
+        [self styleAsActiveBoard];
+    } else {
+        [self styleAsInactiveBoard];
     }
-    [self.mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
 }
 
 - (void)setMapView:(MKMapView *)mapView {
     mapView.showsUserLocation = YES;
-    
+
     // Join button
     UIButton *joinButton = [[UIButton alloc] init];
     joinButton.titleLabel.font = MA_FONT_MENSCH_HEADER;
@@ -117,33 +93,20 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
     if (selected) {
-        if (self.board.game.gameId) {
-            // TODO: We may want to set this up to poll game state while the board is selected. Maybe not though: lotsa data and... meh.
-            [[MAGameManager sharedManager] fetchGameStateForGameId:self.board.game.gameId
-                                                        completion:^(NSArray *coins, NSError *error) {
-                                                            if (error == nil) {
-                                                                [self.mapView addAnnotations:coins];
-                                                            } else {
-                                                                DDLogError(@"Error fetching game state: %@", [error localizedDescription]);
-                                                            }
-                                                        }];
-        } else {
-            [[MAGameManager sharedManager] fetchBoardStateForBoardId:self.board.boardId
-                                                          completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
-                                                              if (error == nil) {
-                                                                  for (NSDictionary *coin in coins) {
-                                                                      MACoin *annotation = [MACoin coinWithDictionary:coin];
-                                                                      [self.mapView addAnnotation:annotation];
-                                                                  }
-                                                              } else {
-                                                                  DDLogError(@"Error fetching board state: %@", [error localizedDescription]);
-                                                              }
-                                                          }];
+        if (self.mapView.overlays.count == 0) {
+            // use custom tiles mapView delegate will have to return a renderer! (GamesListVC should be mapView's delegate).
+            NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", @"dark"];
+            MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
+            overlay.canReplaceMapContent = YES;
+            [self.mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
         }
+
         MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:[self.board toDictionary]];
-        [self.mapView setRegion:region animated:NO];
+        if (self.mapView.region.center.latitude != region.center.latitude ||
+                self.mapView.region.center.longitude != region.center.longitude) {
+            [self.mapView setRegion:region animated:NO];
+        }
     }
 }
 

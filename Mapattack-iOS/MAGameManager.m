@@ -16,6 +16,7 @@
 #import "MACoin.h"
 #import "MAAppDelegate.h"
 #import "MAGame.h"
+#import "MABoard.h"
 
 @interface MAGameManager()
 
@@ -113,12 +114,14 @@
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion {
     MAApiSuccessHandler boardListSuccess = ^(NSDictionary *response) {
         NSArray *boards = response[@"boards"];
+        NSMutableArray *boardBoards = [NSMutableArray new];
         DDLogVerbose(@"Found %lu board%@ nearby", (unsigned long)boards.count, boards.count == 1 ? @"" : @"s");
-        for (NSDictionary *game in boards) {
-            //DDLogVerbose(@"got game: %@", game);
+        for (NSDictionary *board in boards) {
+            //DDLogVerbose(@"got board: %@", board);
+            [boardBoards addObject:[[MABoard alloc] initWithDictionary:board]];
         }
         if (completion != nil) {
-            completion(boards, nil);
+            completion(boardBoards, nil);
         }
     };
     MAApiErrorHandler boardListError = ^(NSError *error) {
