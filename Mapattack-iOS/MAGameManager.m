@@ -54,22 +54,34 @@
     
     _pushTokenRegistered = NO;
 
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self.locationManager.distanceFilter = kMARealTimeDistanceFilter;
-
-    self.gameListLocationManager = [[CLLocationManager alloc] init];
-    self.gameListLocationManager.delegate = self;
-    self.gameListLocationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    self.gameListLocationManager.distanceFilter = kMAGameListDistanceFilter;
-
     self.udpConnection = [[MAUdpConnection alloc] initWithDelegate:self];
     
     _api = [MAApiConnection new];
     [self registerGameStartAndEndHandlers];
 
     return self;
+}
+
+- (CLLocationManager *)locationManager {
+    if (!_locationManager) {
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        _locationManager.distanceFilter = kMARealTimeDistanceFilter;
+    }
+
+    return _locationManager;
+}
+
+- (CLLocationManager *)gameListLocationManager {
+    if (!_gameListLocationManager) {
+        _gameListLocationManager = [[CLLocationManager alloc] init];
+        _gameListLocationManager.delegate = self;
+        _gameListLocationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+        _gameListLocationManager.distanceFilter = kMAGameListDistanceFilter;
+    }
+
+    return _gameListLocationManager;
 }
 
 #pragma mark - Device registration
@@ -137,6 +149,9 @@
 - (void)stopMonitoringNearbyGames {
     DDLogVerbose(@"Stopping game list location updates.");
     [self.gameListLocationManager stopUpdatingLocation];
+    [self.gameListLocationManager stopMonitoringSignificantLocationChanges];
+    self.gameListLocationManager.delegate = nil;
+    self.gameListLocationManager = nil;
 }
 
 - (void)postLocationBoardList {
@@ -218,6 +233,8 @@
     
     [_api registerSuccessHandler:^(NSDictionary *response) {
         [self.locationManager stopUpdatingLocation];
+        self.locationManager.delegate = nil;
+        self.locationManager = nil;
         [self stopPollingGameState];
         if ([self.delegate respondsToSelector:@selector(gameDidEnd)]) {
             [self.delegate gameDidEnd];
@@ -337,6 +354,8 @@
     [self.udpConnection disconnect];
     DDLogVerbose(@"Stopping game location updates.");
     [self.locationManager stopUpdatingLocation];
+    self.locationManager.delegate = nil;
+    self.locationManager = nil;
     [self stopPollingGameState];
 }
 
@@ -533,6 +552,7 @@
 #pragma mark - CLLocationManagerDelegate methods
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    DDLogVerbose(@"Received location updates: %@", locations);
     if (manager == self.gameListLocationManager) {
         [self postLocationBoardList];
     } else if (manager == self.locationManager) {
