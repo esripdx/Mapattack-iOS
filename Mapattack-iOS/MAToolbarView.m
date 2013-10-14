@@ -12,8 +12,13 @@
 
 @interface MAToolbarView ()
 {
-    NSInteger _buttonCount;
+    NSInteger _previousXPos;
+    NSInteger _spacing;
+    NSInteger _totalWidth;
 }
+
+@property (nonatomic, strong) NSMutableArray *buttons;
+
 @end
 
 @implementation MAToolbarView
@@ -22,16 +27,20 @@
 {
     if (self) {
         self = [super initWithFrame:frame];
-        _buttonCount = 0;
+        self.buttons = [[NSMutableArray alloc] init];
+        _totalWidth = 320;
+        _previousXPos = 0;
+        _spacing = 20;
         [self addToolbarItems];
     }
     
     return self;
 }
 
-- (UIButton *)makeButtonWithTitle:(NSString *)title andTarget:(id)target andMethod:(SEL)method
+- (void)addButtonWithTitle:(NSString *)title andTarget:(id)target andMethod:(SEL)method
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIFont *lovebit = [UIFont fontWithName:@"M41_LOVEBIT" size:18.0f];
     
     [button addTarget:target
                action:method
@@ -39,15 +48,29 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
     
-    NSInteger width = [title length];
-    button.frame = CGRectMake(_buttonCount*width, kMAToolbarYPosition, width, kMAToolbarHeight);
-    button.tintColor = MA_COLOR_WHITE;
+    NSInteger width = _spacing+([title length]*14);
+    NSInteger xPos = 0;
+    if ([self.buttons count] > 0) {
+        xPos = _previousXPos;
+        DDLogInfo(@"xPos %d = _buttonCount %d + _previousXPos %d + _spacing %d", xPos, [self.buttons count], _previousXPos, _spacing);
+    } else {
+        DDLogInfo(@"First button %@", title);
+    }
+    NSInteger yPos = 0;
+    NSInteger height = kMAToolbarHeight;
+    button.frame = CGRectMake(xPos, yPos, width, height);
+    DDLogInfo(@"Button %@ x:%d y:%d width:%d height:%d", title, xPos, yPos, width, height);
+    
+    button.tintColor = MA_COLOR_CREAM;
     button.backgroundColor = MA_COLOR_CREAM;
+    button.titleLabel.font = lovebit;
     button.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     
-    _buttonCount = _buttonCount + 1;
+    [self.buttons addObject:button];
+    [self addSubview:button];
     
-    return button;
+    _previousXPos = width + _previousXPos + _spacing;
+    
 }
 
 - (void)addToolbarItems {
@@ -55,10 +78,12 @@
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsUserNameKey];
     MAAppDelegate *appDelegate = (MAAppDelegate *)[[UIApplication sharedApplication] delegate];
     UINavigationController *nav = (UINavigationController *)appDelegate.window.rootViewController;
-    UIFont *lovebit = [UIFont fontWithName:@"M41_LOVEBIT" size:18.0f];
     
-    UIButton *backButton = [self makeButtonWithTitle:@"<" andTarget:nav andMethod:@selector(popViewControllerAnimated:)];
-    [self addSubview:backButton];
+    [self addButtonWithTitle:@"<" andTarget:nav andMethod:@selector(popViewControllerAnimated:)];
+    [self addButtonWithTitle:username andTarget:nil andMethod:nil];
+    [self addButtonWithTitle:@"abc" andTarget:nil andMethod:nil];
+    [self addButtonWithTitle:@"00" andTarget:nil andMethod:nil];
+    [self addButtonWithTitle:@"?" andTarget:appDelegate andMethod:@selector(halp:)];
     
 //    [UIButton alloc] initWithFrame:[backButtonFrame ]l
 //                            initWithTitle:@"<"
@@ -72,9 +97,7 @@
 //
     
     
-    UIButton *usernameButton = [self makeButtonWithTitle:username andTarget:nil andMethod:nil];
-    usernameButton.tintColor = MA_COLOR_WHITE;
-    [self addSubview:usernameButton];
+
     
     //    [[UIBarButtonItem alloc] initWithTitle:username
 //                                                                       style:UIBarButtonItemStylePlain
@@ -96,16 +119,11 @@
     //        avatarButton = [[UIBarButtonItem alloc] initWithImage:avatarImage style:UIBarButtonItemStylePlain target:nil action:nil];
     //    }
     
-    UIButton *scoreButton = [self makeButtonWithTitle:@"00" andTarget:nil andMethod:nil];
-    scoreButton.tintColor = MA_COLOR_WHITE;
-    [self addSubview:scoreButton];
+
 
     //    [[UIButton alloc] initWithTitle:@"00" style:UIBarButtonItemStylePlain target:nil action:nil];
 //    [scoreButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
     
-    UIButton *helpButton = [self makeButtonWithTitle:@"?" andTarget:appDelegate andMethod:@selector(halp:)];
-    helpButton.tintColor = MA_COLOR_WHITE;
-    [self addSubview:helpButton];
     
     //    [[UIBarButtonItem alloc] initWithTitle:@"?"
 //                                                                   style:UIBarButtonItemStylePlain
@@ -129,7 +147,7 @@
     CGFloat x = 0;
     CGFloat width = 320;
 
-    return CGRectMake(x, 320, width, 300);
+    return CGRectMake(x, 0, width, 550);
 }
 
 @end
