@@ -102,7 +102,7 @@
             [self.mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
         }
 
-        MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:[self.board toDictionary]];
+        MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:self.board];
         if (self.mapView.region.center.latitude != region.center.latitude ||
                 self.mapView.region.center.longitude != region.center.longitude) {
             [self.mapView setRegion:region animated:NO];

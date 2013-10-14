@@ -77,9 +77,7 @@
     return section == 0;
 }
 
-- (UITableViewHeaderFooterView *)makeHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor
-{
-
+- (UITableViewHeaderFooterView *)makeHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor {
     NSInteger x = 42;
     NSInteger y = 0;
     NSInteger width = kMATableWidth;
@@ -103,7 +101,6 @@
 }
 
 - (void)beginMonitoringNearbyBoards {
-    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
@@ -149,51 +146,55 @@
     [self.tableView reloadData];
 }
 
+- (MABoard *)boardForIndexPath:(NSIndexPath *)indexPath {
+    MABoard *board;
+    if ([self isActiveSection:indexPath.section]) {
+        board = self.currentGames[(NSUInteger)indexPath.row];
+    } else {
+        board = self.nearbyBoards[(NSUInteger)indexPath.row];
+    }
+    return board;
+}
+
 - (void)joinGame:(id)sender {
     if (_selectedIndex >= 0) {
         [[MAGameManager sharedManager] stopMonitoringNearbyGames];
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.square = NO;
-        NSDictionary *board;
-        if ([self isActiveSection:_selectedSection]) {
-            board = self.currentGames[(NSUInteger)_selectedIndex];
-        } else {
-            board = self.nearbyBoards[(NSUInteger)_selectedIndex];
-        }
+        MABoard *board = [self boardForIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:_selectedSection]];
 
-        NSDictionary *game = board[@"game"];
-        if (game != nil) {
+        if (board.game != nil) {
             hud.labelText = @"Joining...";
-            [[MAGameManager sharedManager] joinGameOnBoard:board completion:^(NSError *error, NSDictionary *response) {
+            [[MAGameManager sharedManager] joinGameOnBoard:board completion:^(NSString *joinedTeam, NSError *error) {
                 [hud hide:YES];
                 if (!error) {
                     // show start button only if the game is inactive or there are no other players in the game.
-                    BOOL showStartButton = !([game[@"active"] boolValue] || [game[@"blue_team"] integerValue] > 0 || [game[@"red_team"] integerValue] > 0);
-                    if ([response[@"team"] isEqualToString:@"blue"]) {
+                    BOOL showStartButton = !(board.game.isActive || board.game.blueTeamPlayers > 0 || board.game.redTeamPlayers > 0);
+                    if ([joinedTeam isEqualToString:@"blue"]) {
                         [self showGameViewControllerWithStartButton:showStartButton color:MA_COLOR_BLUE];
                     } else {
                         [self showGameViewControllerWithStartButton:showStartButton color:MA_COLOR_RED];
                     }
                 } else {
                     DDLogError(@"Error joining game: %@", [error debugDescription]);
-                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board[@"name"]]
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board.name]
                                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                 }
             }];
         } else {
             hud.labelText = @"Creating...";
-            [[MAGameManager sharedManager] createGameForBoard:board completion:^(NSError *error, NSDictionary *response) {
+            [[MAGameManager sharedManager] createGameForBoard:board completion:^(NSString *joinedTeam, NSError *error) {
                 [hud hide:YES];
                 if (!error) {
-                    if ([response[@"team"] isEqualToString:@"blue"]) {
+                    if ([joinedTeam isEqualToString:@"blue"]) {
                         [self showGameViewControllerWithStartButton:YES color:MA_COLOR_BLUE];
                     } else {
                         [self showGameViewControllerWithStartButton:YES color:MA_COLOR_RED];
                     }
                 } else {
                     DDLogError(@"Error creating game: %@", [error debugDescription]);
-                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to create %@", board[@"name"]]
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to create %@", board.name]
                                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                 }
             }];
@@ -247,11 +248,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameListCell" forIndexPath:indexPath];
 
-    if ([self isActiveSection:indexPath.section]) {
-        cell.board = self.currentGames[(NSUInteger)indexPath.row];
-    } else {
-        cell.board = self.nearbyBoards[(NSUInteger)indexPath.row];
-    }
+    cell.board = [self boardForIndexPath:indexPath];
     [cell.startButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     cell.mapView.delegate = self;
 

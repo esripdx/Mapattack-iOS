@@ -17,6 +17,7 @@
 @class MAGameManager;
 @class MAPlayer;
 @class MACoin;
+@class MABoard;
 
 @protocol MAGameManagerDelegate
 - (void)team:(NSString *)color didReceivePoints:(NSInteger)points;
@@ -35,11 +36,9 @@
 @property (strong, nonatomic, readonly) NSString *joinedGameId;
 @property (strong, nonatomic, readonly) NSString *joinedGameName;
 @property (strong, nonatomic, readonly) NSString *joinedTeamColor;
-@property (copy, nonatomic, readonly) NSDictionary *joinedGameBoard;
-@property (copy, nonatomic, readonly) NSDictionary *lastBoardStateDict;
+@property (strong, nonatomic, readonly) MABoard *joinedGameBoard;
 @property (assign, nonatomic, readonly) NSInteger redScore;
 @property (assign, nonatomic, readonly) NSInteger blueScore;
-@property (assign, nonatomic, readonly) NSInteger playerScore;
 @property (weak, nonatomic) id <MAGameManagerDelegate, NSObject> delegate;
 
 + (MAGameManager *)sharedManager;
@@ -49,8 +48,8 @@
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion;
 - (void)stopMonitoringNearbyGames;
 
-- (void)joinGameOnBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
-- (void)createGameForBoard:(NSDictionary *)board completion:(void (^)(NSError *error, NSDictionary *response))completion;
+- (void)joinGameOnBoard:(MABoard *)board completion:(void (^)(NSString *joinedTeam, NSError *error))completion;
+- (void)createGameForBoard:(MABoard *)board completion:(void (^)(NSString *joinedTeam, NSError *error))completion;
 - (void)startGame;
 - (void)endGame;
 - (void)leaveGame;
@@ -59,7 +58,6 @@
 
 - (void)startPollingGameState;
 
-- (MKCoordinateRegion)regionForJoinedBoard;
-- (MKCoordinateRegion)regionForBoard:(NSDictionary *)board;
+- (MKCoordinateRegion)regionForBoard:(MABoard *)board;
 
 @end
