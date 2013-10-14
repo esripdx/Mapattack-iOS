@@ -23,6 +23,7 @@
 }
 @property (strong, nonatomic) NSArray *currentGames;
 @property (strong, nonatomic) NSArray *nearbyBoards;
+@property (strong, nonatomic) NSMutableDictionary *coinCache;
 
 @end
 
@@ -35,8 +36,9 @@
 }
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
+
+    self.coinCache = [NSMutableDictionary new];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
 
@@ -77,9 +79,7 @@
     return section == 0;
 }
 
-- (UITableViewHeaderFooterView *)makeHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor
-{
-
+- (UITableViewHeaderFooterView *)makeHeaderWithText:(NSString *)text andBackgroundColor:(UIColor *)bgColor andTextColor:(UIColor *)textColor {
     NSInteger x = 42;
     NSInteger y = 0;
     NSInteger width = kMATableWidth;
@@ -103,7 +103,6 @@
 }
 
 - (void)beginMonitoringNearbyBoards {
-    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
@@ -149,51 +148,55 @@
     [self.tableView reloadData];
 }
 
+- (MABoard *)boardForIndexPath:(NSIndexPath *)indexPath {
+    MABoard *board;
+    if ([self isActiveSection:indexPath.section]) {
+        board = self.currentGames[(NSUInteger)indexPath.row];
+    } else {
+        board = self.nearbyBoards[(NSUInteger)indexPath.row];
+    }
+    return board;
+}
+
 - (void)joinGame:(id)sender {
     if (_selectedIndex >= 0) {
         [[MAGameManager sharedManager] stopMonitoringNearbyGames];
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.square = NO;
-        NSDictionary *board;
-        if ([self isActiveSection:_selectedSection]) {
-            board = self.currentGames[(NSUInteger)_selectedIndex];
-        } else {
-            board = self.nearbyBoards[(NSUInteger)_selectedIndex];
-        }
+        MABoard *board = [self boardForIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:_selectedSection]];
 
-        NSDictionary *game = board[@"game"];
-        if (game != nil) {
+        if (board.game != nil) {
             hud.labelText = @"Joining...";
-            [[MAGameManager sharedManager] joinGameOnBoard:board completion:^(NSError *error, NSDictionary *response) {
+            [[MAGameManager sharedManager] joinGameOnBoard:board completion:^(NSString *joinedTeam, NSError *error) {
                 [hud hide:YES];
                 if (!error) {
                     // show start button only if the game is inactive or there are no other players in the game.
-                    BOOL showStartButton = !([game[@"active"] boolValue] || [game[@"blue_team"] integerValue] > 0 || [game[@"red_team"] integerValue] > 0);
-                    if ([response[@"team"] isEqualToString:@"blue"]) {
+                    BOOL showStartButton = !(board.game.isActive || board.game.blueTeamPlayers > 0 || board.game.redTeamPlayers > 0);
+                    if ([joinedTeam isEqualToString:@"blue"]) {
                         [self showGameViewControllerWithStartButton:showStartButton color:MA_COLOR_BLUE];
                     } else {
                         [self showGameViewControllerWithStartButton:showStartButton color:MA_COLOR_RED];
                     }
                 } else {
                     DDLogError(@"Error joining game: %@", [error debugDescription]);
-                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board[@"name"]]
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board.name]
                                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                 }
             }];
         } else {
             hud.labelText = @"Creating...";
-            [[MAGameManager sharedManager] createGameForBoard:board completion:^(NSError *error, NSDictionary *response) {
+            [[MAGameManager sharedManager] createGameForBoard:board completion:^(NSString *joinedTeam, NSError *error) {
                 [hud hide:YES];
                 if (!error) {
-                    if ([response[@"team"] isEqualToString:@"blue"]) {
+                    if ([joinedTeam isEqualToString:@"blue"]) {
                         [self showGameViewControllerWithStartButton:YES color:MA_COLOR_BLUE];
                     } else {
                         [self showGameViewControllerWithStartButton:YES color:MA_COLOR_RED];
                     }
                 } else {
                     DDLogError(@"Error creating game: %@", [error debugDescription]);
-                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to create %@", board[@"name"]]
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to create %@", board.name]
                                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                 }
             }];
@@ -247,49 +250,55 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameListCell" forIndexPath:indexPath];
 
-    if ([self isActiveSection:indexPath.section]) {
-        cell.board = self.currentGames[(NSUInteger)indexPath.row];
-    } else {
-        cell.board = self.nearbyBoards[(NSUInteger)indexPath.row];
-    }
-    [cell.startButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
-    cell.mapView.delegate = self;
+    MABoard *board = [self boardForIndexPath:indexPath];
+    [cell setBoard:board withMapDelegate:self annotations:self.coinCache[board.game.gameId]];
 
     // DDLogVerbose(@"dequeued cell for %@", cell.board);
     return cell;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row != _selectedIndex) {
+    if (indexPath.row != _selectedIndex || indexPath.section != _selectedSection) {
         _selectedIndex = indexPath.row;
+        _selectedSection = indexPath.section;
         MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
         if (cell.board.game.gameId) {
-            // TODO: We may want to set this up to poll game state while the board is selected. Maybe not though: lotsa data and... meh.
-            [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
-                                                        completion:^(NSArray *coins, NSError *error) {
-                                                            if (error == nil) {
-                                                                [cell.mapView addAnnotations:coins];
-                                                            } else {
-                                                                DDLogError(@"Error fetching game state: %@", [error localizedDescription]);
-                                                            }
-                                                        }];
+            if (!self.coinCache[cell.board.game.gameId]) {
+                [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
+                                                            completion:^(NSArray *coins, NSError *error) {
+                                                                if (error == nil) {
+                                                                    self.coinCache[cell.board.game.gameId] = coins;
+                                                                    [cell.mapView addAnnotations:coins];
+                                                                    DDLogVerbose(@"Added %d annotations for %@", coins.count, cell.board);
+                                                                } else {
+                                                                    DDLogError(@"Error fetching game state: %@", [error localizedDescription]);
+                                                                }
+                                                            }];
+            } else {
+                [cell.mapView removeAnnotations:cell.mapView.annotations];
+                [cell.mapView addAnnotations:self.coinCache[cell.board.game.gameId]];
+            }
         } else {
-            [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
-                                                          completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
-                                                              if (error == nil) {
-                                                                  for (NSDictionary *coin in coins) {
-                                                                      MACoin *annotation = [MACoin coinWithDictionary:coin];
-                                                                      [cell.mapView addAnnotation:annotation];
+            if (!self.coinCache[cell.board.boardId]) {
+                [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
+                                                              completion:^(MABoard *board, NSArray *coins, NSError *error) {
+                                                                  if (error == nil) {
+                                                                      self.coinCache[cell.board.boardId] = coins;
+                                                                      [cell.mapView addAnnotations:coins];
+                                                                      DDLogVerbose(@"Added %d annotations for %@", coins.count, cell.board);
+                                                                  } else {
+                                                                      DDLogError(@"Error fetching board state: %@", [error localizedDescription]);
                                                                   }
-                                                              } else {
-                                                                  DDLogError(@"Error fetching board state: %@", [error localizedDescription]);
-                                                              }
-                                                          }];
+                                                              }];
+            } else {
+                [cell.mapView removeAnnotations:cell.mapView.annotations];
+                [cell.mapView addAnnotations:self.coinCache[cell.board.boardId]];
+            }
         }
     } else {
         _selectedIndex = -1;
+        _selectedSection = -1;
     }
-    _selectedSection = indexPath.section;
 
     return indexPath;
 }
@@ -301,8 +310,8 @@
     NSInteger scrollTo = indexPath.row;
     NSIndexPath *path = [NSIndexPath indexPathForItem:scrollTo inSection:indexPath.section];
     [self.tableView scrollToRowAtIndexPath:path
-                              atScrollPosition:UITableViewScrollPositionTop
-                                      animated:YES];
+                          atScrollPosition:UITableViewScrollPositionTop
+                                  animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -331,7 +340,5 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [self beginMonitoringNearbyBoards];
 }
-
-
 
 @end
