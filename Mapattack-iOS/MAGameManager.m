@@ -123,7 +123,7 @@
         }
     };
     MAApiErrorHandler boardListError = ^(NSError *error) {
-        DDLogError(@"Error joining game: %@", [error debugDescription]);
+        DDLogError(@"Error fetching games: %@", [error debugDescription]);
         if (completion != nil) {
             completion(nil, error);
         }

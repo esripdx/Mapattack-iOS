@@ -41,24 +41,30 @@
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     UIFont *lovebit = [UIFont fontWithName:@"M41_LOVEBIT" size:18.0f];
-    
+    button.titleLabel.font = lovebit;
+
+    // Do stuff when clickethed
     [button addTarget:target
                action:method
      forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:MA_COLOR_WHITE forState:UIControlStateNormal];
     
-    NSInteger width = _spacing+([title length]*14);
+    // Spacing and crap
+    NSInteger width = _spacing + ([title length]*14);
     NSInteger xPos = 0;
     if ([self.buttons count] > 0) {
         xPos = _previousXPos;
+    } else {
+        xPos = 10;
     }
     NSInteger yPos = 0;
     NSInteger height = kMAToolbarHeight;
     button.frame = CGRectMake(xPos, yPos, width, height);
-    button.titleLabel.font = lovebit;
     button.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    button.contentEdgeInsets =  UIEdgeInsetsZero; //UIEdgeInsetsMake(8.0, 0, 0 ,0);
     
+    // add it to view and keep track of values
     [self.buttons addObject:button];
     [self addSubview:button];
     
@@ -93,14 +99,27 @@
     [self addButtonWithTitle:username andTarget:nil andMethod:nil];
     [self addButtonWithTitle:@"  " andTarget:nil andMethod:nil];
     [self addButtonWithTitle:@"00" andTarget:nil andMethod:nil];
-    [self addButtonWithTitle:@"?" andTarget:appDelegate andMethod:@selector(halp:)];
+    [self addButtonWithTitle:@"?" andTarget:self andMethod:@selector(segueHalp:)];
     
+    // TODO fix this to actually work
     [self setAvatarImage];
 
-    // TODO: UITextAttributeFont is deprecated, but way easier to use =P We'll want to fix this later.
-    //    NSDictionary *barButtonAppearanceDict = @{UITextAttributeFont: lovebit};
-    //    [backButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
+}
 
+- (IBAction)segueHalp:(id)sender
+{
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    UIViewController *halpController = [sb instantiateViewControllerWithIdentifier:@"Help"];
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    [navigationController pushViewController:halpController animated:YES];
+}
+
+- (IBAction)segueScoreboard:(id)sender
+{
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    UIViewController *scoreboardController = [sb instantiateViewControllerWithIdentifier:@"Scoreboard"];
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    [navigationController pushViewController:scoreboardController animated:YES];
 }
 
 + (void)addToView:(UIView *)view

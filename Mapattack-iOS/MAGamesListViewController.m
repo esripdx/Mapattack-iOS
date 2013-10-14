@@ -52,11 +52,6 @@
     self.view.backgroundColor = MA_COLOR_BODYBLUE;
 
     [MAToolbarView addToView:self.view];
-//    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
-//    UIToolbar *toolbar = self.navigationController.toolbar;
-//    toolbar.tintColor = MA_COLOR_WHITE;
-//    toolbar.barStyle = UIBarStyleBlack;
-//    toolbar.translucent = YES;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -117,13 +112,14 @@
             if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
                                             message:@"No games were found near your current location."
-                                           delegate:nil
+                                           delegate:self
                                   cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             }
         } else {
+            // TODO fixme why does this get called twice?
             [[[UIAlertView alloc] initWithTitle:@"Error"
                                         message:[NSString stringWithFormat:@"Failed to retreive nearby games with the following error: %@", [error localizedDescription]]
-                                       delegate:nil
+                                       delegate:self
                               cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             // TODO: Should probably set ourselves as the delegate for the alert view and give a retry button.
             
@@ -340,7 +336,7 @@
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    [self beginMonitoringNearbyBoards];
+    //[self beginMonitoringNearbyBoards];
 }
 
 @end

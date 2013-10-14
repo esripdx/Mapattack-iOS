@@ -38,7 +38,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [MAToolbarView addToView:self.view];
-    //self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

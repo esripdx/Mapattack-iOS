@@ -167,6 +167,8 @@
 				942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */,
 				942C20BE18039D12003FB7CE /* MACoinAnnotationView.h */,
 				942C20BF18039D12003FB7CE /* MACoinAnnotationView.m */,
+				FA93E17E180C66690022EAD9 /* MAToolbarView.h */,
+				FA93E17F180C66690022EAD9 /* MAToolbarView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -191,8 +193,6 @@
 				BD3E227C1804861B00775B71 /* MAGamesListViewController.m */,
 				FA93E175180C5D8F0022EAD9 /* MAScoreboardViewController.h */,
 				FA93E176180C5D8F0022EAD9 /* MAScoreboardViewController.m */,
-				FA93E17E180C66690022EAD9 /* MAToolbarView.h */,
-				FA93E17F180C66690022EAD9 /* MAToolbarView.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

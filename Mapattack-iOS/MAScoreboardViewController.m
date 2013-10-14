@@ -7,14 +7,14 @@
 //
 
 #import "MAScoreboardViewController.h"
-#import "MAAppDelegate.h"
+#import "MAToolbarView.h"
 
 @implementation MAScoreboardViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+    [MAToolbarView addToView:self.view];
 }
 
 @end

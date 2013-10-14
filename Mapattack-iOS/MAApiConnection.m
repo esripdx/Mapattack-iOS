@@ -69,6 +69,7 @@
                      failure:^(NSURLSessionTask *task, NSError *error) {
                          DDLogError(@"api request failure for path '%@': %@", path, error);
                          DDLogError(@"--- params: %@", paramsWithToken);
+                         errorHandler(error);
                      }];
         
     } else {
