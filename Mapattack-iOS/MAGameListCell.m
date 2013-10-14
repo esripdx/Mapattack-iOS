@@ -13,6 +13,12 @@
 #import "MABorderSetter.h"
 #import "MABoard.h"
 
+@interface MAGameListCell ()
+
+@property (strong, nonatomic, readwrite) MABoard *board;
+
+@end
+
 @implementation MAGameListCell
 
 #pragma mark - Helpers
@@ -50,8 +56,8 @@
 }
 
 #pragma mark - Custom setters
-- (void)setBoard:(MABoard *)board {
-    _board = board;
+- (void)setBoard:(MABoard *)board withMapDelegate:(id <MKMapViewDelegate>)delegate annotations:(NSArray *)annotations {
+    self.board = board;
 
     // Set labels
     self.gameNameLabel.text = self.board.name;
@@ -67,6 +73,11 @@
     } else {
         [self styleAsInactiveBoard];
     }
+
+    [self.startButton addTarget:delegate action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
+    self.mapView.delegate = delegate;
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    [self.mapView addAnnotations:annotations];
 }
 
 - (void)setMapView:(MKMapView *)mapView {
@@ -102,7 +113,7 @@
             [self.mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
         }
 
-        MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:[self.board toDictionary]];
+        MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:self.board];
         if (self.mapView.region.center.latitude != region.center.latitude ||
                 self.mapView.region.center.longitude != region.center.longitude) {
             [self.mapView setRegion:region animated:NO];

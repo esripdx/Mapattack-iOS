@@ -20,7 +20,8 @@
 
 @property (strong, nonatomic) UIButton *startButton;
 
-@property (strong, nonatomic) MABoard *board;
+@property (strong, nonatomic, readonly) MABoard *board;
+- (void)setBoard:(MABoard *)board withMapDelegate:(id <MKMapViewDelegate>)delegate annotations:(NSArray *)annotations;
 
 - (void)styleAsActiveBoard;
 - (void)styleAsInactiveBoard;
