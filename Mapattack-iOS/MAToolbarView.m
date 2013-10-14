@@ -59,11 +59,11 @@
     } else {
         xPos = 10;
     }
-    NSInteger yPos = 3;
+    NSInteger yPos = 0;
     NSInteger height = kMAToolbarHeight;
     button.frame = CGRectMake(xPos, yPos, width, height);
     button.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    //button.contentEdgeInsets =  UIEdgeInsetsMake(0, 6.0, 0 ,0);
+    button.contentEdgeInsets =  UIEdgeInsetsMake(0, 0, 0 ,0);
     
     // add it to view and keep track of values
     [self.buttons addObject:button];
@@ -86,11 +86,11 @@
     
     // looks kinda weird
     UIImage *avatarImage = [UIImage imageWithData:avatarData];
-    CGFloat avatarPadding = 2;
-    CGFloat avatarHeight = kMAToolbarHeight-10;
+    CGFloat avatarPadding = 0;
+    CGFloat avatarHeight = 35;
     if (avatarImage.size.height > avatarHeight) {
         UIGraphicsBeginImageContext(CGSizeMake(avatarHeight, avatarHeight));
-        [avatarImage drawInRect:CGRectMake(0.0, avatarPadding, avatarHeight, avatarHeight-6)];
+        [avatarImage drawInRect:CGRectMake(0.0, avatarPadding, 40, 30)];
         avatarImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
     }
