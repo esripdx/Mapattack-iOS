@@ -106,7 +106,7 @@ static const int MAFileLoggerMaxFiles = 7;
 
     UIBarButtonItem *usernameButton = [[UIBarButtonItem alloc] initWithTitle:username
                                                                        style:UIBarButtonItemStylePlain
-                                                                      target:appDelegate action:@selector(flipScoreboard:)];
+                                                                      target:nil action:nil];
     [usernameButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
     usernameButton.tintColor = MA_COLOR_WHITE;
 

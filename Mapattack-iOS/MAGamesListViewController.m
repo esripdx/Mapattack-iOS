@@ -16,6 +16,7 @@
 #import "MABorderSetter.h"
 #import "MACoin.h"
 #import "MABoard.h"
+#import "MAToolbarView.h"
 
 @interface MAGamesListViewController () {
     NSInteger _selectedIndex;
@@ -48,11 +49,12 @@
     self.tableView.backgroundColor = MA_COLOR_CREAM;
     self.view.backgroundColor = MA_COLOR_BODYBLUE;
 
-    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.tintColor = MA_COLOR_WHITE;
-    toolbar.barStyle = UIBarStyleBlack;
-    toolbar.translucent = YES;
+    [MAToolbarView addToView:self.view];
+//    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+//    UIToolbar *toolbar = self.navigationController.toolbar;
+//    toolbar.tintColor = MA_COLOR_WHITE;
+//    toolbar.barStyle = UIBarStyleBlack;
+//    toolbar.translucent = YES;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
