@@ -14,6 +14,7 @@
 #import "MACoin.h"
 #import "MACoinAnnotationView.h"
 #import "MABoard.h"
+#import "MAToolbarView.h"
 
 @interface MAGameViewController ()
 
@@ -36,7 +37,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+    [MAToolbarView addToView:self.view];
+    //self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

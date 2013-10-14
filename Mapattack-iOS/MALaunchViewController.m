@@ -9,7 +9,6 @@
 #import "MALaunchViewController.h"
 #import "MAGameManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-#import "MAToolbarView.h"
 
 @interface MALaunchViewController () {
     BOOL _isUserNameSet;
@@ -119,7 +118,6 @@
     self.navigationController.navigationBarHidden = YES;
 
     self.navigationController.toolbarHidden = YES;
-    [MAToolbarView addToView:self.view];
     
     [self registerForKeyboardNotifications];
 }
