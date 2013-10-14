@@ -33,8 +33,6 @@
 @interface MAGameManager : NSObject <CLLocationManagerDelegate, MAUdpConnectionDelegate>
 @property (strong, nonatomic, readonly) CLLocationManager *locationManager;
 @property (strong, nonatomic, readonly) MAUdpConnection *udpConnection;
-@property (strong, nonatomic, readonly) NSString *joinedGameId;
-@property (strong, nonatomic, readonly) NSString *joinedGameName;
 @property (strong, nonatomic, readonly) NSString *joinedTeamColor;
 @property (strong, nonatomic, readonly) MABoard *joinedGameBoard;
 @property (assign, nonatomic, readonly) NSInteger redScore;
@@ -53,7 +51,7 @@
 - (void)startGame;
 - (void)endGame;
 - (void)leaveGame;
-- (void)fetchBoardStateForBoardId:(NSString *)boardId completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion;
+- (void)fetchBoardStateForBoardId:(NSString *)boardId completion:(void (^)(MABoard *board, NSArray *coins, NSError *error))completion;
 - (void)fetchGameStateForGameId:(NSString *)gameId completion:(void (^)(NSArray *coins, NSError *error))completion;
 
 - (void)startPollingGameState;

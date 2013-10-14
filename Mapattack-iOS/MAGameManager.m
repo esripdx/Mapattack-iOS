@@ -227,8 +227,8 @@
 }
 
 - (void)startGame {
-    if (self.joinedGameId) {
-        NSDictionary *gameParams =@{ kMAApiGameIdKey: self.joinedGameId };
+    if (self.joinedGameBoard.game.gameId) {
+        NSDictionary *gameParams =@{ kMAApiGameIdKey: self.joinedGameBoard.game.gameId };
         [_api postToPath:kMAApiGameStartPath params:gameParams];
     } else {
         DDLogError(@"Couldn't find joinedGameId! Can't start game!");
@@ -236,18 +236,27 @@
 }
 
 - (void)endGame {
-    [_api postToPath:kMAApiGameEndPath params:@{ kMAApiGameIdKey: self.joinedGameId }];
+    [_api postToPath:kMAApiGameEndPath params:@{ kMAApiGameIdKey: self.joinedGameBoard.game.gameId }];
 }
 
 - (void)fetchBoardStateForBoardId:(NSString *)boardId
-                       completion:(void (^)(NSDictionary *board, NSArray *coins, NSError *error))completion {
+                       completion:(void (^)(MABoard *board, NSArray *coins, NSError *error))completion {
     
     DDLogVerbose(@"fetching board state for board: %@", boardId);
     
     MAApiSuccessHandler boardStateSuccess = ^(NSDictionary *response) {
         //DDLogVerbose(@"board state response: %@", response);
         if (completion != nil) {
-            completion(response[kMAApiBoardKey], response[kMAApiCoinsKey], nil);
+            NSArray *coinsResponse = response[kMAApiCoinsKey];
+
+            NSMutableArray *coins = [NSMutableArray new];
+
+            for (NSDictionary *coinDict in coinsResponse) {
+                MACoin *coin = [MACoin coinWithDictionary:coinDict];
+                [coins addObject:coin];
+            }
+
+            completion([[MABoard alloc] initWithDictionary:response[kMAApiBoardKey]], [NSArray arrayWithArray:coins], nil);
         }
     };
     
@@ -301,7 +310,7 @@
 
 - (void)syncGameState {
     DDLogVerbose(@"syncing game state");
-    [_api postToPath:kMAApiGameStatePath params:@{ kMAApiGameIdKey: self.joinedGameId }];
+    [_api postToPath:kMAApiGameStatePath params:@{ kMAApiGameIdKey: self.joinedGameBoard.game.gameId }];
     // TODO: if it errors, tell the user about it in some way? Maybe just keep track how many times we fail a sync
 }
 

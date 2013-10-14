@@ -23,6 +23,7 @@
 }
 @property (strong, nonatomic) NSArray *currentGames;
 @property (strong, nonatomic) NSArray *nearbyBoards;
+@property (strong, nonatomic) NSMutableDictionary *coinCache;
 
 @end
 
@@ -35,8 +36,9 @@
 }
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
+
+    self.coinCache = [NSMutableDictionary new];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
 
@@ -248,45 +250,55 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameListCell" forIndexPath:indexPath];
 
-    cell.board = [self boardForIndexPath:indexPath];
-    [cell.startButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
-    cell.mapView.delegate = self;
+    MABoard *board = [self boardForIndexPath:indexPath];
+    [cell setBoard:board withMapDelegate:self annotations:self.coinCache[board.game.gameId]];
 
     // DDLogVerbose(@"dequeued cell for %@", cell.board);
     return cell;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row != _selectedIndex) {
+    if (indexPath.row != _selectedIndex || indexPath.section != _selectedSection) {
         _selectedIndex = indexPath.row;
+        _selectedSection = indexPath.section;
         MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
         if (cell.board.game.gameId) {
-            // TODO: We may want to set this up to poll game state while the board is selected. Maybe not though: lotsa data and... meh.
-            [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
-                                                        completion:^(NSArray *coins, NSError *error) {
-                                                            if (error == nil) {
-                                                                [cell.mapView addAnnotations:coins];
-                                                            } else {
-                                                                DDLogError(@"Error fetching game state: %@", [error localizedDescription]);
-                                                            }
-                                                        }];
+            if (!self.coinCache[cell.board.game.gameId]) {
+                [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
+                                                            completion:^(NSArray *coins, NSError *error) {
+                                                                if (error == nil) {
+                                                                    self.coinCache[cell.board.game.gameId] = coins;
+                                                                    [cell.mapView addAnnotations:coins];
+                                                                    DDLogVerbose(@"Added %d annotations for %@", coins.count, cell.board);
+                                                                } else {
+                                                                    DDLogError(@"Error fetching game state: %@", [error localizedDescription]);
+                                                                }
+                                                            }];
+            } else {
+                [cell.mapView removeAnnotations:cell.mapView.annotations];
+                [cell.mapView addAnnotations:self.coinCache[cell.board.game.gameId]];
+            }
         } else {
-            [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
-                                                          completion:^(NSDictionary *board, NSArray *coins, NSError *error) {
-                                                              if (error == nil) {
-                                                                  for (NSDictionary *coin in coins) {
-                                                                      MACoin *annotation = [MACoin coinWithDictionary:coin];
-                                                                      [cell.mapView addAnnotation:annotation];
+            if (!self.coinCache[cell.board.boardId]) {
+                [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
+                                                              completion:^(MABoard *board, NSArray *coins, NSError *error) {
+                                                                  if (error == nil) {
+                                                                      self.coinCache[cell.board.boardId] = coins;
+                                                                      [cell.mapView addAnnotations:coins];
+                                                                      DDLogVerbose(@"Added %d annotations for %@", coins.count, cell.board);
+                                                                  } else {
+                                                                      DDLogError(@"Error fetching board state: %@", [error localizedDescription]);
                                                                   }
-                                                              } else {
-                                                                  DDLogError(@"Error fetching board state: %@", [error localizedDescription]);
-                                                              }
-                                                          }];
+                                                              }];
+            } else {
+                [cell.mapView removeAnnotations:cell.mapView.annotations];
+                [cell.mapView addAnnotations:self.coinCache[cell.board.boardId]];
+            }
         }
     } else {
         _selectedIndex = -1;
+        _selectedSection = -1;
     }
-    _selectedSection = indexPath.section;
 
     return indexPath;
 }
@@ -298,8 +310,8 @@
     NSInteger scrollTo = indexPath.row;
     NSIndexPath *path = [NSIndexPath indexPathForItem:scrollTo inSection:indexPath.section];
     [self.tableView scrollToRowAtIndexPath:path
-                              atScrollPosition:UITableViewScrollPositionTop
-                                      animated:YES];
+                          atScrollPosition:UITableViewScrollPositionTop
+                                  animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -328,7 +340,5 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [self beginMonitoringNearbyBoards];
 }
-
-
 
 @end

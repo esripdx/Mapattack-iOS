@@ -17,8 +17,6 @@
 @property (nonatomic, strong) NSArray *bbox;
 @property (nonatomic, strong) MAGame *game;
 
-@property (nonatomic) int indexInBoardList;
-
 - (id)initWithDictionary:(NSDictionary *)board;
 - (NSDictionary *)toDictionary;
 
