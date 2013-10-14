@@ -39,7 +39,7 @@
 
 - (void)addButtonWithTitle:(NSString *)title andTarget:(id)target andMethod:(SEL)method
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     UIFont *lovebit = [UIFont fontWithName:@"M41_LOVEBIT" size:18.0f];
     button.titleLabel.font = lovebit;
 
@@ -51,6 +51,7 @@
     [button setTitleColor:MA_COLOR_WHITE forState:UIControlStateNormal];
     
     // Spacing and crap
+    // TODO this could be a bit less janky
     NSInteger width = _spacing + ([title length]*14);
     NSInteger xPos = 0;
     if ([self.buttons count] > 0) {
@@ -75,16 +76,26 @@
 - (void)setAvatarImage
 {
     NSData *avatarData = [[NSUserDefaults standardUserDefaults] dataForKey:kMADefaultsAvatarKey];
+    if (!avatarData) {
+        // No custom avatar found, use the selected default avatar.
+        NSNumber *defaultAvatarIndex = [[NSUserDefaults standardUserDefaults] valueForKey:kMADefaultsDefaultAvatarSelectedKey];
+        NSString *imageName = MA_DEFAULT_AVATARS[[defaultAvatarIndex unsignedIntegerValue]];
+        UIImage *avatarImage = [UIImage imageNamed:imageName];
+        avatarData = UIImageJPEGRepresentation(avatarImage, 1.0f);
+    }
+    
     if (avatarData) {
         UIImage *avatarImage = [UIImage imageWithData:avatarData];
         CGFloat avatarPadding = 0;
-        CGFloat avatarHeight = kMAToolbarHeight;
+        CGFloat avatarHeight = kMAToolbarHeight-10;
         if (avatarImage.size.height > avatarHeight) {
             UIGraphicsBeginImageContext(CGSizeMake(avatarHeight, avatarHeight));
             [avatarImage drawInRect:CGRectMake(0.0, avatarPadding, avatarHeight, avatarHeight)];
             avatarImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
         }
+
+        [self.buttons[2] setTitle:nil];
         [self.buttons[2] setImage:avatarImage forState:UIControlStateNormal];
     }
 }
