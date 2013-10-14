@@ -114,7 +114,7 @@
         }
     }
     
-    [MAToolbarView addToView:self.view];
+    // debug: [MAToolbarView addToView:self.view];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
