@@ -78,6 +78,14 @@ static const int MAFileLoggerMaxFiles = 7;
     [navigationController pushViewController:halpController animated:YES];
 }
 
+- (IBAction)flipScoreboard:(id)sender
+{
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    UIViewController *scoreboardController = [sb instantiateViewControllerWithIdentifier:@"Scoreboard"];
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    [navigationController pushViewController:scoreboardController animated:YES];
+}
+
 - (NSArray *)toolbarItems {
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kMADefaultsUserNameKey];
     MAAppDelegate *appDelegate = (MAAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -98,7 +106,7 @@ static const int MAFileLoggerMaxFiles = 7;
 
     UIBarButtonItem *usernameButton = [[UIBarButtonItem alloc] initWithTitle:username
                                                                        style:UIBarButtonItemStylePlain
-                                                                      target:nil action:nil];
+                                                                      target:appDelegate action:@selector(flipScoreboard:)];
     [usernameButton setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
     usernameButton.tintColor = MA_COLOR_WHITE;
 
