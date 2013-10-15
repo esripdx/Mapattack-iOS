@@ -285,19 +285,10 @@
                                                         <constraint firstAttribute="width" constant="320" id="u8v-X0-NId"/>
                                                     </constraints>
                                                 </view>
-                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c2W-KM-LfK">
-                                                    <rect key="frame" x="0.0" y="47" width="320" height="278"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="320" id="asy-K3-dmh"/>
-                                                    </constraints>
-                                                </mapView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="GGY-dX-fA9" firstAttribute="top" secondItem="RUk-Oc-MAC" secondAttribute="top" id="2Gg-Wg-M1S"/>
                                                 <constraint firstItem="GGY-dX-fA9" firstAttribute="leading" secondItem="RUk-Oc-MAC" secondAttribute="leading" id="CV4-ql-fYx"/>
-                                                <constraint firstItem="c2W-KM-LfK" firstAttribute="leading" secondItem="RUk-Oc-MAC" secondAttribute="leading" id="GzA-Lk-uVy"/>
-                                                <constraint firstItem="c2W-KM-LfK" firstAttribute="top" secondItem="GGY-dX-fA9" secondAttribute="bottom" id="Zfx-1Q-Y0U"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -305,7 +296,6 @@
                                         <connections>
                                             <outlet property="cellView" destination="GGY-dX-fA9" id="ns8-Gs-Uwl"/>
                                             <outlet property="gameNameLabel" destination="CLf-10-qhJ" id="qbc-4X-tQE"/>
-                                            <outlet property="mapView" destination="c2W-KM-LfK" id="TEI-rl-W2x"/>
                                             <outlet property="playersLabel" destination="cfZ-Ej-7Qa" id="4ew-oM-LEh"/>
                                         </connections>
                                     </tableViewCell>

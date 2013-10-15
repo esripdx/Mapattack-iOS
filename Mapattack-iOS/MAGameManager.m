@@ -112,7 +112,7 @@
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion {
     MAApiSuccessHandler boardListSuccess = ^(NSDictionary *response) {
         NSArray *boards = response[@"boards"];
-        NSMutableArray *boardBoards = [NSMutableArray new];
+        __autoreleasing NSMutableArray *boardBoards = [NSMutableArray new];
         DDLogVerbose(@"Found %lu board%@ nearby", (unsigned long)boards.count, boards.count == 1 ? @"" : @"s");
         for (NSDictionary *board in boards) {
             //DDLogVerbose(@"got board: %@", board);
@@ -343,14 +343,15 @@
 #pragma mark - TCP State handlers
 
 - (void)registerGameStateSuccessHandler {
+    __weak MAGameManager *weakSelf = self;
     MAApiSuccessHandler gameStateSuccess = ^(NSDictionary *response) {
         [response enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if ([key isEqualToString:kMAApiPlayersKey]) {
-                [self handlePlayersUpdate:obj];
+                [weakSelf handlePlayersUpdate:obj];
             } else if ([key isEqualToString:kMAApiCoinsKey]) {
-                [self handleCoinsUpdate:obj];
+                [weakSelf handleCoinsUpdate:obj];
             } else if ([key isEqualToString:kMAApiGameKey]) {
-                [self handleGameUpdate:obj];
+                [weakSelf handleGameUpdate:obj];
             }
         }];
     };
