@@ -13,12 +13,12 @@
 
 @interface MAGameListCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet UILabel *playersLabel;
-@property (strong, nonatomic) IBOutlet UILabel *gameNameLabel;
-@property (strong, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UILabel *playersLabel;
+@property (weak, nonatomic) IBOutlet UILabel *gameNameLabel;
+@property (assign, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIView *cellView;
 
-@property (strong, nonatomic) UIButton *startButton;
+@property (weak, nonatomic) UIButton *startButton;
 
 @property (strong, nonatomic, readonly) MABoard *board;
 - (void)setBoard:(MABoard *)board withMapDelegate:(id <MKMapViewDelegate>)delegate annotations:(NSArray *)annotations;

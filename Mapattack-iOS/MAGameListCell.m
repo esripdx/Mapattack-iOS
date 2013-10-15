@@ -121,4 +121,9 @@
     }
 }
 
+- (void)dealloc {
+    _mapView = nil;
+    self.startButton = nil;
+}
+
 @end

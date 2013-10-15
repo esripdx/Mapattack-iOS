@@ -107,11 +107,16 @@
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Searching...";
-    
+
+    [self fetchBoards:hud];
+}
+
+- (void)fetchBoards:(MBProgressHUD *)hud {
+    __weak MAGamesListViewController *weakSelf = self;
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
-            [self separateBoards:boards];
-            
+            [weakSelf separateBoards:boards];
+
             if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
                                             message:@"No games were found near your current location."
@@ -124,10 +129,13 @@
                                        delegate:nil
                               cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             // TODO: Should probably set ourselves as the delegate for the alert view and give a retry button.
-            
         }
 
-        [hud hide:YES];
+        if (hud) {
+            [hud hide:YES];
+        }
+
+        weakSelf.tableView.hidden = NO;
     }];
 }
 
@@ -261,13 +269,14 @@
     if (indexPath.row != _selectedIndex || indexPath.section != _selectedSection) {
         _selectedIndex = indexPath.row;
         _selectedSection = indexPath.section;
-        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
+        __weak MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
+        __weak MAGamesListViewController *weakSelf = self;
         if (cell.board.game.gameId) {
             if (!self.coinCache[cell.board.game.gameId]) {
                 [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
                                                             completion:^(NSArray *coins, NSError *error) {
                                                                 if (error == nil) {
-                                                                    self.coinCache[cell.board.game.gameId] = coins;
+                                                                    weakSelf.coinCache[cell.board.game.gameId] = coins;
                                                                     [cell.mapView addAnnotations:coins];
                                                                     DDLogVerbose(@"Added %d annotations for %@", coins.count, cell.board);
                                                                 } else {
@@ -283,7 +292,7 @@
                 [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
                                                               completion:^(MABoard *board, NSArray *coins, NSError *error) {
                                                                   if (error == nil) {
-                                                                      self.coinCache[cell.board.boardId] = coins;
+                                                                      weakSelf.coinCache[cell.board.boardId] = coins;
                                                                       [cell.mapView addAnnotations:coins];
                                                                       DDLogVerbose(@"Added %d annotations for %@", coins.count, cell.board);
                                                                   } else {
