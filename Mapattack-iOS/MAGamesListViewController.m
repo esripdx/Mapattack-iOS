@@ -16,6 +16,7 @@
 #import "MABorderSetter.h"
 #import "MACoin.h"
 #import "MABoard.h"
+#import <SVPullToRefresh.h>
 
 @interface MAGamesListViewController () {
     NSInteger _selectedIndex;
@@ -42,12 +43,26 @@
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
 
+    __weak MAGamesListViewController *weakSelf = self;
+    [self.tableView addPullToRefreshWithActionHandler:^{
+        [weakSelf fetchBoards:nil];
+    }];
+    self.tableView.pullToRefreshView.arrowColor = MA_COLOR_CREAM;
+    self.tableView.pullToRefreshView.textColor = MA_COLOR_CREAM;
+    self.tableView.pullToRefreshView.backgroundColor = MA_COLOR_BODYBLUE;
+
     self.tableView.sectionHeaderHeight = kMACellHeight-3;
     // Move the section header up to the tippy-top of the tableview, accounting for the push down that the
     // navigation controller is doing to account for the status bar
     self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
-    self.tableView.backgroundView = nil;
-    self.tableView.backgroundColor = MA_COLOR_CREAM;
+    UIView *bg = [[UIView alloc] initWithFrame:self.tableView.frame];
+    bg.backgroundColor = MA_COLOR_CREAM;
+    UIView *top = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bg.frame.size.width, bg.frame.size.height/4)];
+    top.backgroundColor = MA_COLOR_BODYBLUE;
+    [bg addSubview:top];
+    self.tableView.backgroundView = bg;
+    self.tableView.hidden = YES;
+//    self.tableView.backgroundColor = MA_COLOR_CREAM;
     self.view.backgroundColor = MA_COLOR_BODYBLUE;
 
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
@@ -68,6 +83,7 @@
     
     _selectedIndex = -1;
     [self beginMonitoringNearbyBoards];
+    self.tableView.hidden = !(self.nearbyBoards.count > 0 || self.currentGames.count > 0);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -107,11 +123,15 @@
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Searching...";
-    
+
+    [self fetchBoards:hud];
+}
+
+- (void)fetchBoards:(MBProgressHUD *)hud {
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
             [self separateBoards:boards];
-            
+
             if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
                                             message:@"No games were found near your current location."
@@ -124,10 +144,15 @@
                                        delegate:nil
                               cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             // TODO: Should probably set ourselves as the delegate for the alert view and give a retry button.
-            
+
         }
 
-        [hud hide:YES];
+        if (hud) {
+            [hud hide:YES];
+        }
+
+        [self.tableView.pullToRefreshView stopAnimating];
+        self.tableView.hidden = NO;
     }];
 }
 
@@ -217,9 +242,9 @@
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     // don't bounce on scrolling up, only down.
-    if (scrollView.contentOffset.y < 0) {
-        scrollView.contentOffset = CGPointMake(0, 0);
-    }
+//    if (scrollView.contentOffset.y < 0) {
+//        scrollView.contentOffset = CGPointMake(0, 0);
+//    }
 }
 
 #pragma mark - UITableViewDelegate/Datasource
