@@ -9,6 +9,7 @@
 #import "MALaunchViewController.h"
 #import "MAGameManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "MAToolbarView.h"
 
 @interface MALaunchViewController () {
     BOOL _isUserNameSet;
@@ -112,13 +113,15 @@
             self.selectedAvatarIndex = arc4random_uniform(self.avatars.count);
         }
     }
+    
+    // debug: [MAToolbarView addToView:self.view];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBarHidden = YES;
 
     self.navigationController.toolbarHidden = YES;
-
+    
     [self registerForKeyboardNotifications];
 }
 

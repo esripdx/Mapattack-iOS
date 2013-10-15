@@ -9,6 +9,7 @@
 #import "MAHelpViewController.h"
 #import "MAAppDelegate.h"
 #import "MBProgressHUD.h"
+#import "MAToolbarView.h"
 
 @interface MAHelpViewController () {
 
@@ -78,8 +79,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-
-    self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
+    [MAToolbarView addToView:self.view];
 }
 
 - (void)didReceiveMemoryWarning

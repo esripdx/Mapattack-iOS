@@ -21,5 +21,4 @@
 
 + (MAAppDelegate *)appDelegate;
 
-- (NSArray *)toolbarItems;
 @end
