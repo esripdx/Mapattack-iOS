@@ -18,7 +18,7 @@ static NSUInteger const kMACellExpandedHeight = 326;
 static NSUInteger const kMATableWidth = 320;
 
 static NSUInteger const kMAToolbarHeight = 35;
-static NSUInteger const kMAToolbarYPosition = 568-44;
+static NSUInteger const kMAToolbarAvatarIndex = 2;
 
 static NSString *const kMAWebHelpPath = @"/info";
 

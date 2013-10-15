@@ -95,8 +95,8 @@
         UIGraphicsEndImageContext();
     }
 
-    [self.buttons[2] setTitle:nil];
-    [self.buttons[2] setImage:avatarImage forState:UIControlStateNormal];
+    [self.buttons[kMAToolbarAvatarIndex] setTitle:nil];
+    [self.buttons[kMAToolbarAvatarIndex] setImage:avatarImage forState:UIControlStateNormal];
     
 }
 
