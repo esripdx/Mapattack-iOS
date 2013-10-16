@@ -14,6 +14,52 @@
 		942C20B91803728D003FB7CE /* MAPlayerAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */; };
 		942C20BD18037960003FB7CE /* MACoin.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20BC18037960003FB7CE /* MACoin.m */; };
 		942C20C018039D12003FB7CE /* MACoinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20BF18039D12003FB7CE /* MACoinAnnotationView.m */; };
+		942C574A180F2B530002B9D0 /* MALaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBCE17EA695B00E63C71 /* MALaunchViewController.m */; };
+		942C574B180F2B530002B9D0 /* MAUdpConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2228E617EA601500EFF703 /* MAUdpConnection.m */; };
+		942C574C180F2B530002B9D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BDADFD7117EA41C000CB11B8 /* main.m */; };
+		942C574D180F2B530002B9D0 /* MAApiConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC25CA717FA5F3E00735CFC /* MAApiConnection.m */; };
+		942C574E180F2B530002B9D0 /* MAPlayerAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20B81803728D003FB7CE /* MAPlayerAnnotationView.m */; };
+		942C574F180F2B530002B9D0 /* MACoin.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20BC18037960003FB7CE /* MACoin.m */; };
+		942C5750180F2B530002B9D0 /* MAPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 940DAA2A17FF2C2900FC6C17 /* MAPlayer.m */; };
+		942C5751180F2B530002B9D0 /* MABoard.m in Sources */ = {isa = PBXBuildFile; fileRef = FA79D5CA17FE0C0A00E7DD20 /* MABoard.m */; };
+		942C5752180F2B530002B9D0 /* MABorderSetter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3A479218031C53002282DD /* MABorderSetter.m */; };
+		942C5753180F2B530002B9D0 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39C17F600E00033EFDE /* NSData+Conversion.m */; };
+		942C5754180F2B530002B9D0 /* MAGame.m in Sources */ = {isa = PBXBuildFile; fileRef = FA79D5CD17FE0C6600E7DD20 /* MAGame.m */; };
+		942C5755180F2B530002B9D0 /* MAGameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameManager.m */; };
+		942C5756180F2B530002B9D0 /* MACoinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 942C20BF18039D12003FB7CE /* MACoinAnnotationView.m */; };
+		942C5757180F2B530002B9D0 /* NSString+UrlEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33B39F17F602900033EFDE /* NSString+UrlEncoding.m */; };
+		942C5758180F2B530002B9D0 /* MAGamesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3E227C1804861B00775B71 /* MAGamesListViewController.m */; };
+		942C5759180F2B530002B9D0 /* MAHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD117EA69D200E63C71 /* MAHelpViewController.m */; };
+		942C575A180F2B530002B9D0 /* MALovebitTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF1F17F5660E00D284D4 /* MALovebitTextField.m */; };
+		942C575B180F2B530002B9D0 /* MAGameListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 94FDAF0A17F2245C00D284D4 /* MAGameListCell.m */; };
+		942C575C180F2B530002B9D0 /* MAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDADFD7517EA41C000CB11B8 /* MAAppDelegate.m */; };
+		942C575D180F2B530002B9D0 /* MAGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD69CBD417EA6B9C00E63C71 /* MAGameViewController.m */; };
+		942C575E180F2B530002B9D0 /* MAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF21A8CF822FA5157F20CB /* MAConstants.m */; };
+		942C5760180F2B530002B9D0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940DAA2717FDF4B700FC6C17 /* AudioToolbox.framework */; };
+		942C5761180F2B530002B9D0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94FDAF0C17F236C100D284D4 /* MapKit.framework */; };
+		942C5762180F2B530002B9D0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D23117EC15D000F30187 /* QuartzCore.framework */; };
+		942C5763180F2B530002B9D0 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22F17EC15AA00F30187 /* ImageIO.framework */; };
+		942C5764180F2B530002B9D0 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22D17EC152E00F30187 /* CoreVideo.framework */; };
+		942C5765180F2B530002B9D0 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22B17EC151B00F30187 /* CoreMedia.framework */; };
+		942C5766180F2B530002B9D0 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22917EC151000F30187 /* CoreImage.framework */; };
+		942C5767180F2B530002B9D0 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22717EC0D2F00F30187 /* AVFoundation.framework */; };
+		942C5768180F2B530002B9D0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22517EBB0F900F30187 /* CoreLocation.framework */; };
+		942C5769180F2B530002B9D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6517EA41C000CB11B8 /* UIKit.framework */; };
+		942C576A180F2B530002B9D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6717EA41C000CB11B8 /* Foundation.framework */; };
+		942C576B180F2B530002B9D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDADFD6917EA41C000CB11B8 /* CoreGraphics.framework */; };
+		942C576C180F2B530002B9D0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD71C79D415455F8DAB6718 /* libPods.a */; };
+		942C576E180F2B530002B9D0 /* mensch.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF1117F4A60B00D284D4 /* mensch.ttf */; };
+		942C576F180F2B530002B9D0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94D4D66117F79A6B008E0F7A /* Images.xcassets */; };
+		942C5770180F2B530002B9D0 /* Esri.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FA00E8A617FC746C00181205 /* Esri.gpx */; };
+		942C5771180F2B530002B9D0 /* lovebit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF1017F4A60B00D284D4 /* lovebit.ttf */; };
+		942C5772180F2B530002B9D0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD6E17EA41C000CB11B8 /* InfoPlist.strings */; };
+		942C5773180F2B530002B9D0 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7717EA41C000CB11B8 /* Default.png */; };
+		942C5774180F2B530002B9D0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7917EA41C000CB11B8 /* Default@2x.png */; };
+		942C5775180F2B530002B9D0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7B17EA41C000CB11B8 /* Default-568h@2x.png */; };
+		942C5776180F2B530002B9D0 /* karla.otf in Resources */ = {isa = PBXBuildFile; fileRef = 94FDAF0F17F4A60B00D284D4 /* karla.otf */; };
+		942C5777180F2B530002B9D0 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDADFD7D17EA41C000CB11B8 /* MainStoryboard.storyboard */; };
+		942C577F180F2BD00002B9D0 /* SparkInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 942C577E180F2BD00002B9D0 /* SparkInspector.framework */; };
+		942C5781180F2C030002B9D0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 942C5780180F2C030002B9D0 /* libz.dylib */; };
 		94A131CE17EB9CA500E1B15D /* MAGameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A131CD17EB9CA500E1B15D /* MAGameManager.m */; };
 		94C6D22617EBB0F900F30187 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22517EBB0F900F30187 /* CoreLocation.framework */; };
 		94C6D22817EC0D2F00F30187 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C6D22717EC0D2F00F30187 /* AVFoundation.framework */; };
@@ -66,6 +112,10 @@
 		942C20BC18037960003FB7CE /* MACoin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoin.m; sourceTree = "<group>"; };
 		942C20BE18039D12003FB7CE /* MACoinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACoinAnnotationView.h; sourceTree = "<group>"; };
 		942C20BF18039D12003FB7CE /* MACoinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoinAnnotationView.m; sourceTree = "<group>"; };
+		942C577C180F2B530002B9D0 /* MapAttack copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MapAttack copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		942C577D180F2B530002B9D0 /* MapAttack copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MapAttack copy-Info.plist"; path = "/Users/ryana/src/Mapattack-iOS/MapAttack copy-Info.plist"; sourceTree = "<absolute>"; };
+		942C577E180F2BD00002B9D0 /* SparkInspector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SparkInspector.framework; sourceTree = "<group>"; };
+		942C5780180F2C030002B9D0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		94A131CC17EB9CA500E1B15D /* MAGameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGameManager.h; sourceTree = "<group>"; };
 		94A131CD17EB9CA500E1B15D /* MAGameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGameManager.m; sourceTree = "<group>"; };
 		94C6D22517EBB0F900F30187 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -127,6 +177,28 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		942C575F180F2B530002B9D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				942C5781180F2C030002B9D0 /* libz.dylib in Frameworks */,
+				942C5760180F2B530002B9D0 /* AudioToolbox.framework in Frameworks */,
+				942C5761180F2B530002B9D0 /* MapKit.framework in Frameworks */,
+				942C5762180F2B530002B9D0 /* QuartzCore.framework in Frameworks */,
+				942C5763180F2B530002B9D0 /* ImageIO.framework in Frameworks */,
+				942C5764180F2B530002B9D0 /* CoreVideo.framework in Frameworks */,
+				942C5765180F2B530002B9D0 /* CoreMedia.framework in Frameworks */,
+				942C577F180F2BD00002B9D0 /* SparkInspector.framework in Frameworks */,
+				942C5766180F2B530002B9D0 /* CoreImage.framework in Frameworks */,
+				942C5767180F2B530002B9D0 /* AVFoundation.framework in Frameworks */,
+				942C5768180F2B530002B9D0 /* CoreLocation.framework in Frameworks */,
+				942C5769180F2B530002B9D0 /* UIKit.framework in Frameworks */,
+				942C576A180F2B530002B9D0 /* Foundation.framework in Frameworks */,
+				942C576B180F2B530002B9D0 /* CoreGraphics.framework in Frameworks */,
+				942C576C180F2B530002B9D0 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BDADFD5F17EA41C000CB11B8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -204,6 +276,7 @@
 				BDADFD6417EA41C000CB11B8 /* Frameworks */,
 				BDADFD6317EA41C000CB11B8 /* Products */,
 				D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */,
+				942C577D180F2B530002B9D0 /* MapAttack copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -211,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				BDADFD6217EA41C000CB11B8 /* MapAttack.app */,
+				942C577C180F2B530002B9D0 /* MapAttack copy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -218,6 +292,8 @@
 		BDADFD6417EA41C000CB11B8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				942C5780180F2C030002B9D0 /* libz.dylib */,
+				942C577E180F2BD00002B9D0 /* SparkInspector.framework */,
 				940DAA2717FDF4B700FC6C17 /* AudioToolbox.framework */,
 				94FDAF0C17F236C100D284D4 /* MapKit.framework */,
 				94C6D23117EC15D000F30187 /* QuartzCore.framework */,
@@ -306,6 +382,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		942C5747180F2B530002B9D0 /* MapAttack with SparkInspector */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 942C5779180F2B530002B9D0 /* Build configuration list for PBXNativeTarget "MapAttack with SparkInspector" */;
+			buildPhases = (
+				942C5748180F2B530002B9D0 /* Check Pods Manifest.lock */,
+				942C5749180F2B530002B9D0 /* Sources */,
+				942C575F180F2B530002B9D0 /* Frameworks */,
+				942C576D180F2B530002B9D0 /* Resources */,
+				942C5778180F2B530002B9D0 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MapAttack with SparkInspector";
+			productName = "Mapattack-iOS";
+			productReference = 942C577C180F2B530002B9D0 /* MapAttack copy.app */;
+			productType = "com.apple.product-type.application";
+		};
 		BDADFD6117EA41C000CB11B8 /* MapAttack */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BDADFD9A17EA41C000CB11B8 /* Build configuration list for PBXNativeTarget "MapAttack" */;
@@ -358,11 +453,29 @@
 			projectRoot = "";
 			targets = (
 				BDADFD6117EA41C000CB11B8 /* MapAttack */,
+				942C5747180F2B530002B9D0 /* MapAttack with SparkInspector */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		942C576D180F2B530002B9D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				942C576E180F2B530002B9D0 /* mensch.ttf in Resources */,
+				942C576F180F2B530002B9D0 /* Images.xcassets in Resources */,
+				942C5770180F2B530002B9D0 /* Esri.gpx in Resources */,
+				942C5771180F2B530002B9D0 /* lovebit.ttf in Resources */,
+				942C5772180F2B530002B9D0 /* InfoPlist.strings in Resources */,
+				942C5773180F2B530002B9D0 /* Default.png in Resources */,
+				942C5774180F2B530002B9D0 /* Default@2x.png in Resources */,
+				942C5775180F2B530002B9D0 /* Default-568h@2x.png in Resources */,
+				942C5776180F2B530002B9D0 /* karla.otf in Resources */,
+				942C5777180F2B530002B9D0 /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BDADFD6017EA41C000CB11B8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -413,9 +526,67 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		942C5748180F2B530002B9D0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		942C5778180F2B530002B9D0 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		942C5749180F2B530002B9D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				942C574A180F2B530002B9D0 /* MALaunchViewController.m in Sources */,
+				942C574B180F2B530002B9D0 /* MAUdpConnection.m in Sources */,
+				942C574C180F2B530002B9D0 /* main.m in Sources */,
+				942C574D180F2B530002B9D0 /* MAApiConnection.m in Sources */,
+				942C574E180F2B530002B9D0 /* MAPlayerAnnotationView.m in Sources */,
+				942C574F180F2B530002B9D0 /* MACoin.m in Sources */,
+				942C5750180F2B530002B9D0 /* MAPlayer.m in Sources */,
+				942C5751180F2B530002B9D0 /* MABoard.m in Sources */,
+				942C5752180F2B530002B9D0 /* MABorderSetter.m in Sources */,
+				942C5753180F2B530002B9D0 /* NSData+Conversion.m in Sources */,
+				942C5754180F2B530002B9D0 /* MAGame.m in Sources */,
+				942C5755180F2B530002B9D0 /* MAGameManager.m in Sources */,
+				942C5756180F2B530002B9D0 /* MACoinAnnotationView.m in Sources */,
+				942C5757180F2B530002B9D0 /* NSString+UrlEncoding.m in Sources */,
+				942C5758180F2B530002B9D0 /* MAGamesListViewController.m in Sources */,
+				942C5759180F2B530002B9D0 /* MAHelpViewController.m in Sources */,
+				942C575A180F2B530002B9D0 /* MALovebitTextField.m in Sources */,
+				942C575B180F2B530002B9D0 /* MAGameListCell.m in Sources */,
+				942C575C180F2B530002B9D0 /* MAAppDelegate.m in Sources */,
+				942C575D180F2B530002B9D0 /* MAGameViewController.m in Sources */,
+				942C575E180F2B530002B9D0 /* MAConstants.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BDADFD5E17EA41C000CB11B8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -466,6 +637,52 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		942C577A180F2B530002B9D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = MapAttackLaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/ryana/src/Mapattack-iOS",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Mapattack-iOS/Mapattack-iOS-Prefix.pch";
+				INFOPLIST_FILE = "MapAttack copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "MapAttack copy";
+				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		942C577B180F2B530002B9D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D684CAF86B57428AAC1DD2D9 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = MapAttackLaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/ryana/src/Mapattack-iOS",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Mapattack-iOS/Mapattack-iOS-Prefix.pch";
+				INFOPLIST_FILE = "MapAttack copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "MapAttack copy";
+				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		BDADFD9817EA41C000CB11B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -567,6 +784,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		942C5779180F2B530002B9D0 /* Build configuration list for PBXNativeTarget "MapAttack with SparkInspector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				942C577A180F2B530002B9D0 /* Debug */,
+				942C577B180F2B530002B9D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BDADFD5D17EA41C000CB11B8 /* Build configuration list for PBXProject "Mapattack-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
