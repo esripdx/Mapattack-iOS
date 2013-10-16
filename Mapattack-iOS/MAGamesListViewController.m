@@ -266,11 +266,17 @@
     if (scrollView.contentOffset.y < 0) {
         scrollView.contentOffset = CGPointMake(0, 0);
     }
-    NSIndexPath *path = [self.tableView indexPathsForVisibleRows][0];
+
     UIColor *bgColor = self.view.backgroundColor;
-    if (![self isActiveSection:path.section]) {
-        self.view.backgroundColor = MA_COLOR_CREAM;
-        _currentStatusBarStyle = UIStatusBarStyleDefault;
+    if (self.tableView.indexPathsForVisibleRows.count > 0) {
+        NSIndexPath *path = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
+        if (![self isActiveSection:path.section]) {
+            self.view.backgroundColor = MA_COLOR_CREAM;
+            _currentStatusBarStyle = UIStatusBarStyleDefault;
+        } else {
+            self.view.backgroundColor = MA_COLOR_BODYBLUE;
+            _currentStatusBarStyle = UIStatusBarStyleLightContent;
+        }
     } else {
         self.view.backgroundColor = MA_COLOR_BODYBLUE;
         _currentStatusBarStyle = UIStatusBarStyleLightContent;
