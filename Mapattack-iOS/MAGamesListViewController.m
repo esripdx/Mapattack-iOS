@@ -20,6 +20,7 @@
 @interface MAGamesListViewController () {
     NSInteger _selectedIndex;
     NSInteger _selectedSection;
+    UIStatusBarStyle _currentStatusBarStyle;
 }
 @property (strong, nonatomic) NSArray *currentGames;
 @property (strong, nonatomic) NSArray *nearbyBoards;
@@ -50,6 +51,7 @@
     self.tableView.backgroundView = nil;
     self.tableView.backgroundColor = MA_COLOR_CREAM;
     self.view.backgroundColor = MA_COLOR_BODYBLUE;
+    _currentStatusBarStyle = UIStatusBarStyleLightContent;
 
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
     UIToolbar *toolbar = self.navigationController.toolbar;
@@ -59,7 +61,7 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
+    return _currentStatusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -263,6 +265,18 @@
     // don't bounce on scrolling up, only down.
     if (scrollView.contentOffset.y < 0) {
         scrollView.contentOffset = CGPointMake(0, 0);
+    }
+    NSIndexPath *path = [self.tableView indexPathsForVisibleRows][0];
+    UIColor *bgColor = self.view.backgroundColor;
+    if (![self isActiveSection:path.section]) {
+        self.view.backgroundColor = MA_COLOR_CREAM;
+        _currentStatusBarStyle = UIStatusBarStyleDefault;
+    } else {
+        self.view.backgroundColor = MA_COLOR_BODYBLUE;
+        _currentStatusBarStyle = UIStatusBarStyleLightContent;
+    }
+    if (bgColor != self.view.backgroundColor) {
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 
