@@ -11,13 +11,13 @@
 
 @interface MALaunchViewController : UIViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
-@property (strong, nonatomic) IBOutlet UITextField *userNameField;
-@property (strong, nonatomic) IBOutlet UIButton *enterButton;
-@property (strong, nonatomic) IBOutlet UIButton *captureAvatarButton;
-@property (strong, nonatomic) IBOutlet UIButton *pickFromRollButton;
-@property (strong, nonatomic) IBOutlet UIButton *prevAvatarButton;
-@property (strong, nonatomic) IBOutlet UIButton *nextAvatarButton;
-@property (strong, nonatomic) IBOutlet UIImageView *avatarImageView;
+@property (weak, nonatomic) IBOutlet UITextField *userNameField;
+@property (weak, nonatomic) IBOutlet UIButton *enterButton;
+@property (weak, nonatomic) IBOutlet UIButton *captureAvatarButton;
+@property (weak, nonatomic) IBOutlet UIButton *pickFromRollButton;
+@property (weak, nonatomic) IBOutlet UIButton *prevAvatarButton;
+@property (weak, nonatomic) IBOutlet UIButton *nextAvatarButton;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (strong, nonatomic) AVCaptureSession *videoCaptureSession;
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *videoLayer;

@@ -16,12 +16,18 @@
     if (self) {
         if ([annotation isKindOfClass:[MACoin class]]) {
             self.coin = (MACoin *)annotation;
-            self.image = self.coin.image;
-            [self.coin addObserver:self forKeyPath:@"team" options:NSKeyValueObservingOptionNew context:NULL];
         }
     }
 
     return self;
+}
+
+- (void)setCoin:(MACoin *)coin {
+    [_coin removeObserver:self forKeyPath:@"team"];
+    _coin = nil;
+    self.image = coin.image;
+    [coin addObserver:self forKeyPath:@"team" options:NSKeyValueObservingOptionNew context:NULL];
+    _coin = coin;
 }
 
 - (void)dealloc {

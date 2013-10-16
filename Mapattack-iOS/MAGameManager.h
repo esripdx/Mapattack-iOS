@@ -58,4 +58,7 @@
 
 - (MKCoordinateRegion)regionForBoard:(MABoard *)board;
 
+- (MKMapRect)mapRectForJoinedBoard;
+
+- (MKMapRect)mapRectForBoard:(MABoard *)board;
 @end

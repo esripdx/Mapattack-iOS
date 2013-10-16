@@ -20,10 +20,13 @@
 @interface MAGamesListViewController () {
     NSInteger _selectedIndex;
     NSInteger _selectedSection;
+    UIStatusBarStyle _currentStatusBarStyle;
 }
 @property (strong, nonatomic) NSArray *currentGames;
 @property (strong, nonatomic) NSArray *nearbyBoards;
 @property (strong, nonatomic) NSMutableDictionary *coinCache;
+@property (strong, nonatomic) MKMapView *mapView;
+@property (strong, nonatomic) UIButton *joinButton;
 
 @end
 
@@ -38,7 +41,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.coinCache = [NSMutableDictionary new];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
 
@@ -49,6 +51,7 @@
     self.tableView.backgroundView = nil;
     self.tableView.backgroundColor = MA_COLOR_CREAM;
     self.view.backgroundColor = MA_COLOR_BODYBLUE;
+    _currentStatusBarStyle = UIStatusBarStyleLightContent;
 
     self.toolbarItems = [MAAppDelegate appDelegate].toolbarItems;
     UIToolbar *toolbar = self.navigationController.toolbar;
@@ -58,7 +61,7 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
+    return _currentStatusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -68,11 +71,46 @@
     
     _selectedIndex = -1;
     [self beginMonitoringNearbyBoards];
+
+    self.coinCache = [NSMutableDictionary new];
+
+    // init map
+    MKMapView *mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, kMACellHeight, self.tableView.frame.size.width, kMACellExpandedHeight - kMACellHeight)];
+    mapView.delegate = self;
+    mapView.showsUserLocation = YES;
+    mapView.pitchEnabled = NO;
+
+    // custom map tiles
+    NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", @"dark"];
+    MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:template];
+    overlay.canReplaceMapContent = YES;
+    [mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
+
+    CGSize btnSize = CGSizeMake(mapView.frame.size.width * 0.75f, 50);
+    CGFloat btnPadding = 16;
+    CGRect btnFrame = CGRectMake(mapView.frame.size.width/2 - btnSize.width/2, mapView.frame.size.height - btnSize.height - btnPadding, btnSize.width, btnSize.height);
+    UIButton *joinButton = [[UIButton alloc] initWithFrame:btnFrame];
+    joinButton.titleLabel.font = MA_FONT_MENSCH_HEADER;
+    joinButton.contentEdgeInsets = UIEdgeInsetsMake(7.0, 0, 0, 0);
+    joinButton.backgroundColor = MA_COLOR_CREAM;
+    joinButton.alpha = 0.93f;
+    joinButton.layer.cornerRadius = 10;
+    joinButton.clipsToBounds = YES;
+    [joinButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
+    [mapView addSubview:joinButton];
+
+    self.mapView = mapView;
+    self.joinButton = joinButton;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[MAGameManager sharedManager] stopMonitoringNearbyGames];
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    [self.mapView removeOverlays:self.mapView.overlays];
+    self.mapView = nil;
+    self.joinButton = nil;
+    self.coinCache = nil;
 }
 
 - (BOOL)isActiveSection:(NSInteger)section {
@@ -103,15 +141,20 @@
 }
 
 - (void)beginMonitoringNearbyBoards {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    __weak MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Searching...";
-    
+
+    [self fetchBoards:hud];
+}
+
+- (void)fetchBoards:(MBProgressHUD *)hud {
+    __weak MAGamesListViewController *weakSelf = self;
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
-            [self separateBoards:boards];
-            
+            [weakSelf separateBoards:boards];
+
             if (boards.count == 0) {
                 [[[UIAlertView alloc] initWithTitle:@"No Nearby Games"
                                             message:@"No games were found near your current location."
@@ -124,16 +167,19 @@
                                        delegate:nil
                               cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
             // TODO: Should probably set ourselves as the delegate for the alert view and give a retry button.
-            
         }
 
-        [hud hide:YES];
+        if (hud) {
+            [hud hide:YES];
+        }
+
+        weakSelf.tableView.hidden = NO;
     }];
 }
 
 -(void)separateBoards:(NSArray *)boards {
-    NSMutableArray *active = [NSMutableArray array];
-    NSMutableArray *inactive = [NSMutableArray array];
+    NSMutableArray *active = [NSMutableArray new];
+    NSMutableArray *inactive = [NSMutableArray new];
     for (MABoard *board in boards) {
         if (board.game.isActive) {
             [active addObject:board];
@@ -161,10 +207,10 @@
 - (void)joinGame:(id)sender {
     if (_selectedIndex >= 0) {
         [[MAGameManager sharedManager] stopMonitoringNearbyGames];
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        __weak MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.dimBackground = YES;
         hud.square = NO;
-        MABoard *board = [self boardForIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:_selectedSection]];
+        __weak MABoard *board = [self boardForIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:_selectedSection]];
 
         if (board.game != nil) {
             hud.labelText = @"Joining...";
@@ -220,12 +266,28 @@
     if (scrollView.contentOffset.y < 0) {
         scrollView.contentOffset = CGPointMake(0, 0);
     }
+
+    UIColor *bgColor = self.view.backgroundColor;
+    if (self.tableView.indexPathsForVisibleRows.count > 0) {
+        NSIndexPath *path = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
+        if (![self isActiveSection:path.section]) {
+            self.view.backgroundColor = MA_COLOR_CREAM;
+            _currentStatusBarStyle = UIStatusBarStyleDefault;
+        } else {
+            self.view.backgroundColor = MA_COLOR_BODYBLUE;
+            _currentStatusBarStyle = UIStatusBarStyleLightContent;
+        }
+    } else {
+        self.view.backgroundColor = MA_COLOR_BODYBLUE;
+        _currentStatusBarStyle = UIStatusBarStyleLightContent;
+    }
+    if (bgColor != self.view.backgroundColor) {
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
 }
 
 #pragma mark - UITableViewDelegate/Datasource
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if ([self isActiveSection:section]) {
         return [self makeHeaderWithText:@"CURRENT GAMES" andBackgroundColor:MA_COLOR_BODYBLUE andTextColor:MA_COLOR_WHITE];
     } else {
@@ -233,8 +295,7 @@
     }
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
     return 2;
 }
@@ -250,8 +311,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MAGameListCell *cell = (MAGameListCell *)[tableView dequeueReusableCellWithIdentifier:@"gameListCell" forIndexPath:indexPath];
 
-    MABoard *board = [self boardForIndexPath:indexPath];
-    [cell setBoard:board withMapDelegate:self annotations:self.coinCache[board.game.gameId]];
+    cell.mapView = self.mapView;
+    cell.joinButton = self.joinButton;
+    cell.board = [self boardForIndexPath:indexPath];
 
     // DDLogVerbose(@"dequeued cell for %@", cell.board);
     return cell;
@@ -261,13 +323,20 @@
     if (indexPath.row != _selectedIndex || indexPath.section != _selectedSection) {
         _selectedIndex = indexPath.row;
         _selectedSection = indexPath.section;
-        MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
+        __weak MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
+        __weak MAGamesListViewController *weakSelf = self;
+        [cell.mapView removeAnnotations:cell.mapView.annotations];
         if (cell.board.game.gameId) {
+            self.mapView.tintColor = MA_COLOR_BLUE;
+            [self.joinButton setTitleColor:MA_COLOR_BLUE forState:UIControlStateNormal];
+            [self.joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
             if (!self.coinCache[cell.board.game.gameId]) {
                 [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
                                                             completion:^(NSArray *coins, NSError *error) {
                                                                 if (error == nil) {
-                                                                    self.coinCache[cell.board.game.gameId] = coins;
+                                                                    [weakSelf.coinCache removeObjectForKey:cell.board.game.gameId];
+                                                                    weakSelf.coinCache[cell.board.game.gameId] = coins;
+                                                                    [cell.mapView removeAnnotations:cell.mapView.annotations];
                                                                     [cell.mapView addAnnotations:coins];
                                                                     DDLogVerbose(@"Added %d annotations for %@", coins.count, cell.board);
                                                                 } else {
@@ -275,15 +344,20 @@
                                                                 }
                                                             }];
             } else {
-                [cell.mapView removeAnnotations:cell.mapView.annotations];
                 [cell.mapView addAnnotations:self.coinCache[cell.board.game.gameId]];
             }
         } else {
+            [cell styleAsInactiveBoard];
+            self.mapView.tintColor = MA_COLOR_RED;
+            [self.joinButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
+            [self.joinButton setTitle:@"CREATE" forState:UIControlStateNormal];
             if (!self.coinCache[cell.board.boardId]) {
                 [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
                                                               completion:^(MABoard *board, NSArray *coins, NSError *error) {
                                                                   if (error == nil) {
-                                                                      self.coinCache[cell.board.boardId] = coins;
+                                                                      [weakSelf.coinCache removeObjectForKey:cell.board.boardId];
+                                                                      weakSelf.coinCache[cell.board.boardId] = coins;
+                                                                      [cell.mapView removeAnnotations:cell.mapView.annotations];
                                                                       [cell.mapView addAnnotations:coins];
                                                                       DDLogVerbose(@"Added %d annotations for %@", coins.count, cell.board);
                                                                   } else {
@@ -291,7 +365,6 @@
                                                                   }
                                                               }];
             } else {
-                [cell.mapView removeAnnotations:cell.mapView.annotations];
                 [cell.mapView addAnnotations:self.coinCache[cell.board.boardId]];
             }
         }
@@ -326,7 +399,7 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
     if ([annotation isKindOfClass:[MACoin class]]) {
-        return [[MACoinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"coinAnnotation"];
+        return [[MACoinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
     }
     return nil;
 }

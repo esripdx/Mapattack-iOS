@@ -14,8 +14,8 @@
     BOOL _isUserNameSet;
 }
 
-@property (strong, nonatomic) IBOutlet UIView *avatarContainer;
-@property (strong, nonatomic) IBOutlet UIView *avatarButtonsContainer;
+@property (weak, nonatomic) IBOutlet UIView *avatarContainer;
+@property (weak, nonatomic) IBOutlet UIView *avatarButtonsContainer;
 @property (strong, nonatomic) NSArray *avatars;
 @property (nonatomic) NSInteger selectedAvatarIndex;
 
@@ -146,7 +146,7 @@
 }
 
 - (IBAction)enterLobby {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    __weak MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Registering...";
@@ -281,7 +281,8 @@
         }
         if (videoConnection) {break;}
     }
-    
+
+    __weak MALaunchViewController *weakSelf = self;
     void (^captureStillCompletionHandler)(CMSampleBufferRef, NSError *) = ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
         /*
         CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
@@ -295,12 +296,14 @@
         
         CGRect captureRect = CGRectMake((352.0 - kMAAvatarSize)/2,
                                         (288.0 - kMAAvatarSize)/2,
-                                        self.avatarImageView.frame.size.width,
-                                        self.avatarImageView.frame.size.height);
+                                        weakSelf.avatarImageView.frame.size.width,
+                                        weakSelf.avatarImageView.frame.size.height);
         UIImage *image = [[UIImage alloc] initWithData:[AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer]];
 
         // crop image
-        image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([image CGImage], captureRect)];
+        CGImageRef cgImage = CGImageCreateWithImageInRect([image CGImage], captureRect);
+        image = [UIImage imageWithCGImage:cgImage];
+        CGImageRelease(cgImage);
 
         // rotate image
         UIGraphicsBeginImageContext(captureRect.size);
@@ -315,10 +318,10 @@
         UIGraphicsEndImageContext();
 
         // use the fruits of our labor.
-        self.avatarImageView.image = image;
-        [self saveAvatar:image];
+        weakSelf.avatarImageView.image = image;
+        [weakSelf saveAvatar:image];
 
-        [self endCapture];
+        [weakSelf endCapture];
     };
     
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection
