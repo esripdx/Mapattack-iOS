@@ -33,10 +33,6 @@
     self.gameNameLabel.font = [self fontType];
     [MABorderSetter setBottomBorderForView:self.cellView withColor:MA_COLOR_WHITE];
     [MABorderSetter setLeftBorderForView:self.cellView withColor:MA_COLOR_WHITE];
-
-    self.mapView.tintColor = MA_COLOR_BLUE;
-    [self.joinButton setTitleColor:MA_COLOR_BLUE forState:UIControlStateNormal];
-    [self.joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
 }
 
 - (void)styleAsInactiveBoard {
@@ -47,10 +43,6 @@
     self.gameNameLabel.font = [self fontType];
     [MABorderSetter setBottomBorderForView:self.cellView withColor:MA_COLOR_RED];
     [MABorderSetter setLeftBorderForView:self.cellView withColor:MA_COLOR_RED];
-
-    self.mapView.tintColor = MA_COLOR_RED;
-    [self.joinButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
-    [self.joinButton setTitle:@"CREATE" forState:UIControlStateNormal];
 }
 
 #pragma mark - Custom setters
@@ -78,13 +70,13 @@
     [super setSelected:selected animated:animated];
 
     if (selected) {
+        [self.contentView addSubview:self.mapView];
+
         MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:self.board];
         if (self.mapView.region.center.latitude != region.center.latitude ||
                 self.mapView.region.center.longitude != region.center.longitude) {
             [self.mapView setRegion:region animated:NO];
         }
-
-        [self.contentView addSubview:self.mapView];
     }
 }
 

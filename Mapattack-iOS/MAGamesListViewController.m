@@ -307,7 +307,9 @@
         __weak MAGamesListViewController *weakSelf = self;
         [cell.mapView removeAnnotations:cell.mapView.annotations];
         if (cell.board.game.gameId) {
-            [cell styleAsActiveBoard];
+            self.mapView.tintColor = MA_COLOR_BLUE;
+            [self.joinButton setTitleColor:MA_COLOR_BLUE forState:UIControlStateNormal];
+            [self.joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
             if (!self.coinCache[cell.board.game.gameId]) {
                 [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
                                                             completion:^(NSArray *coins, NSError *error) {
@@ -326,6 +328,9 @@
             }
         } else {
             [cell styleAsInactiveBoard];
+            self.mapView.tintColor = MA_COLOR_RED;
+            [self.joinButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
+            [self.joinButton setTitle:@"CREATE" forState:UIControlStateNormal];
             if (!self.coinCache[cell.board.boardId]) {
                 [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
                                                               completion:^(MABoard *board, NSArray *coins, NSError *error) {
