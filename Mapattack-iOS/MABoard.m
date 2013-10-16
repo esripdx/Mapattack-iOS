@@ -12,6 +12,7 @@
 
 - (id)initWithDictionary:(NSDictionary *)board
 {
+    self = [super init];
     if (self) {
         self.boardId = board[kMAApiBoardIdKey];
         self.name = board[kMAApiNameKey];
