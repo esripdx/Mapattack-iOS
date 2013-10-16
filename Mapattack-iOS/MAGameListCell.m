@@ -72,10 +72,11 @@
     if (selected) {
         [self.contentView addSubview:self.mapView];
 
-        MKCoordinateRegion region = [[MAGameManager sharedManager] regionForBoard:self.board];
-        if (self.mapView.region.center.latitude != region.center.latitude ||
-                self.mapView.region.center.longitude != region.center.longitude) {
-            [self.mapView setRegion:region animated:NO];
+        MKMapRect rect = [[MAGameManager sharedManager] mapRectForBoard:self.board];
+        if (self.mapView.visibleMapRect.origin.x != rect.origin.x || self.mapView.visibleMapRect.origin.y != rect.origin.y) {
+            CGFloat padding = 12;
+            UIEdgeInsets edgePadding = UIEdgeInsetsMake(padding, padding, padding + self.mapView.frame.size.height - CGRectGetMinY(self.joinButton.frame), padding);
+            [self.mapView setVisibleMapRect:rect edgePadding:edgePadding animated:NO];
         }
     }
 }

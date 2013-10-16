@@ -73,10 +73,10 @@
     self.coinCache = [NSMutableDictionary new];
 
     // init map
-    CGFloat padding = 3;
-    MKMapView *mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, kMACellHeight+padding, self.tableView.frame.size.width, self.tableView.frame.size.height)];
+    MKMapView *mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, kMACellHeight, self.tableView.frame.size.width, kMACellExpandedHeight - kMACellHeight)];
     mapView.delegate = self;
     mapView.showsUserLocation = YES;
+    mapView.pitchEnabled = NO;
 
     // custom map tiles
     NSString *template = [NSString stringWithFormat:@"http://mapattack-tiles-0.pdx.esri.com/%@/{z}/{y}/{x}", @"dark"];
@@ -86,7 +86,7 @@
 
     CGSize btnSize = CGSizeMake(mapView.frame.size.width * 0.75f, 50);
     CGFloat btnPadding = 16;
-    CGRect btnFrame = CGRectMake(mapView.frame.size.width/2 - btnSize.width/2, (kMACellExpandedHeight-kMACellHeight-padding) - btnSize.height - btnPadding, btnSize.width, btnSize.height);
+    CGRect btnFrame = CGRectMake(mapView.frame.size.width/2 - btnSize.width/2, mapView.frame.size.height - btnSize.height - btnPadding, btnSize.width, btnSize.height);
     UIButton *joinButton = [[UIButton alloc] initWithFrame:btnFrame];
     joinButton.titleLabel.font = MA_FONT_MENSCH_HEADER;
     joinButton.contentEdgeInsets = UIEdgeInsetsMake(7.0, 0, 0, 0);
