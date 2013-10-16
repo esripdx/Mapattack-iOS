@@ -64,7 +64,6 @@
     [bg addSubview:top];
     self.tableView.backgroundView = bg;
     self.tableView.hidden = YES;
-//    self.tableView.backgroundColor = MA_COLOR_CREAM;
     self.view.backgroundColor = MA_COLOR_BODYBLUE;
     _currentStatusBarStyle = UIStatusBarStyleLightContent;
 
@@ -279,11 +278,6 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    // don't bounce on scrolling up, only down.
-//    if (scrollView.contentOffset.y < 0) {
-//        scrollView.contentOffset = CGPointMake(0, 0);
-//    }
-
     UIColor *bgColor = self.view.backgroundColor;
     if (self.tableView.indexPathsForVisibleRows.count > 0) {
         NSIndexPath *path = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
