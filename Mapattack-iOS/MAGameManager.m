@@ -124,7 +124,7 @@
 - (void)beginMonitoringNearbyBoardsWithBlock:(void (^)(NSArray *games, NSError *))completion {
     MAApiSuccessHandler boardListSuccess = ^(NSDictionary *response) {
         NSArray *boards = response[@"boards"];
-        NSMutableArray *boardBoards = [NSMutableArray new];
+        __autoreleasing NSMutableArray *boardBoards = [NSMutableArray new];
         DDLogVerbose(@"Found %lu board%@ nearby", (unsigned long)boards.count, boards.count == 1 ? @"" : @"s");
         for (NSDictionary *board in boards) {
             //DDLogVerbose(@"got board: %@", board);
@@ -362,14 +362,15 @@
 #pragma mark - TCP State handlers
 
 - (void)registerGameStateSuccessHandler {
+    __weak MAGameManager *weakSelf = self;
     MAApiSuccessHandler gameStateSuccess = ^(NSDictionary *response) {
         [response enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if ([key isEqualToString:kMAApiPlayersKey]) {
-                [self handlePlayersUpdate:obj];
+                [weakSelf handlePlayersUpdate:obj];
             } else if ([key isEqualToString:kMAApiCoinsKey]) {
-                [self handleCoinsUpdate:obj];
+                [weakSelf handleCoinsUpdate:obj];
             } else if ([key isEqualToString:kMAApiGameKey]) {
-                [self handleGameUpdate:obj];
+                [weakSelf handleGameUpdate:obj];
             }
         }];
     };
@@ -537,6 +538,25 @@
     return region;
 }
 
+- (MKMapRect)mapRectForJoinedBoard {
+    return [self mapRectForBoard:self.joinedGameBoard];
+}
+
+- (MKMapRect)mapRectForBoard:(MABoard *)board {
+    MKCoordinateRegion region = [self regionForBoard:board];
+
+    CLLocationCoordinate2D topLeftCoord = CLLocationCoordinate2DMake(region.center.latitude + (region.span.latitudeDelta/2.0),
+            region.center.longitude - (region.span.longitudeDelta/2.0));
+    MKMapPoint topLeftPoint = MKMapPointForCoordinate(topLeftCoord);
+
+    CLLocationCoordinate2D botRightCoord = CLLocationCoordinate2DMake(region.center.latitude - (region.span.latitudeDelta/2.0),
+            region.center.longitude + (region.span.longitudeDelta/2.0));
+    MKMapPoint botRightPoint = MKMapPointForCoordinate(botRightCoord);
+
+    MKMapRect rect = MKMapRectMake(topLeftPoint.x, topLeftPoint.y, fabs(botRightPoint.x - topLeftPoint.x), fabs(botRightPoint.y - topLeftPoint.y));
+
+    return rect;
+}
 
 #pragma mark - MAUdpConnectionDelegate methods
 

@@ -11,6 +11,6 @@
 @class MACoin;
 
 @interface MACoinAnnotationView : MKAnnotationView
-@property (strong, nonatomic) MACoin *coin;
+@property (weak, nonatomic) MACoin *coin;
 
 @end

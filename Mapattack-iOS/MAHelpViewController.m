@@ -11,10 +11,9 @@
 #import "MBProgressHUD.h"
 
 @interface MAHelpViewController () {
-
-    MBProgressHUD *_hud;
-
 }
+
+@property (strong, nonatomic) MBProgressHUD *hud;
 
 @end
 
@@ -32,10 +31,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 
-    _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    _hud.dimBackground = YES;
-    _hud.square = NO;
-    _hud.labelText = @"Loading...";
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.dimBackground = YES;
+    self.hud.square = NO;
+    self.hud.labelText = @"Loading...";
 
     NSURL *url =[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kMapAttackWebHostname, kMAWebHelpPath]];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
@@ -71,7 +70,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [_hud hide:YES];
+    [self.hud hide:YES];
 }
 
 - (void)viewDidLoad
