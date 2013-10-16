@@ -84,16 +84,16 @@
     overlay.canReplaceMapContent = YES;
     [mapView addOverlay:overlay level:MKOverlayLevelAboveLabels];
 
-    UIButton *joinButton = [[UIButton alloc] init];
+    CGSize btnSize = CGSizeMake(mapView.frame.size.width * 0.75f, 50);
+    CGFloat btnPadding = 16;
+    CGRect btnFrame = CGRectMake(mapView.frame.size.width/2 - btnSize.width/2, (kMACellExpandedHeight-kMACellHeight-padding) - btnSize.height - btnPadding, btnSize.width, btnSize.height);
+    UIButton *joinButton = [[UIButton alloc] initWithFrame:btnFrame];
     joinButton.titleLabel.font = MA_FONT_MENSCH_HEADER;
     joinButton.contentEdgeInsets = UIEdgeInsetsMake(7.0, 0, 0, 0);
     joinButton.backgroundColor = MA_COLOR_CREAM;
     joinButton.alpha = 0.93f;
     joinButton.layer.cornerRadius = 10;
     joinButton.clipsToBounds = YES;
-    CGSize btnSize = CGSizeMake(mapView.frame.size.width * 0.75f, 50);
-    CGFloat btnPadding = 16;
-    joinButton.frame = CGRectMake(mapView.frame.size.width/2 - btnSize.width/2, CGRectGetMaxY(mapView.bounds) - btnSize.height - btnPadding, btnSize.width, btnSize.height);
     [joinButton addTarget:self action:@selector(joinGame:) forControlEvents:UIControlEventTouchUpInside];
     [mapView addSubview:joinButton];
 
@@ -305,7 +305,9 @@
         _selectedSection = indexPath.section;
         __weak MAGameListCell *cell = (MAGameListCell *)[tableView cellForRowAtIndexPath:indexPath];
         __weak MAGamesListViewController *weakSelf = self;
+        [cell.mapView removeAnnotations:cell.mapView.annotations];
         if (cell.board.game.gameId) {
+            [cell styleAsActiveBoard];
             if (!self.coinCache[cell.board.game.gameId]) {
                 [[MAGameManager sharedManager] fetchGameStateForGameId:cell.board.game.gameId
                                                             completion:^(NSArray *coins, NSError *error) {
@@ -320,10 +322,10 @@
                                                                 }
                                                             }];
             } else {
-                [cell.mapView removeAnnotations:cell.mapView.annotations];
                 [cell.mapView addAnnotations:self.coinCache[cell.board.game.gameId]];
             }
         } else {
+            [cell styleAsInactiveBoard];
             if (!self.coinCache[cell.board.boardId]) {
                 [[MAGameManager sharedManager] fetchBoardStateForBoardId:cell.board.boardId
                                                               completion:^(MABoard *board, NSArray *coins, NSError *error) {
@@ -338,7 +340,6 @@
                                                                   }
                                                               }];
             } else {
-                [cell.mapView removeAnnotations:cell.mapView.annotations];
                 [cell.mapView addAnnotations:self.coinCache[cell.board.boardId]];
             }
         }
