@@ -9,7 +9,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 #import "MAGameManager.h"
-#import "NSString+UrlEncoding.h"
 #import "NSData+Conversion.h"
 #import "MAApiConnection.h"
 #import "MAPlayer.h"
@@ -90,15 +89,18 @@
 - (void)registerDeviceWithCompletionBlock:(void (^)(NSError *))completion {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *userName = [defaults stringForKey:kMADefaultsUserNameKey];
-    NSData *avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
-    if (!avatarData) {
-        // No custom avatar found, use the selected default avatar.
-        NSNumber *defaultAvatarIndex = [defaults valueForKey:kMADefaultsDefaultAvatarSelectedKey];
+    NSData *avatarData;
+    NSNumber *defaultAvatarIndex = [defaults valueForKey:kMADefaultsDefaultAvatarSelectedKey];
+    if (defaultAvatarIndex != nil) {
+        // default avatar index selected key, will not exist in defaults if they had a custom avatar selected when the clicked GO
         NSString *imageName = MA_DEFAULT_AVATARS[[defaultAvatarIndex unsignedIntegerValue]];
         UIImage *avatarImage = [UIImage imageNamed:imageName];
         avatarData = UIImageJPEGRepresentation(avatarImage, 1.0f);
+    } else {
+        // load up the custom avatar
+        avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
     }
-    NSString *avatarString = [[avatarData base64EncodedStringWithOptions:0] urlEncode];
+    NSString *avatarString = [avatarData base64EncodedStringWithOptions:0];
     MAApiSuccessHandler deviceRegisterSuccess = ^(NSDictionary *response) {
         NSString *dk = response[kMAApiDeviceIdKey];
         NSString *at = response[kMAApiAccessTokenKey];
