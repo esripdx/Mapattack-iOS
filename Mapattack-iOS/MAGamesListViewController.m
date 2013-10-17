@@ -240,8 +240,9 @@
                     }
                 } else {
                     DDLogError(@"Error joining game: %@", [error debugDescription]);
-                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board.name]
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@: %@", board.name, error.localizedDescription]
                                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                    return;
                 }
             }];
         } else {
