@@ -25,6 +25,7 @@
 @property (strong, nonatomic) MAUdpConnection *udpConnection;
 @property (strong, nonatomic) NSString *joinedTeamColor;
 @property (strong, nonatomic, readwrite) MABoard *joinedGameBoard;
+@property (strong, nonatomic, readwrite) NSString *inactiveGameId;
 @property (strong, nonatomic) NSTimer *syncTimer;
 
 @end
@@ -209,6 +210,7 @@
     MAApiSuccessHandler gameCreateSuccess = ^(NSDictionary *response) {
         DDLogVerbose(@"game/create response: %@", response);
         self.joinedGameBoard = board;
+        self.inactiveGameId = response[kMAApiGameIdKey];
         self.joinedTeamColor = response[kMAApiTeamKey];
         if (completion != nil) {
             completion(self.joinedTeamColor, nil);
@@ -252,8 +254,12 @@
 }
 
 - (void)startGame {
-    if (self.joinedGameBoard.game.gameId) {
-        NSDictionary *gameParams =@{ kMAApiGameIdKey: self.joinedGameBoard.game.gameId };
+    NSString *gameId = self.joinedGameBoard.game.gameId;
+    if (!gameId) {
+        gameId = self.inactiveGameId;
+    }
+    if (gameId) {
+        NSDictionary *gameParams =@{ kMAApiGameIdKey: gameId };
         [_api postToPath:kMAApiGameStartPath params:gameParams];
     } else {
         DDLogError(@"Couldn't find joinedGameId! Can't start game!");
@@ -335,8 +341,15 @@
 
 - (void)syncGameState {
     DDLogVerbose(@"syncing game state");
-    [_api postToPath:kMAApiGameStatePath params:@{ kMAApiGameIdKey: self.joinedGameBoard.game.gameId }];
-    // TODO: if it errors, tell the user about it in some way? Maybe just keep track how many times we fail a sync
+    NSString *gameId = self.joinedGameBoard.game.gameId;
+    if (!gameId) {
+        gameId = self.inactiveGameId;
+    }
+
+    if (gameId) {
+        [_api postToPath:kMAApiGameStatePath params:@{ kMAApiGameIdKey:gameId }];
+        // TODO: if it errors, tell the user about it in some way? Maybe just keep track how many times we fail a sync
+    }
 }
 
 - (void)sendLocationsViaUdp:(NSArray *)locations {
@@ -413,6 +426,10 @@
 }
 
 - (void)handleGameUpdate:(NSDictionary *)gameUpdate {
+    BOOL wasActive = self.joinedGameBoard.game.isActive;
+    MAGame *game = [[MAGame alloc] initWithDictionary:gameUpdate];
+    self.joinedGameBoard.game = game;
+
     DDLogVerbose(@"about to set scores...");
     if ([self.delegate respondsToSelector:@selector(team:setScore:)]){
         DDLogVerbose(@"setting scores...");
@@ -420,6 +437,14 @@
                    setScore:[(NSNumber *)gameUpdate[kMAApiTeamsKey][kMAApiRedKey][kMAApiScoreKey] integerValue]];
         [self.delegate team:kMAApiBlueKey
                    setScore:[(NSNumber *)gameUpdate[kMAApiTeamsKey][kMAApiBlueKey][kMAApiScoreKey] integerValue]];
+    }
+
+    if (wasActive && !game.isActive) {
+        DDLogVerbose(@"game ended!");
+        [self leaveGame];
+        if ([self.delegate respondsToSelector:@selector(gameDidEnd)]) {
+            [self.delegate gameDidEnd];
+        }
     }
 }
 
