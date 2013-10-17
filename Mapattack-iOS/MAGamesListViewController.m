@@ -52,6 +52,7 @@
     self.tableView.pullToRefreshView.arrowColor = MA_COLOR_CREAM;
     self.tableView.pullToRefreshView.textColor = MA_COLOR_CREAM;
     self.tableView.pullToRefreshView.backgroundColor = MA_COLOR_BODYBLUE;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     self.tableView.sectionHeaderHeight = kMACellHeight-3;
     // Move the section header up to the tippy-top of the tableview, accounting for the push down that the
@@ -59,11 +60,10 @@
     self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
     UIView *bg = [[UIView alloc] initWithFrame:self.tableView.frame];
     bg.backgroundColor = MA_COLOR_CREAM;
-    UIView *top = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bg.frame.size.width, bg.frame.size.height/4)];
+    UIView *top = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bg.frame.size.width, kMACellHeight)];
     top.backgroundColor = MA_COLOR_BODYBLUE;
     [bg addSubview:top];
     self.tableView.backgroundView = bg;
-    self.tableView.hidden = YES;
     self.view.backgroundColor = MA_COLOR_BODYBLUE;
     _currentStatusBarStyle = UIStatusBarStyleLightContent;
 
@@ -85,7 +85,6 @@
 
     _selectedIndex = -1;
     [self beginMonitoringNearbyBoards];
-    self.tableView.hidden = !(self.nearbyBoards.count > 0 || self.currentGames.count > 0);
 
     self.coinCache = [NSMutableDictionary new];
 
@@ -189,7 +188,6 @@
         }
 
         [weakSelf.tableView.pullToRefreshView stopAnimating];
-        weakSelf.tableView.hidden = NO;
     }];
 }
 
@@ -294,6 +292,17 @@
     }
     if (bgColor != self.view.backgroundColor) {
         [self setNeedsStatusBarAppearanceUpdate];
+    }
+
+    if (self.tableView.backgroundView.subviews.count > 0) {
+        UIView *blueBG = self.tableView.backgroundView.subviews[0];
+        if (scrollView.contentOffset.y > 0) {
+            // Scrolling up, move the blue bg up with it, so it doesn't end up showing when the nearby boards comes up.
+            [blueBG setFrame:CGRectMake(0, -scrollView.contentOffset.y, blueBG.frame.size.width, kMACellHeight)];
+        } else {
+            // Scrolling down, stretch the blue bg with the scroll so the cream bg doesn't show up along with the pull to refresh.
+            [blueBG setFrame:CGRectMake(0, blueBG.frame.origin.y, blueBG.frame.size.width, kMACellHeight + abs(scrollView.contentOffset.y))];
+        }
     }
 }
 
