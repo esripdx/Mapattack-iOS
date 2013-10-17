@@ -432,7 +432,8 @@
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    [self beginMonitoringNearbyBoards];
+    // Taking this out due to pull to refresh
+    //[self beginMonitoringNearbyBoards];
 }
 
 @end
