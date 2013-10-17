@@ -56,15 +56,25 @@
     [self setupScoreLabels];
 
     if (self.createdGame) {
-        self.startStopButton = [[UIButton alloc] initWithFrame:CGRectMake(42, self.view.frame.size.height - self.navigationController.toolbar.frame.size.height - 84, self.view.frame.size.width * 0.75f, 66)];
+        CGSize btnSize = CGSizeMake(self.mapView.frame.size.width * 0.75f, 50);
+        CGFloat btnPadding = 16;
+        CGRect btnFrame = CGRectMake(self.mapView.frame.size.width/2 - btnSize.width/2, self.mapView.frame.size.height - self.navigationController.toolbar.frame.size.height - btnSize.height - btnPadding, btnSize.width, btnSize.height);
+        // self.startStopButton = [[UIButton alloc] initWithFrame:CGRectMake(42, self.view.frame.size.height - self.navigationController.toolbar.frame.size.height - 84, self.view.frame.size.width * 0.75f, 66)];
+        self.startStopButton = [[UIButton alloc] initWithFrame:btnFrame];
         [self.startStopButton setTitle:@"START" forState:UIControlStateNormal];
-        self.startStopButton.titleLabel.font = [UIFont fontWithName:@"M41_LOVEBIT" size:24];
-        self.startStopButton.titleLabel.textColor = MA_COLOR_WHITE;
-        self.startStopButton.layer.borderColor = MA_COLOR_WHITE.CGColor;
-        self.startStopButton.layer.borderWidth = 2;
+        self.startStopButton.titleLabel.font = MA_FONT_MENSCH_HEADER;
+        self.startStopButton.contentEdgeInsets = UIEdgeInsetsMake(7, 0, 0, 0);
+        if ([[MAGameManager sharedManager].joinedTeamColor isEqualToString:@"blue"]) {
+            [self.startStopButton setTitleColor:MA_COLOR_BLUE forState:UIControlStateNormal];
+        } else {
+            [self.startStopButton setTitleColor:MA_COLOR_RED forState:UIControlStateNormal];
+        }
+        self.startStopButton.alpha = 0.93f;
+        self.startStopButton.layer.cornerRadius = 10;
+        self.startStopButton.clipsToBounds = YES;
+        self.startStopButton.backgroundColor = MA_COLOR_CREAM;
         [self.startStopButton addTarget:self action:@selector(startGame:) forControlEvents:UIControlEventTouchUpInside];
-
-        [self.view addSubview:self.startStopButton];
+        [self.mapView addSubview:self.startStopButton];
     }
 }
 
