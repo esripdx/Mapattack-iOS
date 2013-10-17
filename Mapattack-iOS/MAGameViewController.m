@@ -219,6 +219,28 @@
     [self.startStopButton setTitle:@"START" forState:UIControlStateNormal];
     [self.startStopButton removeTarget:self action:@selector(endGame:) forControlEvents:UIControlEventTouchUpInside];
     [self.startStopButton addTarget:self action:@selector(startGame:) forControlEvents:UIControlEventTouchUpInside];
+
+    NSString *victoryString;
+    NSInteger teamScore;
+    NSInteger opponentScore;
+    MAGameManager *manager = [MAGameManager sharedManager];
+    if ([manager.joinedTeamColor isEqualToString:@"blue"]) {
+        teamScore = manager.blueScore;
+        opponentScore = manager.redScore;
+    } else {
+        teamScore = manager.redScore;
+        opponentScore = manager.blueScore;
+    }
+
+    if (teamScore > opponentScore) {
+        victoryString = @"Your team won!";
+    } else if (teamScore < opponentScore) {
+        victoryString = @"Your team lost!";
+    } else {
+        victoryString = @"It's a tie!";
+    }
+    [[[UIAlertView alloc] initWithTitle:@"Game Over" message:[NSString stringWithFormat:@"The game has ended. %@!", victoryString]
+                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 @end
