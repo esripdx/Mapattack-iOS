@@ -16,6 +16,7 @@
 #import "MABorderSetter.h"
 #import "MACoin.h"
 #import "MABoard.h"
+#import <SVPullToRefresh.h>
 
 @interface MAGamesListViewController () {
     NSInteger _selectedIndex;
@@ -44,12 +45,25 @@
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
 
+    __weak MAGamesListViewController *weakSelf = self;
+    [self.tableView addPullToRefreshWithActionHandler:^{
+        [weakSelf fetchBoards:nil];
+    }];
+    self.tableView.pullToRefreshView.arrowColor = MA_COLOR_CREAM;
+    self.tableView.pullToRefreshView.textColor = MA_COLOR_CREAM;
+    self.tableView.pullToRefreshView.backgroundColor = MA_COLOR_BODYBLUE;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+
     self.tableView.sectionHeaderHeight = kMACellHeight-3;
     // Move the section header up to the tippy-top of the tableview, accounting for the push down that the
     // navigation controller is doing to account for the status bar
     self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
-    self.tableView.backgroundView = nil;
-    self.tableView.backgroundColor = MA_COLOR_CREAM;
+    UIView *bg = [[UIView alloc] initWithFrame:self.tableView.frame];
+    bg.backgroundColor = MA_COLOR_CREAM;
+    UIView *top = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bg.frame.size.width, kMACellHeight)];
+    top.backgroundColor = MA_COLOR_BODYBLUE;
+    [bg addSubview:top];
+    self.tableView.backgroundView = bg;
     self.view.backgroundColor = MA_COLOR_BODYBLUE;
     _currentStatusBarStyle = UIStatusBarStyleLightContent;
 
@@ -68,7 +82,7 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     self.navigationController.toolbarHidden = NO;
-    
+
     _selectedIndex = -1;
     [self beginMonitoringNearbyBoards];
 
@@ -173,7 +187,7 @@
             [hud hide:YES];
         }
 
-        weakSelf.tableView.hidden = NO;
+        [weakSelf.tableView.pullToRefreshView stopAnimating];
     }];
 }
 
@@ -262,11 +276,6 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    // don't bounce on scrolling up, only down.
-    if (scrollView.contentOffset.y < 0) {
-        scrollView.contentOffset = CGPointMake(0, 0);
-    }
-
     UIColor *bgColor = self.view.backgroundColor;
     if (self.tableView.indexPathsForVisibleRows.count > 0) {
         NSIndexPath *path = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
@@ -283,6 +292,17 @@
     }
     if (bgColor != self.view.backgroundColor) {
         [self setNeedsStatusBarAppearanceUpdate];
+    }
+
+    if (self.tableView.backgroundView.subviews.count > 0) {
+        UIView *blueBG = self.tableView.backgroundView.subviews[0];
+        if (scrollView.contentOffset.y > 0) {
+            // Scrolling up, move the blue bg up with it, so it doesn't end up showing when the nearby boards comes up.
+            [blueBG setFrame:CGRectMake(0, -scrollView.contentOffset.y, blueBG.frame.size.width, kMACellHeight)];
+        } else {
+            // Scrolling down, stretch the blue bg with the scroll so the cream bg doesn't show up along with the pull to refresh.
+            [blueBG setFrame:CGRectMake(0, blueBG.frame.origin.y, blueBG.frame.size.width, kMACellHeight + abs(scrollView.contentOffset.y))];
+        }
     }
 }
 
