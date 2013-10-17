@@ -18,6 +18,7 @@ static NSUInteger const kMACellExpandedHeight = 326;
 static NSUInteger const kMATableWidth = 320;
 
 static NSString *const kMAWebHelpPath = @"/info";
+static NSUInteger const kMAMaxNumberOfPlayers = 16;
 
 /* UserDefaults keys
  */
