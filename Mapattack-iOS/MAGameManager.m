@@ -164,6 +164,14 @@
 #pragma mark - Game creating/joining
 
 - (void)joinGameOnBoard:(MABoard *)board completion:(void (^)(NSString *joinedTeam, NSError *error))completion {
+
+    if (board.game.totalPlayers > kMAMaxNumberOfPlayers) {
+        NSString *errString = [NSString stringWithFormat:@"Only %d people can play at one time!", kMAMaxNumberOfPlayers];
+        NSDictionary *errDict = @{NSLocalizedDescriptionKey:errString};
+        NSError *error = [NSError errorWithDomain:@"yermum" code:42 userInfo:errDict];
+        completion(nil, error);
+        return;
+    }
     [self registerForPushToken];
     
     DDLogVerbose(@"Joining game: %@", board.game.gameId);

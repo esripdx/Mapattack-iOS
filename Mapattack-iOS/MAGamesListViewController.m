@@ -261,8 +261,9 @@
                     }
                 } else {
                     DDLogError(@"Error joining game: %@", [error debugDescription]);
-                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@", board.name]
+                    [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to join %@: %@", board.name, error.localizedDescription]
                                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                    return;
                 }
             }];
         } else {
@@ -452,6 +453,7 @@
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    // Taking this out due to pull to refresh
     //[self beginMonitoringNearbyBoards];
 }
 

@@ -19,6 +19,7 @@ static NSUInteger const kMATableWidth = 320;
 static NSUInteger const kMANearbyBoardsTimeoutInterval = 30;
 
 static NSString *const kMAWebHelpPath = @"/info";
+static NSUInteger const kMAMaxNumberOfPlayers = 16;
 
 /* UserDefaults keys
  */
