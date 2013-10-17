@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+@class MBProgressHUD;
 
 @interface MAGamesListViewController : UIViewController <MKMapViewDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) MBProgressHUD *hud;
 
 @end

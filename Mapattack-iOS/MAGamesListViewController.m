@@ -154,12 +154,33 @@
     return view;
 }
 
+- (void)timeoutLater
+{
+    NSTimeInterval interval = kMANearbyBoardsTimeoutInterval;
+    NSDictionary *info = @{NSLocalizedDescriptionKey:@"Something happened"};
+    [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(stopMonitoringNearbyBoards) userInfo:info repeats:NO];
+}
+
+- (void)stopMonitoringNearbyBoards
+{
+    [[MAGameManager sharedManager] stopMonitoringNearbyGames];
+    [self.hud hide:YES];
+    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                message:[NSString stringWithFormat:@"Retrieving games took too long!"]
+                               delegate:self
+                      cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+
+    DDLogInfo(@"Stopping monitoring!");
+}
+
 - (void)beginMonitoringNearbyBoards {
     __weak MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Searching...";
+    self.hud = hud;
 
+    [self timeoutLater];
     [self fetchBoards:hud];
 }
 
@@ -431,7 +452,7 @@
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    [self beginMonitoringNearbyBoards];
+    //[self beginMonitoringNearbyBoards];
 }
 
 @end
