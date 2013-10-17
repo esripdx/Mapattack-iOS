@@ -16,6 +16,7 @@ static float const kMAAvatarIconSize = 55.0f;
 static NSUInteger const kMACellHeight = 44;
 static NSUInteger const kMACellExpandedHeight = 326;
 static NSUInteger const kMATableWidth = 320;
+static NSUInteger const kMANearbyBoardsTimeoutInterval = 30;
 
 static NSString *const kMAWebHelpPath = @"/info";
 static NSUInteger const kMAMaxNumberOfPlayers = 16;

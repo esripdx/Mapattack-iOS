@@ -154,19 +154,42 @@
     return view;
 }
 
+- (NSTimer *)timeoutLater
+{
+    NSTimeInterval interval = kMANearbyBoardsTimeoutInterval;
+    NSDictionary *info = @{NSLocalizedDescriptionKey:@"Something happened"};
+    return [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(stopMonitoringNearbyBoards) userInfo:info repeats:NO];
+}
+
+- (void)stopMonitoringNearbyBoards
+{
+    [[MAGameManager sharedManager] stopMonitoringNearbyGames];
+    [self.hud hide:YES];
+    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                message:[NSString stringWithFormat:@"Retrieving games took too long!"]
+                               delegate:self
+                      cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+
+    DDLogInfo(@"Stopping monitoring!");
+}
+
 - (void)beginMonitoringNearbyBoards {
     __weak MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
     hud.square = NO;
     hud.labelText = @"Searching...";
+    self.hud = hud;
 
     [self fetchBoards:hud];
 }
 
 - (void)fetchBoards:(MBProgressHUD *)hud {
     __weak MAGamesListViewController *weakSelf = self;
+    NSTimer *finalCountdown = [self timeoutLater];
+
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
+            [finalCountdown invalidate];
             [weakSelf separateBoards:boards];
 
             if (boards.count == 0) {
