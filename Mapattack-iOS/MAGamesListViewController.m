@@ -154,11 +154,11 @@
     return view;
 }
 
-- (void)timeoutLater
+- (NSTimer *)timeoutLater
 {
     NSTimeInterval interval = kMANearbyBoardsTimeoutInterval;
     NSDictionary *info = @{NSLocalizedDescriptionKey:@"Something happened"};
-    [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(stopMonitoringNearbyBoards) userInfo:info repeats:NO];
+    return [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(stopMonitoringNearbyBoards) userInfo:info repeats:NO];
 }
 
 - (void)stopMonitoringNearbyBoards
@@ -180,14 +180,16 @@
     hud.labelText = @"Searching...";
     self.hud = hud;
 
-    [self timeoutLater];
     [self fetchBoards:hud];
 }
 
 - (void)fetchBoards:(MBProgressHUD *)hud {
     __weak MAGamesListViewController *weakSelf = self;
+    NSTimer *finalCountdown = [self timeoutLater];
+
     [[MAGameManager sharedManager] beginMonitoringNearbyBoardsWithBlock:^(NSArray *boards, NSError *error) {
         if (error == nil) {
+            [finalCountdown invalidate];
             [weakSelf separateBoards:boards];
 
             if (boards.count == 0) {
