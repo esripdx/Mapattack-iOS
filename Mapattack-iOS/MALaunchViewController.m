@@ -43,15 +43,20 @@
         _isUserNameSet = YES;
     }
 
+    UIImageView *bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"launchViewBG-%f", [[UIScreen mainScreen] bounds].size.height]]];
+    [self.view addSubview:bg];
+    [self.view sendSubviewToBack:bg];
     self.view.backgroundColor = MA_COLOR_CREAM;
+    bg.bounds = self.view.frame;
+    bg.frame = self.view.frame;
 
     self.avatarContainer.layer.borderColor = MA_COLOR_RED.CGColor;
     self.avatarContainer.layer.borderWidth = 2.0f;
-    self.avatarContainer.backgroundColor = [UIColor clearColor];
+    self.avatarContainer.backgroundColor = MA_COLOR_CREAM;
 
     self.avatarButtonsContainer.layer.borderColor = MA_COLOR_RED.CGColor;
     self.avatarButtonsContainer.layer.borderWidth = 1.0f;
-    self.avatarButtonsContainer.backgroundColor = [UIColor clearColor];
+    self.avatarButtonsContainer.backgroundColor = MA_COLOR_CREAM;
 
     UIFont *lovebit = [UIFont fontWithName:@"M41_LOVEBIT" size:26.0f];
     self.prevAvatarButton.titleLabel.font = lovebit;
