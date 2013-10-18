@@ -31,6 +31,7 @@ static NSString * const kMADefaultsAccessTokenKey = @"com.esri.portland.mapattac
 static NSString * const kMADefaultsPushTokenKey = @"com.esri.portland.mapattack.pushToken";
 static NSString *const kMADefaultsAvatarIndexKey = @"com.esri.portland.mapattack.defaultAvatarIndex";
 static NSString *const kMADefaultsDefaultAvatarSelectedKey = @"com.esri.portland.mapattack.defaultAvatarSelected";
+static NSString *const kMADefaultsJoinedGameId = @"com.esri.portland.mapattack.joinedGameId";
 
 /* API paths
  */

@@ -167,8 +167,8 @@
 #pragma mark - Game creating/joining
 
 - (void)joinGameOnBoard:(MABoard *)board completion:(void (^)(NSString *joinedTeam, NSError *error))completion {
-
-    if (board.game.totalPlayers > kMAMaxNumberOfPlayers) {
+    NSString *previouslyJoinedGameId = [[NSUserDefaults standardUserDefaults] stringForKey:kMADefaultsJoinedGameId];
+    if (board.game.totalPlayers >= kMAMaxNumberOfPlayers && ![previouslyJoinedGameId isEqualToString:board.game.gameId]) {
         NSString *errString = [NSString stringWithFormat:@"Only %d people can play at one time!", kMAMaxNumberOfPlayers];
         NSDictionary *errDict = @{NSLocalizedDescriptionKey:errString};
         NSError *error = [NSError errorWithDomain:@"yermum" code:42 userInfo:errDict];
@@ -183,6 +183,7 @@
         DDLogVerbose(@"game/join response: %@", response);
         self.joinedGameBoard = board;
         self.joinedTeamColor = response[kMAApiTeamKey];
+        [[NSUserDefaults standardUserDefaults] setObject:response[kMAApiGameIdKey] forKey:kMADefaultsJoinedGameId];
         if (board.game != nil) {
             [self.locationManager startUpdatingLocation];
             [self startPollingGameState];
@@ -214,6 +215,7 @@
         self.joinedGameBoard = board;
         self.inactiveGameId = response[kMAApiGameIdKey];
         self.joinedTeamColor = response[kMAApiTeamKey];
+        [[NSUserDefaults standardUserDefaults] setObject:response[kMAApiGameIdKey] forKey:kMADefaultsJoinedGameId];
         if (completion != nil) {
             completion(self.joinedTeamColor, nil);
         }
