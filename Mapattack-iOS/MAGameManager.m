@@ -101,6 +101,11 @@
         avatarData = [defaults dataForKey:kMADefaultsAvatarKey];
     }
     NSString *avatarString = [avatarData base64EncodedStringWithOptions:0];
+    
+    // url safen the string
+    avatarString = [avatarString stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
+    avatarString = [avatarString stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    
     MAApiSuccessHandler deviceRegisterSuccess = ^(NSDictionary *response) {
         NSString *dk = response[kMAApiDeviceIdKey];
         NSString *at = response[kMAApiAccessTokenKey];
