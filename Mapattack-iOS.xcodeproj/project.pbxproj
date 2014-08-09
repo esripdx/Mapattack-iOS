@@ -748,8 +748,8 @@
 				INFOPLIST_FILE = "Mapattack-iOS/Mapattack-iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "armv7 armv7s";
+				PROVISIONING_PROFILE = "5E501C3C-0776-4E72-82F0-D34F9FC11FA5";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -767,8 +767,8 @@
 				INFOPLIST_FILE = "Mapattack-iOS/Mapattack-iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "armv7 armv7s";
+				PROVISIONING_PROFILE = "5E501C3C-0776-4E72-82F0-D34F9FC11FA5";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
