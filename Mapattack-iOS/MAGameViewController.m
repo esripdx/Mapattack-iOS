@@ -241,6 +241,9 @@
         teamScore = manager.redScore;
         opponentScore = manager.blueScore;
     }
+    
+    DDLogVerbose(@"team score: %ld", (long)teamScore);
+    DDLogVerbose(@"oppo score: %ld", (long)opponentScore);
 
     if (teamScore > opponentScore) {
         victoryString = @"Your team won!";
