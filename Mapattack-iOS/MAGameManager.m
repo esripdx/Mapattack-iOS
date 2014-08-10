@@ -442,10 +442,12 @@
     DDLogVerbose(@"about to set scores...");
     if ([self.delegate respondsToSelector:@selector(team:setScore:)]){
         DDLogVerbose(@"setting scores...");
-        [self.delegate team:kMAApiRedKey
-                   setScore:[(NSNumber *)gameUpdate[kMAApiTeamsKey][kMAApiRedKey][kMAApiScoreKey] integerValue]];
-        [self.delegate team:kMAApiBlueKey
-                   setScore:[(NSNumber *)gameUpdate[kMAApiTeamsKey][kMAApiBlueKey][kMAApiScoreKey] integerValue]];
+        NSInteger redScore = [(NSNumber *)gameUpdate[kMAApiTeamsKey][kMAApiRedKey][kMAApiScoreKey] integerValue];
+        NSInteger blueScore = [(NSNumber *)gameUpdate[kMAApiTeamsKey][kMAApiBlueKey][kMAApiScoreKey] integerValue];
+        _redScore = redScore;
+        _blueScore = blueScore;
+        [self.delegate team:kMAApiRedKey setScore:redScore];
+        [self.delegate team:kMAApiBlueKey setScore:blueScore];
     }
 
     if (wasActive && !game.isActive) {
@@ -474,7 +476,9 @@
     DDLogVerbose(@"got coin update");
     MACoin *coin = [MACoin coinWithDictionary:coinUpdate];
     NSNumber *redScore = coinUpdate[kMAApiRedScoreKey];
+    _redScore = [redScore integerValue];
     NSNumber *blueScore = coinUpdate[kMAApiBlueScoreKey];
+    _blueScore = [blueScore integerValue];
     NSString *playerId = coinUpdate[kMAApiDeviceIdKey];
     NSNumber *playerScore = coinUpdate[kMAApiPlayerScoreKey];
     if ([self.delegate respondsToSelector:@selector(updateStateForCoin:)]) {
@@ -509,7 +513,9 @@
 - (void)handleUdpBoardUpdate:(NSDictionary *)boardUpdate {
     DDLogVerbose(@"got board update");
     NSNumber *redScore = boardUpdate[kMAApiRedScoreKey];
+    _redScore = [redScore integerValue];
     NSNumber *blueScore = boardUpdate[kMAApiBlueScoreKey];
+    _blueScore = [blueScore integerValue];
     if ([self.delegate respondsToSelector:@selector(team:setScore:)]) {
         DDLogVerbose(@"setting team red score to %@", redScore);
         [self.delegate team:kMAApiRedKey setScore:[redScore integerValue]];
